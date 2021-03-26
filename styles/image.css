@@ -1,0 +1,16 @@
+.image,
+.image img {
+	width: 100%;
+	max-width: 500px;
+}
+
+.image {
+	margin: 0 auto var(--page-margins) auto;
+}
+
+.image p {
+	text-align: left;
+	opacity: .8;
+	font-style: italic;
+	margin-top: 12px;
+}

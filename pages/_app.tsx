@@ -4,6 +4,8 @@ import '../styles/colors.css';
 import '../styles/layout.css';
 import '../styles/globals.css';
 import '../styles/navbarItem.css';
+import '../styles/button.css';
+import '../styles/image.css';
 
 export default function Blog({ Component, pageProps }) {
 	return <div>
