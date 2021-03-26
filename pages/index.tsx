@@ -1,8 +1,5 @@
 import Seperator from '../components/articleSeperator';
-import NavbarItem from '../components/navbarItem';
-
-import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
-import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
+import Navbar from '../components/navbar';
 
 export default function Home() {
 	return <div>
@@ -12,10 +9,7 @@ export default function Home() {
 				<p className="subtile">Loek heeft dit geschreven</p>
 			</div>
 			<div className="navAreaWrapper">
-				<div className="sticky">
-					<NavbarItem icon={<HomeRoundedIcon/>} title="Home" href="/"/>
-					<NavbarItem icon={<SearchRoundedIcon/>} title="Search for posts" href="/search"/>
-				</div>
+				<div className="sticky"><Navbar page="home"/></div>
 			</div>
 			<div className="contentWrapper">
 				<p>

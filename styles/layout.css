@@ -1,12 +1,18 @@
+:root {
+	--nav-width: 200px;
+	--page-width: 700px;
+	--page-margins: 24px;
+}
+
 .centeredPage {
-	max-width: calc(700px + 24px + 200px);
+	max-width: calc(var(--nav-width) + var(--page-width) + var(--page-margins));
 	margin: 0 auto;
 	margin-top: 96px;
-	padding: 0 24px;
+	padding: 0 var(--page-margins);
 
 	display: grid;
-	gap: 24px;
-	grid-template-columns: 200px 1fr;
+	gap: var(--page-margins);
+	grid-template-columns: var(--nav-width) 1fr;
 	grid-auto-rows: auto;
 }
 
@@ -22,7 +28,7 @@
 }
 .navAreaWrapper > .sticky {
 	position: sticky;
-	top: 24px;
+	top: var(--page-margins);
 }
 
 .contentWrapper {
@@ -31,7 +37,7 @@
 }
 .contentWrapper > * {
 	margin: 0;
-	margin-bottom: 24px;
+	margin-bottom: var(--page-margins);
 }
 
 .contentWrapper p {
