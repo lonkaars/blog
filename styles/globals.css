@@ -4,7 +4,11 @@ html, body {
 
 	background-color: var(--bg);
 	color: var(--fg);
+
+	font-family: "Inter", sans-serif;
 }
+
+code { font-family: "JetBrainsMono", monospace; }
 
 ::selection {
 	background-color: var(--fire-opal);
