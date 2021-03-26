@@ -46,6 +46,16 @@
 	margin-top: 1px;
 }
 
+.navbarItem.chapter .chapterChildren {
+	transition-property: height;
+	transition-duration: .3s;
+
+	overflow: hidden;
+}
+.navbarItem.chapter .chapterChildren.collapsed {
+	height: 0;
+}
+
 .navbarItem .inner {
 	height: 24px;
 }

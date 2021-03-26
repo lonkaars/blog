@@ -1,3 +1,5 @@
+import { ReactNode, useState } from 'react';
+
 import { NavbarItem } from '../components/navbar';
 
 import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
@@ -10,16 +12,37 @@ interface chapter {
 	children?: Array<chapter>;
 }
 
+function NavbarChapter(props: {
+	level: number;
+	chapter: chapter;
+	children?: ReactNode;
+}) {
+	var [ collapsed, setCollapsed ] = useState(true);
+
+	var icon = props.chapter.children?.length > 0 ?
+		collapsed ? <KeyboardArrowDownRoundedIcon/> : <KeyboardArrowRightRoundedIcon/> :
+		<RemoveRoundedIcon/>
+
+	var classes: Array<string> = [];
+	classes.push("chapter")
+	classes.push(`indentLevel${props.level}`)
+
+	return <NavbarItem icon={icon} classList={classes} title={props.chapter.name} style={{
+		marginLeft: 12 * props.level
+	}}>
+		{props.children}
+	</NavbarItem>
+}
+
 class Chapter {
 	constructor(public chapters: Array<chapter>, public level: number) {}
 	render() {
-		console.log(this)
-		return <div>
+		return <div className="chapterChildren">
 			{
 				this.chapters?.map(chapter => {
-					return <NavbarItem icon={<RemoveRoundedIcon/>} chapterIndent={this.level} title={chapter.name}>
+					return <NavbarChapter level={this.level} chapter={chapter}>
 						{ new Chapter(chapter.children, this.level + 1).render() }
-					</NavbarItem>
+					</NavbarChapter>
 				})
 			}
 		</div>

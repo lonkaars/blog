@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, CSSProperties } from 'react';
 
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
@@ -8,18 +8,15 @@ export function NavbarItem(props: {
 	title: string;
 	href?: string;
 	active?: boolean;
-	chapterIndent?: number;
 	children?: ReactNode;
+	classList?: Array<string>;
+	style?: CSSProperties;
 }) {
-	return <a href={props.href} className={
-		"navbarItem"
-		+ (props.active ? " active" : "")
-		+ (typeof props.chapterIndent !== "undefined" ? " chapter" : "")
-		+ " indentLevel" + (props.chapterIndent || 0)
-	}>
-		<div className="inner" style={{
-			marginLeft: 12 * props.chapterIndent || 0
-		}}>
+	var classes = props.classList || [];
+	classes.push("navbarItem");
+	props.active && classes.push("active");
+	return <a href={props.href} className={classes.join(" ")}>
+		<div className="inner" style={props.style}>
 			{props.icon}
 			<span>{props.title}</span>
 		</div>
