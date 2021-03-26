@@ -1,0 +1,55 @@
+.navbarItem .inner {
+	background-color: var(--oxford-blue);
+	color: var(--almond);
+
+	padding: 8px;
+	border-radius: 8px;
+
+	transition-property: background-color, color;
+	transition-duration: .15s;
+
+	position: relative;
+}
+
+.navbarItem {
+	text-decoration: none;
+	display: block;
+}
+
+.navbarItem.indentLevel0 { margin-bottom: 12px; }
+
+.navbarItem.active .inner,
+.navbarItem:hover .inner {
+	background-color: var(--heliotrope-gray);
+	color: var(--oxford-blue);
+}
+
+.navbarItem.chapter .inner {
+	background-color: transparent;
+	color: var(--fg);
+	/* box-shadow: inset 0 0 0 1px #ff00ff; */
+	padding: 4px 0;
+	overflow: visible;
+}
+
+.navbarItem span {
+	vertical-align: top;
+	margin-left: 8px;
+	margin-top: 3px;
+	display: inline-block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	width: calc(100% - 32px);
+}
+.navbarItem.chapter span {
+	margin-top: 1px;
+}
+
+.navbarItem .inner {
+	height: 24px;
+}
+
+.navbarItem > div > svg {
+	vertical-align: super;
+}

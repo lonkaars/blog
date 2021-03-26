@@ -3,7 +3,7 @@ import Head from 'next/head';
 import '../styles/colors.css';
 import '../styles/layout.css';
 import '../styles/globals.css';
-import '../styles/navbarItem.css';
+import '../styles/navbar.css';
 import '../styles/button.css';
 import '../styles/image.css';
 

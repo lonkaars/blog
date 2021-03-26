@@ -2,6 +2,7 @@ import Seperator from '../components/articleSeperator';
 import Navbar from '../components/navbar';
 import Button from '../components/button';
 import Image from '../components/image';
+import Chapters from '../components/chapters';
 
 export default function Home() {
 	return <div>
@@ -11,7 +12,32 @@ export default function Home() {
 				<p className="subtile">Loek heeft dit geschreven</p>
 			</div>
 			<div className="navAreaWrapper">
-				<div className="sticky"><Navbar page="home"/></div>
+				<div className="sticky">
+					<Navbar page="home"/>
+					<Chapters chapters={[
+						{
+							name: "gert",
+							children: [
+								{
+									name: "gert2",
+									children: [
+										{
+											name: "gert3",
+										}
+									]
+								}
+							]
+						},
+						{
+							name: "gert4",
+							children: [
+								{
+									name: "gert5",
+								}
+							]
+						}
+					]}/>
+				</div>
 			</div>
 			<div className="contentWrapper">
 				<p>
