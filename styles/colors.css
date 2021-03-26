@@ -1,0 +1,13 @@
+:root {
+	--almond: #F4DEC9;
+	--heliotrope-gray: #A69CAC;
+	--purple-navy: #474973;
+	--oxford-blue: #161B33;
+	--xiketic: #0D0C1A;
+	--magnolia: #EFE9F4;
+	--fire-opal: #EE6352;
+
+	--bg: var(--xiketic);
+	--fg: var(--almond);
+}
+

@@ -1,0 +1,40 @@
+.centeredPage {
+	max-width: calc(700px + 24px + 200px);
+	margin: 0 auto;
+	margin-top: 96px;
+	padding: 0 24px;
+
+	display: grid;
+	gap: 24px;
+	grid-template-columns: 200px 1fr;
+	grid-auto-rows: auto;
+}
+
+.titleWrapper {
+	grid-column: 2;
+	grid-row: 1;
+}
+.titleWrapper > * { margin: 0; }
+
+.navAreaWrapper {
+	grid-column: 1;
+	grid-row: 2;
+}
+.navAreaWrapper > .sticky {
+	position: sticky;
+	top: 24px;
+}
+
+.contentWrapper {
+	grid-column: 2;
+	grid-row: 2;
+}
+.contentWrapper > * {
+	margin: 0;
+	margin-bottom: 24px;
+}
+
+.contentWrapper p {
+	text-align: justify;
+}
+

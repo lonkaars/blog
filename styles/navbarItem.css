@@ -1,0 +1,22 @@
+.navbarItem {
+	display: block;
+
+	background-color: var(--oxford-blue);
+	color: var(--almond);
+
+	text-decoration: none;
+
+	padding: 8px;
+	border-radius: 8px;
+	margin-bottom: 12px;
+}
+
+.navbarItem span {
+	vertical-align: super;
+	line-height: 0;
+	margin-left: 8px;
+}
+
+.navbarItem > div {
+	height: 24px;
+}
