@@ -13,8 +13,8 @@ export default function Home() {
 			</div>
 			<div className="navAreaWrapper">
 				<div className="sticky">
-					<NavbarItem icon={<HomeRoundedIcon/>} title="Home" href="#"/>
-					<NavbarItem icon={<SearchRoundedIcon/>} title="Search for posts" href="#"/>
+					<NavbarItem icon={<HomeRoundedIcon/>} title="Home" href="/"/>
+					<NavbarItem icon={<SearchRoundedIcon/>} title="Search for posts" href="/search"/>
 				</div>
 			</div>
 			<div className="contentWrapper">

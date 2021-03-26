@@ -9,6 +9,15 @@
 	padding: 8px;
 	border-radius: 8px;
 	margin-bottom: 12px;
+
+	transition-property: background-color, color;
+	transition-duration: .15s;
+}
+
+.navbarItem.active,
+.navbarItem:hover {
+	background-color: var(--heliotrope-gray);
+	color: var(--oxford-blue);
 }
 
 .navbarItem span {
