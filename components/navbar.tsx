@@ -28,7 +28,17 @@ export default function Navbar(props: {
 	page?: string;
 }) {
 	return <div style={{ marginBottom: 24 }}>
-		<NavbarItem active={props.page == "home"} icon={<HomeRoundedIcon/>} title="Home" href="/"/>
-		<NavbarItem active={props.page == "search"} icon={<SearchRoundedIcon/>} title="Search for posts" href="/search"/>
+		<NavbarItem
+			active={props.page == "home"}
+			icon={<HomeRoundedIcon/>}
+			title="Home"
+			href="/"
+			classList={["indentLevel0"]}/>
+		<NavbarItem
+			active={props.page == "search"}
+			icon={<SearchRoundedIcon/>}
+			title="Search for posts"
+			href="/search"
+			classList={["indentLevel0"]}/>
 	</div>
 }
