@@ -11,14 +11,17 @@ export function NavbarItem(props: {
 	children?: ReactNode;
 	classList?: Array<string>;
 	style?: CSSProperties;
+	outerStyle?: CSSProperties;
+	onIconClick?: () => void;
+	onClick?: () => void;
 }) {
 	var classes = props.classList || [];
 	classes.push("navbarItem");
 	props.active && classes.push("active");
-	return <a href={props.href} className={classes.join(" ")}>
+	return <a href={props.href} className={classes.join(" ")} style={props.outerStyle}>
 		<div className="inner" style={props.style}>
-			{props.icon}
-			<span>{props.title}</span>
+			<div className="icon" onClick={props.onIconClick}>{props.icon}</div>
+			<span className="title" onClick={props.onClick}>{props.title}</span>
 		</div>
 		{props.children}
 	</a>

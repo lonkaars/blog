@@ -16,6 +16,22 @@
 	display: block;
 }
 
+.navbarItem .icon { display: inline-block; }
+
+.navbarItem .icon .collapseIcon {
+	transform: rotate(0deg);
+	transition-property: transform;
+	transition-duration: .3s;
+}
+.navbarItem .icon .collapseIcon.collapsed {
+	transform: rotate(-90deg);
+}
+
+.navbarItem .icon,
+.navbarItem .title {
+	cursor: pointer;
+}
+
 .navbarItem.indentLevel0 { margin-bottom: 12px; }
 
 .navbarItem.active .inner,
@@ -27,12 +43,12 @@
 .navbarItem.chapter .inner {
 	background-color: transparent;
 	color: var(--fg);
-	/* box-shadow: inset 0 0 0 1px #ff00ff; */
+
 	padding: 4px 0;
 	overflow: visible;
 }
 
-.navbarItem span {
+.navbarItem .title {
 	vertical-align: top;
 	margin-left: 8px;
 	margin-top: 3px;
@@ -42,9 +58,7 @@
 	white-space: nowrap;
 	width: calc(100% - 32px);
 }
-.navbarItem.chapter span {
-	margin-top: 1px;
-}
+.navbarItem.chapter .title { margin-top: 1px; }
 
 .navbarItem.chapter .chapterChildren {
 	transition-property: height;
@@ -52,11 +66,13 @@
 
 	overflow: hidden;
 }
-.navbarItem.chapter .chapterChildren.collapsed {
-	height: 0;
-}
 
-.navbarItem .inner {
+.navbarItem.chapter.childrenCollapsed > .chapterChildren { height: 0; }
+.navbarItem.chapter > .chapterChildren { height: var(--children-height); }
+
+.navbarItem .inner,
+.navbarItem .icon,
+.navbarItem .icon .collapseIcon {
 	height: 24px;
 }
 

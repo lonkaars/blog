@@ -1,9 +1,8 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, CSSProperties } from 'react';
 
 import { NavbarItem } from '../components/navbar';
 
 import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
-import KeyboardArrowRightRoundedIcon from '@material-ui/icons/KeyboardArrowRightRounded';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 
 interface chapter {
@@ -19,17 +18,30 @@ function NavbarChapter(props: {
 }) {
 	var [ collapsed, setCollapsed ] = useState(true);
 
-	var icon = props.chapter.children?.length > 0 ?
-		collapsed ? <KeyboardArrowDownRoundedIcon/> : <KeyboardArrowRightRoundedIcon/> :
-		<RemoveRoundedIcon/>
+	var icon = <div className={ "collapseIcon" + (collapsed ? "" : " collapsed") }>
+		{
+			props.chapter.children?.length > 0 ?
+				<KeyboardArrowDownRoundedIcon/> :
+				<RemoveRoundedIcon/>
+		}
+	</div>
 
-	var classes: Array<string> = [];
-	classes.push("chapter")
-	classes.push(`indentLevel${props.level}`)
+	var classes = [
+		"chapter",
+		`indentLevel${props.level}`
+	]
+	!collapsed && classes.push("childrenCollapsed");
 
-	return <NavbarItem icon={icon} classList={classes} title={props.chapter.name} style={{
-		marginLeft: 12 * props.level
-	}}>
+	var outercss = /* { "--children-height": 0 + "px" } */ {} as CSSProperties;
+
+	return <NavbarItem
+	icon={icon}
+	classList={classes}
+	title={props.chapter.name}
+	onIconClick={() => props.chapter.children?.length > 0 && setCollapsed(!collapsed)}
+	style={{
+		marginLeft: 12 * props.level,
+	}} outerStyle={outercss}>
 		{props.children}
 	</NavbarItem>
 }
