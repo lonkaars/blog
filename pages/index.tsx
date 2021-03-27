@@ -23,6 +23,45 @@ export default function Home() {
 									children: [
 										{
 											name: "gert3",
+										},
+										{
+											name: "gert",
+											children: [
+												{
+													name: "gert2",
+													children: [
+														{
+															name: "gert3",
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							name: "gert",
+							children: [
+								{
+									name: "gert2",
+									children: [
+										{
+											name: "gert3",
+										},
+										{
+											name: "gert",
+											children: [
+												{
+													name: "gert2",
+													children: [
+														{
+															name: "gert3",
+														}
+													]
+												}
+											]
 										}
 									]
 								}
