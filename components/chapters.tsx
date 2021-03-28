@@ -5,7 +5,7 @@ import { NavbarItem } from '../components/navbar';
 import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 
-interface chapter {
+export interface chapter {
 	name: string;
 	sectionLink?: string;
 	children?: Array<chapter>;
@@ -39,6 +39,7 @@ function NavbarChapter(props: {
 	classList={classes}
 	title={props.chapter.name}
 	onIconClick={() => props.chapter.children?.length > 0 && setCollapsed(!collapsed)}
+	key={(() => Math.round(Math.random() * 1e12))()}
 	style={{
 		marginLeft: 12 * props.level,
 	}} outerStyle={outercss}>

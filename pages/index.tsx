@@ -4,6 +4,8 @@ import Button from '../components/button';
 import Image from '../components/image';
 import Chapters from '../components/chapters';
 
+import ReactMarkdown from 'react-markdown';
+
 export default function Home() {
 	return <div>
 		<div className="centeredPage">
@@ -79,6 +81,9 @@ export default function Home() {
 				</div>
 			</div>
 			<div className="contentWrapper">
+
+				<ReactMarkdown children={"### cool\n\nbanaan"}/>
+				
 				<p>
 					Lorem ipsum <a>dolor</a> sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida dictum fusce ut placerat orci nulla pellentesque. Laoreet id donec ultrices tincidunt arcu. Tortor aliquam nulla facilisi cras fermentum odio eu feugiat. A scelerisque purus semper eget duis at tellus. A iaculis at erat pellentesque adipiscing commodo elit at imperdiet. Arcu bibendum at varius vel pharetra vel turpis nunc eget. Euismod in pellentesque massa placerat duis. Lorem ipsum dolor sit amet consectetur adipiscing elit. Ultrices in iaculis nunc sed augue lacus. Vestibulum mattis ullamcorper velit sed. Adipiscing diam donec adipiscing
 				</p>
