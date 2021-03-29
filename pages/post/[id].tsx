@@ -2,16 +2,17 @@ import ReactMarkdown from 'react-markdown';
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 
-// import Seperator from '../../components/articleSeperator';
+import Seperator from '../../components/seperator';
 import Navbar from '../../components/navbar';
 // import Button from '../../components/button';
-// import Image from '../../components/image';
+import Image from '../../components/image';
 import Chapters, { chapter } from '../../components/chapters';
 
 interface ArticleMeta {
 	title?: string;
 	subtitle?: string;
-	date?: Date;
+	author?: string;
+	date?: string;
 	chapters?: Array<chapter>;
 }
 
@@ -32,15 +33,41 @@ export default function Post(props: {
 				</div>
 			</div>
 			<div className="contentWrapper">
-				<ReactMarkdown children={props.content}/>
+				<ReactMarkdown
+				children={props.content}
+				renderers={{
+					image: Image,
+					thematicBreak: Seperator,
+				}}/>
 			</div>
 		</div>
 	</div>
 }
 
+var parseTag = {
+	"title": (val: string) => val,
+	"subtitle": (val: string) => val,
+	"author": (val: string) => val,
+	"date": (val: string) => new Date(val).toDateString(),
+}
+
+function parseMeta(file: Array<string>) {
+	var meta: ArticleMeta = {};
+
+	file.forEach(line => {
+		if (!line.startsWith("[meta]: ")) return;
+		var tags = line.match(/\[meta\]:\s+\<(.+?)\>\s+\((.+?)\)/);
+		if (!tags || !tags[1] || !tags[2]) return;
+		if (!parseTag.hasOwnProperty(tags[1])) return;
+		meta[tags[1]] = parseTag[tags[1]](tags[2]);
+	});
+
+	return meta;
+}
+
 function preprocessor(fileContent: string) {
 	var fileAsArr = fileContent.split("\n");
-	var meta: ArticleMeta = {};
+	var meta = parseMeta(fileAsArr);
 
 	var result = fileAsArr.join("\n").trim()
 	return { meta, result }

@@ -1,12 +1,12 @@
 export default function Image(props: {
 	src: string;
-	title?: string;
+	alt?: string;
 }) {
 	return <div className="image">
-		<img src={props.src} alt={props.title}/>
+		<img src={props.src} alt={props.alt}/>
 		{
-			props.title && <div>
-				<p>{props.title}</p>
+			props.alt && <div>
+				<p>{props.alt}</p>
 			</div>
 		}
 	</div>

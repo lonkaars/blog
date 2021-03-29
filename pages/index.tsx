@@ -1,4 +1,4 @@
-import Seperator from '../components/articleSeperator';
+import Seperator from '../components/seperator';
 import Navbar from '../components/navbar';
 import Button from '../components/button';
 import Image from '../components/image';
