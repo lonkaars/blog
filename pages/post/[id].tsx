@@ -12,6 +12,7 @@ interface ArticleMeta {
 	title?: string;
 	subtitle?: string;
 	author?: string;
+	tags?: Array<string>;
 	date?: string;
 	chapters?: Array<chapter>;
 }
@@ -48,6 +49,7 @@ var parseTag = {
 	"title": (val: string) => val,
 	"subtitle": (val: string) => val,
 	"author": (val: string) => val,
+	"tags": (val: string) => val.split(",").map(i => i.trim()),
 	"date": (val: string) => new Date(val).toDateString(),
 }
 
