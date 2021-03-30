@@ -90,7 +90,7 @@ export default function Home() {
 				<a href="https://blog.pipeframe.xyz">Here's a link</a>
 				<Button text="gert" onclick={() => alert("Hallo wereld!")}/>
 				<Button text="gert2" href="https://github.com/lonkaars"/>
-				<Image src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fbarkpost-assets.s3.amazonaws.com%2Fwp-content%2Fuploads%2F2013%2F11%2FplainDoge.jpg&f=1&nofb=1" title="fonny doge meme big laugh hahaha funni image big fonny me laugh because image fonne"/>
+				<Image src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fbarkpost-assets.s3.amazonaws.com%2Fwp-content%2Fuploads%2F2013%2F11%2FplainDoge.jpg&f=1&nofb=1" alt="fonny doge meme big laugh hahaha funni image big fonny me laugh because image fonne"/>
 
 				<Seperator/>
 				<p>

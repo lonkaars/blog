@@ -53,7 +53,7 @@ var parseTag = {
 	"date": (val: string) => new Date(val).toDateString(),
 }
 
-function parseMeta(file: Array<string>) {
+function parseMeta(file: Array<string>): ArticleMeta {
 	var meta: ArticleMeta = {};
 
 	file.forEach(line => {
@@ -67,10 +67,48 @@ function parseMeta(file: Array<string>) {
 	return meta;
 }
 
+var headingLevel = (input: string) => input?.match(/^[#]+/)[0]?.length || 0;
+function parseToCRecursive(headings: Array<string>): Array<chapter> {
+	interface WIPchapter extends chapter {
+		unparsedChildren?: Array<string>;
+	}
+	var children: Array<WIPchapter> = []
+
+	var lowestLevel = headingLevel(headings[0]);
+	var currentChildIndex = -1;
+	for (var i in headings) {
+		var localLevel = headingLevel(headings[i]);
+		if (localLevel == lowestLevel) {
+			children.push({
+				name: headings[i].match(/^[#]+\s+(.+)/)[1],
+				unparsedChildren: [],
+			});
+			currentChildIndex += 1;
+		} else {
+			children[currentChildIndex].unparsedChildren.push(headings[i])
+		}
+	}
+
+	children.map(child => {
+		child.children = parseToCRecursive(child.unparsedChildren)
+		delete child.unparsedChildren;
+
+		return child
+	})
+
+	return children as Array<chapter>;
+}
+
+function parseToC(file: Array<string>): Array<chapter> {
+	var chapterStrings = file.filter(line => line.startsWith("#"));
+	console.log(parseToCRecursive(chapterStrings))
+	return parseToCRecursive(chapterStrings);
+}
+
 function preprocessor(fileContent: string) {
 	var fileAsArr = fileContent.split("\n");
 	var meta = parseMeta(fileAsArr);
-
+	meta.chapters = parseToC(fileAsArr);
 	var result = fileAsArr.join("\n").trim()
 	return { meta, result }
 }
