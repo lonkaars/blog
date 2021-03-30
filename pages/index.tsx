@@ -56,7 +56,6 @@ export function getStaticProps() {
 	})
 
 	var staticProps = { props: { posts: postsContent } };
-	console.log(staticProps)
 	
 	return staticProps
 }
