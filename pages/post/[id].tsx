@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
@@ -15,6 +16,21 @@ interface ArticleMeta {
 	tags?: Array<string>;
 	date?: string;
 	chapters?: Array<chapter>;
+}
+
+var headingLevel = (input: string) => input?.match(/^[#]+/)[0]?.length || 0;
+
+var sectionID = (input: string) => input
+	.replace(/[()\[\]{}!@#$%^&*<>?,./\;':"\\|=+]/g, "")
+	.replace(/\s/g, "-")
+	.toLowerCase();
+
+function Heading(props: {
+	children?: ReactNode;
+	level?: number;
+}) {
+	var HeadingTag = "h" + props.level as keyof JSX.IntrinsicElements;
+	return <HeadingTag id={sectionID(props.children[0].props.children)} children={props.children}/>
 }
 
 export default function Post(props: {
@@ -39,6 +55,7 @@ export default function Post(props: {
 				renderers={{
 					image: Image,
 					thematicBreak: Seperator,
+					heading: Heading,
 				}}/>
 			</div>
 		</div>
@@ -67,7 +84,6 @@ function parseMeta(file: Array<string>): ArticleMeta {
 	return meta;
 }
 
-var headingLevel = (input: string) => input?.match(/^[#]+/)[0]?.length || 0;
 function parseToCRecursive(headings: Array<string>): Array<chapter> {
 	interface WIPchapter extends chapter {
 		unparsedChildren?: Array<string>;
@@ -79,8 +95,10 @@ function parseToCRecursive(headings: Array<string>): Array<chapter> {
 	for (var i in headings) {
 		var localLevel = headingLevel(headings[i]);
 		if (localLevel == lowestLevel) {
+			var chapterName = headings[i].match(/^[#]+\s+(.+)/)[1];
 			children.push({
-				name: headings[i].match(/^[#]+\s+(.+)/)[1],
+				name: chapterName,
+				sectionLink: sectionID(chapterName),
 				unparsedChildren: [],
 			});
 			currentChildIndex += 1;
@@ -101,7 +119,6 @@ function parseToCRecursive(headings: Array<string>): Array<chapter> {
 
 function parseToC(file: Array<string>): Array<chapter> {
 	var chapterStrings = file.filter(line => line.startsWith("#"));
-	console.log(parseToCRecursive(chapterStrings))
 	return parseToCRecursive(chapterStrings);
 }
 
