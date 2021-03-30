@@ -36,12 +36,12 @@ export default function Navbar(props: {
 			icon={<HomeRoundedIcon/>}
 			title="Home"
 			href="/"
-			classList={["indentLevel0"]}/>
+			classList={["indentLevel0", "link"]}/>
 		<NavbarItem
 			active={props.page == "search"}
 			icon={<SearchRoundedIcon/>}
 			title="Search for posts"
 			href="/search"
-			classList={["indentLevel0"]}/>
+			classList={["indentLevel0", "link"]}/>
 	</div>
 }

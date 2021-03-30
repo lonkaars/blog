@@ -35,18 +35,27 @@
 .navbarItem.indentLevel0 { margin-bottom: 12px; }
 
 .navbarItem.active .inner,
-.navbarItem:not(.chapter):hover .inner {
+.navbarItem.link:hover .inner {
 	background-color: var(--heliotrope-gray);
 	color: var(--oxford-blue);
 }
 
-.navbarItem.chapter .inner {
+.navbarItem.chapter .inner,
+.navbarItem.pinned .inner {
 	background-color: transparent;
 	color: var(--fg);
 
 	padding: 4px 0;
 	overflow: visible;
 }
+
+.navbarItem.pinned .inner .title {
+	margin: 0;
+	font-style: italic;
+	opacity: .8;
+	color: var(--heliotrope-gray)
+}
+.navbarItem.pinned * { cursor: default !important; }
 
 .navbarItem .title {
 	vertical-align: top;

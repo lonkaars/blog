@@ -1,110 +1,61 @@
+import Navbar, { NavbarItem } from '../components/navbar';
+import Chapters, { chapter } from '../components/chapters';
 import Seperator from '../components/seperator';
-import Navbar from '../components/navbar';
-import Button from '../components/button';
-import Image from '../components/image';
-import Chapters from '../components/chapters';
-import Tags from '../components/tag';
 
-import ReactMarkdown from 'react-markdown';
+import { getStaticProps as getBlogPage, ArticleMeta, RenderedArticle } from './post/[id]';
 
-export default function Home() {
+var posts = ["index", "index", "index"];
+
+export default function Home(props: {
+	posts: Array<{
+		props: {
+			content: string,
+			meta: ArticleMeta
+		}
+	}>
+}) {
 	return <div>
 		<div className="centeredPage">
 			<div className="titleWrapper">
-				<h1>Loek’s excruciatingly interesting blog</h1>
-				<p className="subtile">Loek heeft dit geschreven</p>
-				<Tags tags={[ "gert", "banaan", "komkommer" ]}/>
+				<h1>{props.posts[0].props.meta.title}</h1>
 			</div>
 			<div className="navAreaWrapper">
 				<div className="sticky">
 					<Navbar page="home"/>
+					<NavbarItem title="Pinned posts:" classList={["pinned"]}/>
 					<Chapters chapters={[
-						{
-							name: "gert",
-							children: [
-								{
-									name: "gert2",
-									children: [
-										{
-											name: "gert3",
-										},
-										{
-											name: "gert",
-											children: [
-												{
-													name: "gert2",
-													children: [
-														{
-															name: "gert3",
-														}
-													]
-												}
-											]
-										}
-									]
-								}
-							]
-						},
-						{
-							name: "gert",
-							children: [
-								{
-									name: "gert2",
-									children: [
-										{
-											name: "gert3",
-										},
-										{
-											name: "gert",
-											children: [
-												{
-													name: "gert2",
-													children: [
-														{
-															name: "gert3",
-														}
-													]
-												}
-											]
-										}
-									]
-								}
-							]
-						},
-						{
-							name: "gert4",
-							children: [
-								{
-									name: "gert5",
-								}
-							]
-						}
+						...props.posts.slice(1).map(post => {
+							return {
+								children: post.props.meta.chapters,
+								name: post.props.meta.title,
+							} as chapter
+						})
 					]}/>
 				</div>
 			</div>
 			<div className="contentWrapper">
-
-				<ReactMarkdown children={"### cool\n\nbanaan"}/>
-				
-				<p>
-					Lorem ipsum <a>dolor</a> sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida dictum fusce ut placerat orci nulla pellentesque. Laoreet id donec ultrices tincidunt arcu. Tortor aliquam nulla facilisi cras fermentum odio eu feugiat. A scelerisque purus semper eget duis at tellus. A iaculis at erat pellentesque adipiscing commodo elit at imperdiet. Arcu bibendum at varius vel pharetra vel turpis nunc eget. Euismod in pellentesque massa placerat duis. Lorem ipsum dolor sit amet consectetur adipiscing elit. Ultrices in iaculis nunc sed augue lacus. Vestibulum mattis ullamcorper velit sed. Adipiscing diam donec adipiscing
-				</p>
-				<a href="https://blog.pipeframe.xyz">Here's a link</a>
-				<Button text="gert" onclick={() => alert("Hallo wereld!")}/>
-				<Button text="gert2" href="https://github.com/lonkaars"/>
-				<Image src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fbarkpost-assets.s3.amazonaws.com%2Fwp-content%2Fuploads%2F2013%2F11%2FplainDoge.jpg&f=1&nofb=1" alt="fonny doge meme big laugh hahaha funni image big fonny me laugh because image fonne"/>
-
-				<Seperator/>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida dictum fusce ut placerat orci nulla pellentesque. Laoreet id donec ultrices tincidunt arcu. Tortor aliquam nulla facilisi cras fermentum odio eu feugiat. A scelerisque purus semper eget duis at tellus. A iaculis at erat pellentesque adipiscing commodo elit at imperdiet. Arcu bibendum at varius vel pharetra vel turpis nunc eget. Euismod in pellentesque massa placerat duis. Lorem ipsum dolor sit amet consectetur adipiscing elit. Ultrices in iaculis nunc sed augue lacus. Vestibulum mattis ullamcorper velit sed. Adipiscing diam donec adipiscing
-				</p>
-				<p>
-					Lorem ipsum <a>dolor</a> sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida dictum fusce ut placerat orci nulla pellentesque. Laoreet id donec ultrices tincidunt arcu. Tortor aliquam nulla facilisi cras fermentum odio eu feugiat. A scelerisque purus semper eget duis at tellus. A iaculis at erat pellentesque adipiscing commodo elit at imperdiet. Arcu bibendum at varius vel pharetra vel turpis nunc eget. Euismod in pellentesque massa placerat duis. Lorem ipsum dolor sit amet consectetur adipiscing elit. Ultrices in iaculis nunc sed augue lacus. Vestibulum mattis ullamcorper velit sed. Adipiscing diam donec adipiscing
-				</p>
-				<p>
-					Lorem ipsum <a>dolor</a> sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Gravida dictum fusce ut placerat orci nulla pellentesque. Laoreet id donec ultrices tincidunt arcu. Tortor aliquam nulla facilisi cras fermentum odio eu feugiat. A scelerisque purus semper eget duis at tellus. A iaculis at erat pellentesque adipiscing commodo elit at imperdiet. Arcu bibendum at varius vel pharetra vel turpis nunc eget. Euismod in pellentesque massa placerat duis. Lorem ipsum dolor sit amet consectetur adipiscing elit. Ultrices in iaculis nunc sed augue lacus. Vestibulum mattis ullamcorper velit sed. Adipiscing diam donec adipiscing
-				</p>
+				{
+					props.posts.map((post, index) => {
+						return <>
+						<RenderedArticle content={post.props.content}/>
+						{ index + 1 != props.posts.length && <Seperator/> }
+						</>
+					})
+				}
 			</div>
 		</div>
 	</div>
+}
+
+export function getStaticProps() {
+	var postsContent = [];
+
+	posts.forEach(id => {
+		postsContent.push(getBlogPage({ params: { id } }));
+	})
+
+	var staticProps = { props: { posts: postsContent } };
+	console.log(staticProps)
+	
+	return staticProps
 }

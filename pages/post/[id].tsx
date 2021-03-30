@@ -10,13 +10,23 @@ import Image from '../../components/image';
 import Chapters, { chapter } from '../../components/chapters';
 import Tags from '../../components/tag';
 
-interface ArticleMeta {
+export interface ArticleMeta {
 	title?: string;
 	subtitle?: string;
 	author?: string;
 	tags?: Array<string>;
 	date?: string;
 	chapters?: Array<chapter>;
+}
+
+export function RenderedArticle(props: { content: string }) {
+	return <ReactMarkdown
+	children={props.content}
+	renderers={{
+		image: Image,
+		thematicBreak: Seperator,
+		heading: Heading,
+	}}/>;
 }
 
 var headingLevel = (input: string) => input?.match(/^[#]+/)[0]?.length || 0;
@@ -52,13 +62,7 @@ export default function Post(props: {
 				</div>
 			</div>
 			<div className="contentWrapper">
-				<ReactMarkdown
-				children={props.content}
-				renderers={{
-					image: Image,
-					thematicBreak: Seperator,
-					heading: Heading,
-				}}/>
+				<RenderedArticle content={props.content}/>
 			</div>
 		</div>
 	</div>
