@@ -39,7 +39,7 @@ function NavbarChapter(props: {
 	classList={classes}
 	title={props.chapter.name}
 	onIconClick={() => props.chapter.children?.length > 0 && setCollapsed(!collapsed)}
-	href={"#" + props.chapter.sectionLink}
+	href={props.chapter.sectionLink}
 	key={(() => Math.round(Math.random() * 1e12))()}
 	style={{
 		marginLeft: 12 * props.level,

@@ -28,6 +28,7 @@ export default function Home(props: {
 							return {
 								children: post.props.meta.chapters,
 								name: post.props.meta.title,
+								sectionLink: "/post/" + post.props.meta.id
 							} as chapter
 						})
 					]}/>

@@ -17,6 +17,7 @@ export interface ArticleMeta {
 	tags?: Array<string>;
 	date?: string;
 	chapters?: Array<chapter>;
+	id?: string;
 }
 
 export function RenderedArticle(props: { content: string }) {
@@ -104,7 +105,7 @@ function parseToCRecursive(headings: Array<string>): Array<chapter> {
 			var chapterName = headings[i].match(/^[#]+\s+(.+)/)[1];
 			children.push({
 				name: chapterName,
-				sectionLink: sectionID(chapterName),
+				sectionLink: "#" + sectionID(chapterName),
 				unparsedChildren: [],
 			});
 			currentChildIndex += 1;
@@ -141,6 +142,7 @@ export function getStaticProps(props: {params: { id: string }}) {
 	var filecontent = readFileSync(filename).toString().trim()
 
 	var parsed = preprocessor(filecontent);
+	parsed.meta.id = props.params.id;
 
 	return {
 		props: {
