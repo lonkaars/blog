@@ -1,0 +1,38 @@
+.searchBar {
+	background-color: var(--heliotrope-gray);
+	border-radius: 8px;
+	padding: 12px;
+}
+
+.searchBar .input {
+	background-color: transparent;
+	border: 0;
+
+	color: var(--bg);
+
+	margin-left: 12px;
+	width: calc(100% - 48px - 12px);
+	padding: 14px 0;
+
+	vertical-align: top;
+
+	font-family: "Inter", sans-serif;
+	font-size: 16px;
+}
+
+.searchBar .input::placeholder {
+	font-style: italic;
+	opacity: .75;
+
+	color: var(--bg);
+}
+
+.searchBar .button {
+	margin: 0;
+	display: inline-block !important;
+	line-height: 0;
+	min-width: unset;
+	background-color: var(--bg);
+	color: var(--heliotrope-gray) !important;
+}
+

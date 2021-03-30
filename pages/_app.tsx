@@ -7,6 +7,7 @@ import '../styles/navbar.css';
 import '../styles/button.css';
 import '../styles/image.css';
 import '../styles/tags.css';
+import '../styles/search.css';
 
 export default function Blog({ Component, pageProps }) {
 	return <div>
