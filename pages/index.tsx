@@ -37,6 +37,7 @@ export default function Home(props: {
 				{
 					props.posts.map((post, index) => {
 						return <>
+						{ index != 0 && <h1>{post.props.meta.title}</h1> }
 						<RenderedArticle content={post.props.content}/>
 						{ index + 1 != props.posts.length && <Seperator/> }
 						</>
