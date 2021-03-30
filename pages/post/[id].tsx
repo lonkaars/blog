@@ -8,6 +8,7 @@ import Navbar from '../../components/navbar';
 // import Button from '../../components/button';
 import Image from '../../components/image';
 import Chapters, { chapter } from '../../components/chapters';
+import Tags from '../../components/tag';
 
 interface ArticleMeta {
 	title?: string;
@@ -42,6 +43,7 @@ export default function Post(props: {
 			<div className="titleWrapper">
 				<h1>{props.meta.title}</h1>
 				<p className="subtile">{props.meta.subtitle}</p>
+				{ props.meta.tags && <Tags tags={props.meta.tags}/> }
 			</div>
 			<div className="navAreaWrapper">
 				<div className="sticky">
