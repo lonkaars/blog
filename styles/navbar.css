@@ -1,6 +1,6 @@
 .navbarItem .inner {
 	background-color: var(--oxford-blue);
-	color: var(--almond);
+	color: var(--fg);
 
 	padding: 8px;
 	border-radius: 8px;
@@ -35,7 +35,7 @@
 .navbarItem.indentLevel0 { margin-bottom: 12px; }
 
 .navbarItem.active .inner,
-.navbarItem:hover .inner {
+.navbarItem:not(.chapter):hover .inner {
 	background-color: var(--heliotrope-gray);
 	color: var(--oxford-blue);
 }
@@ -78,4 +78,14 @@
 
 .navbarItem > div > svg {
 	vertical-align: super;
+}
+
+@media (prefers-color-scheme: light) {
+	.navbarItem .inner { background-color: var(--heliotrope-gray); }
+
+	.navbarItem.active .inner,
+	.navbarItem:not(.chapter):hover .inner {
+		color: var(--bg);
+		background-color: var(--fg);
+	}
 }

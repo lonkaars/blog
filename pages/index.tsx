@@ -3,6 +3,7 @@ import Navbar from '../components/navbar';
 import Button from '../components/button';
 import Image from '../components/image';
 import Chapters from '../components/chapters';
+import Tags from '../components/tag';
 
 import ReactMarkdown from 'react-markdown';
 
@@ -12,6 +13,7 @@ export default function Home() {
 			<div className="titleWrapper">
 				<h1>Loek’s excruciatingly interesting blog</h1>
 				<p className="subtile">Loek heeft dit geschreven</p>
+				<Tags tags={[ "gert", "banaan", "komkommer" ]}/>
 			</div>
 			<div className="navAreaWrapper">
 				<div className="sticky">

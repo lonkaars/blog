@@ -6,6 +6,7 @@ import '../styles/globals.css';
 import '../styles/navbar.css';
 import '../styles/button.css';
 import '../styles/image.css';
+import '../styles/tags.css';
 
 export default function Blog({ Component, pageProps }) {
 	return <div>

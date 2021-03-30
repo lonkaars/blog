@@ -23,3 +23,6 @@
 a.button { min-width: calc(200px - 2 * 12px); }
 a.button::after { display: none; }
 
+@media (prefers-color-scheme: light) {
+	.button { color: var(--bg) !important; }
+}

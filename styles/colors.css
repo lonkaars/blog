@@ -11,3 +11,14 @@
 	--fg: var(--almond);
 }
 
+@media (prefers-color-scheme: light) {
+	:root {
+		--heliotrope-gray: #c9c9dd;
+		--purple-navy: #989abb;
+		--fire-opal: #ba3321;
+
+		--bg: var(--magnolia);
+		--fg: var(--xiketic);
+	}
+}
+
