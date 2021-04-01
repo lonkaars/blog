@@ -11,8 +11,12 @@ if [[ $tag_name = "tags" ]]; then
 		sed -z '$ s/\n$//' |\
 		jq --raw-input --slurp 'split("\n")'
 else
-	echo $output |\
-		sed -z '$ s/\n$//' |\
-		jq --raw-input
+	if [[ $output = "" ]]; then
+		echo "" | jq --raw-input
+	else
+		echo $output |\
+			sed -z '$ s/\n$//' |\
+			jq --raw-input
+	fi
 fi
 

@@ -3,7 +3,7 @@
 filename=$1
 
 jq -n \
-	--argjson title    "$(./meta title $filename)" \
+	--argjson title    "$(./meta title $filename || '\n')" \
 	--argjson subtitle "$(./meta subtitle $filename)" \
 	--argjson author   "$(./meta author $filename)" \
 	--argjson date     "$(./meta date $filename)" \

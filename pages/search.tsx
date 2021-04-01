@@ -13,6 +13,7 @@ function SearchBar(props: { searchFunction: () => void }) {
 		id="searchInput"
 		placeholder="Search for posts..."
 		onChange={() => props.searchFunction()}
+		spellCheck="false"
 		autoComplete="off"/>
 		<button className="button" onClick={() => props.searchFunction()}><SearchOutlinedIcon/></button>
 	</div>
