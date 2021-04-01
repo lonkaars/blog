@@ -54,7 +54,7 @@ function Posts(props: { posts: Array<Post> }) {
 
 export default function SearchPage() {
 	var [posts, setPosts] = useState<PostsInfo>({ posts: [], valid_tags: [] });
-	var [query, setQuery] = useState("");
+	var [query, setQuery] = useState("-");
 	var [visiblePosts, setVisiblePosts] = useState<Array<Post>>([]);
 
 	var fuse = new Fuse(posts.posts, {
@@ -73,10 +73,12 @@ export default function SearchPage() {
 		var query = new URLSearchParams(window.location.search).get("q") || "";
 		if(query)
 			(document.getElementById("searchInput") as HTMLInputElement).value = query;
-		setQuery(query);
 
 		var posts = await fetch("/posts.json");
-		setPosts(await posts.json());
+		var postsJson: PostsInfo = await posts.json();
+		postsJson.posts = postsJson.posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+		setPosts(postsJson);
+		setQuery(query);
 	})()}, []);
 
 	useEffect(() => {
