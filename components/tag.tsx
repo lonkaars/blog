@@ -5,7 +5,7 @@ export default function Tags(props: {
 }) {
 	return <div className="tags">
 		<span>Tags:</span>
-		{props.tags.map(tag => <Tag name={tag}/>)}
+		{props.tags.map(tag => <Tag key={Math.random().toString()} name={tag}/>)}
 	</div>
 }
 

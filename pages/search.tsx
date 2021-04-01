@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
+import Fuse from 'fuse.js';
 
 import Navbar from '../components/navbar';
-import { FormEvent } from 'react';
-import { ArticleMeta } from './post/[id]';
 import Tags from '../components/tag'
 
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 
-function SearchBar(props: {
-	searchFunction: (event?: FormEvent<HTMLFormElement>) => void;
-}) {
+function SearchBar(props: { searchFunction: () => void }) {
 	return <div className="searchBar">
-		<form onSubmit={props.searchFunction}>
-			<input className="input" placeholder="Search for posts..." autoComplete="off"/>
-			<button className="button" onClick={() => props.searchFunction()}><SearchOutlinedIcon/></button>
-			<input type="submit" style={{ display: "none" }}/>
-		</form>
+		<input
+		className="input"
+		id="searchInput"
+		placeholder="Search for posts..."
+		onChange={() => props.searchFunction()}
+		autoComplete="off"/>
+		<button className="button" onClick={() => props.searchFunction()}><SearchOutlinedIcon/></button>
 	</div>
 }
 
@@ -54,11 +53,38 @@ function Posts(props: { posts: Array<Post> }) {
 
 export default function SearchPage() {
 	var [posts, setPosts] = useState<PostsInfo>({ posts: [], valid_tags: [] });
+	var [query, setQuery] = useState("");
+	var [visiblePosts, setVisiblePosts] = useState<Array<Post>>([]);
+
+	var fuse = new Fuse(posts.posts, {
+		keys: [
+			"title",
+			"subtitle",
+			"author",
+			"date",
+			"urlname",
+			"tags"
+		],
+		isCaseSensitive: false
+	})
 
 	useEffect(() => {(async () => {
+		var query = new URLSearchParams(window.location.search).get("q") || "";
+		if(query)
+			(document.getElementById("searchInput") as HTMLInputElement).value = query;
+		setQuery(query);
+
 		var posts = await fetch("/posts.json");
 		setPosts(await posts.json());
 	})()}, []);
+
+	useEffect(() => {
+		if(query.length == 0) {
+			setVisiblePosts(posts.posts)
+		} else {
+			setVisiblePosts(fuse.search(query).map(res => res.item))
+		}
+	}, [query]);
 
 	return <div>
 		<div className="centeredPage">
@@ -71,10 +97,10 @@ export default function SearchPage() {
 				</div>
 			</div>
 			<div className="contentWrapper">
-				<SearchBar searchFunction={(event?: FormEvent<HTMLFormElement>) => {
-					event?.preventDefault();
+				<SearchBar searchFunction={() => {
+					setTimeout(() => setQuery((document.getElementById("searchInput") as HTMLInputElement).value));
 				}}/>
-				<Posts posts={posts.posts}/>
+				<Posts posts={visiblePosts}/>
 			</div>
 		</div>
 	</div>
