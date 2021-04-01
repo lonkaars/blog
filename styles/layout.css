@@ -30,7 +30,7 @@
 	position: sticky;
 	top: var(--page-margins);
 	bottom: var(--page-margins);
-	height: calc(100vh - 2 * var(--page-margins));
+	max-height: calc(100vh - 2 * var(--page-margins));
 
 	overflow-y: scroll;
 

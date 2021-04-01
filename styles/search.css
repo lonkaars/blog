@@ -2,6 +2,7 @@
 	background-color: var(--heliotrope-gray);
 	border-radius: 8px;
 	padding: 12px;
+	margin-bottom: 24px;
 }
 
 .searchBar .input {
@@ -34,5 +35,38 @@
 	min-width: unset;
 	background-color: var(--bg);
 	color: var(--heliotrope-gray) !important;
+}
+
+.searchResults .post::after {
+	display: none;
+}
+
+.searchResults .post {
+	display: block;
+	border-radius: 8px;
+
+	padding: 8px;
+	margin-bottom: 12px;
+	background-color: var(--oxford-blue);
+
+	color: var(--fg);
+}
+
+.searchResults .post .title,
+.searchResults .post .subtitle,
+.searchResults .post .authordate {
+	margin: 4px 0;
+}
+
+.searchResults .post .authordate {
+	font-style: italic;
+	opacity: .75;
+}
+
+@media (prefers-color-scheme: light) {
+	.searchBar { background-color: var(--fg); }
+	.searchBar .button { color: var(--fg) !important; }
+
+	.searchResults .post { background-color: var(--heliotrope-gray); }
 }
 

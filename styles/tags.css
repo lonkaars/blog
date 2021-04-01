@@ -1,8 +1,8 @@
-.titleWrapper .tags {
+.tags {
 	margin-top: 12px;
 }
 
-.titleWrapper .tags .tag {
+.tags .tag {
 	--tag-color: hsl(var(--tag-hue), 75%, 70%);
 
 	padding: 4px 12px;
@@ -18,12 +18,14 @@
 }
 
 @media (prefers-color-scheme: light) {
-	.titleWrapper .tags .tag {
+	.tags .tag {
 		--tag-color: hsl(var(--tag-hue), 50%, 40%);
 	}
 }
 
-.titleWrapper .tags .tag::before {
+.tags .tag::after { display: none; }
+
+.tags .tag::before {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -37,4 +39,4 @@
 	opacity: .25;
 }
 
-.titleWrapper .tags > * { margin-right: 6px; }
+.tags > * { margin-right: 6px; }

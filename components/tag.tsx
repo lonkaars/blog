@@ -12,7 +12,7 @@ export default function Tags(props: {
 export function Tag(props: {
 	name: string;
 }) {
-	return <a className="tag" href={"/search?tag=" + props.name} style={{
+	return <a className="tag" href={"/search?q=" + props.name} style={{
 		"--tag-hue": props.name
 			.split("")
 			.map(char => char.charCodeAt(0))
