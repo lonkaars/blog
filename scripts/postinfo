@@ -1,0 +1,20 @@
+#!/bin/sh
+
+filename=$1
+
+jq -n \
+	--argjson title    "$(./meta title $filename)" \
+	--argjson subtitle "$(./meta subtitle $filename)" \
+	--argjson author   "$(./meta author $filename)" \
+	--argjson date     "$(./meta date $filename)" \
+	--argjson tags     "$(./meta tags $filename)" \
+	--argjson urlname  "$(basename $filename .md | jq --raw-input)" \
+'{
+	"title": $title,
+	"subtitle": $subtitle,
+	"author": $author,
+	"date": $date,
+	"tags": $tags,
+	"urlname": $urlname
+}'
+
