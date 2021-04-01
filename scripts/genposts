@@ -1,0 +1,2 @@
+#!/bin/sh
+./posts | jq -c > ../public/posts.json
