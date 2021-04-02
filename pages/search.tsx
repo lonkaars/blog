@@ -52,6 +52,37 @@ function Posts(props: { posts: Array<Post> }) {
 	</div>;
 }
 
+function searchFilter(query: string, tags: Array<string>) {
+	var output = {
+		query: "",
+		tags: []
+	}
+
+	// remove string literals from tag matching
+	var queryWithoutLiterals = query.replace(/\".+?\"/g, "");
+
+	// find tags and remove them from the query
+	tags.forEach(tag => {
+		var index = queryWithoutLiterals.indexOf(tag);
+		if (index == -1) return;
+
+		// remove tag from query
+		queryWithoutLiterals =
+			queryWithoutLiterals.substr(0, index) +
+			queryWithoutLiterals.substr(index + tag.length);
+
+		output.tags.push(tag);
+	});
+
+	// add back in the string literals (janky just gets pasted on end)
+	output.query =
+		queryWithoutLiterals + " " +
+		(query.match(/\".+?\"/g)
+			?.map(r => r.substr(1, r.length - 2))
+			.join(" ") || "");
+	return output;
+}
+
 export default function SearchPage() {
 	var [posts, setPosts] = useState<PostsInfo>({ posts: [], valid_tags: [] });
 	var [query, setQuery] = useState("-");
@@ -82,11 +113,23 @@ export default function SearchPage() {
 	})()}, []);
 
 	useEffect(() => {
-		if(query.length == 0) {
-			setVisiblePosts(posts.posts)
+		var search = searchFilter(query, posts.valid_tags);
+
+		if(search.query.length == 0) {
+			var results = posts.posts;
 		} else {
-			setVisiblePosts(fuse.search(query).map(res => res.item))
+			var fuseSearch = fuse.search(search.query);
+			var results = fuseSearch.map(res => res.item);
 		}
+
+		results = results.filter(result => {
+			for(var i in search.tags) {
+				if (!result.tags.includes(search.tags[i]))
+					return false;
+			}
+			return true;
+		});
+		setVisiblePosts(results)
 	}, [query]);
 
 	return <div>
