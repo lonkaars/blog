@@ -128,7 +128,10 @@ function parseToCRecursive(headings: Array<string>): Array<chapter> {
 }
 
 function parseToC(file: Array<string>): Array<chapter> {
-	var chapterStrings = file.filter(line => line.startsWith("#"));
+	var fileAsStr = file.join("\n");
+	fileAsStr = fileAsStr.replace(/```.*?```/gs, ""); // filter out code blocks from table of contents
+	var fileAsArr = fileAsStr.split("\n");
+	var chapterStrings = fileAsArr.filter(line => line.startsWith("#"));
 	return parseToCRecursive(chapterStrings);
 }
 
