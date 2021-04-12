@@ -5,13 +5,13 @@ filename=$2
 
 output=$(grep -Poh "^\[meta\]:\s+<$tag_name>\s+\(\K(.+)(?=\)$)" $filename)
 
-if [[ $tag_name = "tags" ]]; then
+if [ "$tag_name" = "tags" ]; then
 	echo $output |\
 		sed "s/,\s*/\n/g" |\
 		sed -z '$ s/\n$//' |\
 		jq --raw-input --slurp 'split("\n")'
 else
-	if [[ $output = "" ]]; then
+	if [ "$output" = "" ]; then
 		echo "" | jq --raw-input
 	else
 		echo $output |\
