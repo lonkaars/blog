@@ -15,6 +15,12 @@ npx next build
 echo "-> exporting static files..."
 npx next export
 
+echo "-> cleaning $web_root..."
+rm -rf $web_root/*
+
 echo "-> moving static files to $web_root..."
 cp -rv out/* $web_root
+
+echo "-> cleaning out directory..."
 rm -rfv out
+
