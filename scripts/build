@@ -16,5 +16,5 @@ echo "-> exporting static files..."
 npx next export
 
 echo "-> moving static files to $web_root..."
-mv -v out/* $web_root
+cp -rv out/* $web_root
 rm -rfv out
