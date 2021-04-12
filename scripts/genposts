@@ -1,2 +1,6 @@
 #!/bin/sh
-./posts | jq -c > ../public/posts.json
+./posts |\
+	jq ".posts |= sort_by(.date)" |\
+	jq -c \
+	> ../public/posts.json
+

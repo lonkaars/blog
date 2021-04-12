@@ -111,7 +111,6 @@ export default function SearchPage() {
 
 			var posts = await fetch('/posts.json');
 			var postsJson: PostsInfo = await posts.json();
-			postsJson.posts = postsJson.posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 			setPosts(postsJson);
 			setQuery(query);
 		})();
@@ -135,6 +134,7 @@ export default function SearchPage() {
 			}
 			return true;
 		});
+		results = results.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 		setVisiblePosts(results);
 	}, [query]);
 
