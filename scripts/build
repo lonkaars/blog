@@ -4,16 +4,17 @@ web_root=/var/www/blog
 
 cd $(dirname $0)
 
-echo "> generating posts.json..."
+echo "-> generating posts.json..."
 ./genposts
 
 cd ..
 
-echo "> building static files..."
+echo "-> building static files..."
 npx next build
 
-echo "> exporting static files..."
+echo "-> exporting static files..."
 npx next export
 
-echo "> moving static files to $web_root..."
-mv out $web_root
+echo "-> moving static files to $web_root..."
+mv -v out/* $web_root
+rm -rfv out
