@@ -22,22 +22,23 @@ function SearchBar(props: { searchFunction: () => void; }) {
 	</div>;
 }
 
-interface Post {
+export interface Post {
 	title: string;
 	subtitle: string;
 	author: string;
 	date: string;
-	urlname: string;
+	id: string;
+	cover: string;
 	tags: Array<string>;
 }
 
-interface PostsInfo {
+export interface PostsInfo {
 	valid_tags: Array<string>;
 	posts: Array<Post>;
 }
 
 function Post(props: { post: Post; }) {
-	return <a className='post' href={'/post/' + props.post.urlname}>
+	return <a className='post' href={'/post/' + props.post.id}>
 		<b className='title'>{props.post.title}</b>
 		{props.post.subtitle && <p className='subtitle'>{props.post.subtitle}</p>}
 		<p className='authordate'>
@@ -96,7 +97,7 @@ export default function SearchPage() {
 			'subtitle',
 			'author',
 			'date',
-			'urlname',
+			'id',
 			'tags',
 		],
 		isCaseSensitive: false,

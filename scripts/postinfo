@@ -8,13 +8,15 @@ jq -n \
 	--argjson author   "$(./meta author $filename)" \
 	--argjson date     "$(./meta date $filename)" \
 	--argjson tags     "$(./meta tags $filename)" \
-	--argjson urlname  "$(basename $filename .md | jq --raw-input)" \
+	--argjson cover    "$(./meta cover $filename)" \
+	--argjson id  "$(basename $filename .md | jq --raw-input)" \
 '{
 	"title": $title,
 	"subtitle": $subtitle,
 	"author": $author,
 	"date": $date,
 	"tags": $tags,
-	"urlname": $urlname
+	"cover": $cover,
+	"id": $id
 }'
 

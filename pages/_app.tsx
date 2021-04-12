@@ -8,6 +8,7 @@ import '../styles/layout.css';
 import '../styles/navbar.css';
 import '../styles/search.css';
 import '../styles/tags.css';
+import '../styles/card.css';
 
 export default function Blog({ Component, pageProps }) {
 	return <div>

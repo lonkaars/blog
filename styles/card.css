@@ -1,0 +1,28 @@
+.postCard {
+	background-color: var(--oxford-blue);
+	padding: 12px;
+	border-radius: 8px;
+
+	overflow-x: hidden;
+	color: var(--fg) !important;
+}
+
+.postCard::after {
+	display: none;
+}
+
+.postCard .cover {
+	width: 100%;
+	border-radius: 6px;
+	max-height: 220px;
+	object-fit: cover;
+}
+
+.postCard .title {
+	font-size: 24px;
+}
+
+.postCard .subtitle {
+	font-weight: 500;
+}
+

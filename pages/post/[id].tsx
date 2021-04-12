@@ -18,6 +18,7 @@ export interface ArticleMeta {
 	tags?: Array<string>;
 	date?: string;
 	chapters?: Array<chapter>;
+	cover?: string;
 	id?: string;
 }
 
@@ -78,6 +79,7 @@ var parseTag = {
 	'title': (val: string) => val,
 	'subtitle': (val: string) => val,
 	'author': (val: string) => val,
+	'cover': (val: string) => val,
 	'tags': (val: string) => val.split(',').map(i => i.trim()),
 	'date': (val: string) => new Date(val).toDateString(),
 };

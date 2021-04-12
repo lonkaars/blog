@@ -1,8 +1,12 @@
+import Button from '../components/button';
 import Chapters, { chapter } from '../components/chapters';
 import Navbar, { NavbarItem } from '../components/navbar';
 import Seperator from '../components/seperator';
-
+import PostCard from '../components/card';
+import { PostsInfo } from './search';
 import { ArticleMeta, getStaticProps as getBlogPage, RenderedArticle } from './post/[id]';
+
+import { useEffect, useState } from 'react';
 
 var posts = ['index', 'index', 'index'];
 
@@ -14,6 +18,16 @@ export default function Home(props: {
 		};
 	}>;
 }) {
+	var [posts, setPosts] = useState<PostsInfo>({ posts: [], valid_tags: [] });
+
+	useEffect(() => {
+		(async () => {
+			var posts = await fetch('/posts.json');
+			var postsJson: PostsInfo = await posts.json();
+			setPosts(postsJson);
+		})();
+	}, []);
+
 	return <div>
 		<div className='centeredPage'>
 			<div className='titleWrapper'>
@@ -39,9 +53,24 @@ export default function Home(props: {
 			<div className='contentWrapper'>
 				{props.posts.map((post, index) => {
 					return <>
-						{index != 0 && <h1>{post.props.meta.title}</h1>}
+						{ index != 0 && <h1>{post.props.meta.title}</h1> }
 						<RenderedArticle content={post.props.content} />
-						{index + 1 != props.posts.length && <Seperator />}
+						{ index + 1 != props.posts.length && <Seperator /> }
+						{
+							index == 0 && <>
+								<h2>Recent posts</h2>
+								<div className="recentPosts">
+								{
+									posts.posts.slice(0, 4).map(post => {
+										return <PostCard post={post}/>;
+									})
+								}
+								</div>
+
+								<div><Button text="Go to all posts" href="/search"/></div>
+								<Seperator />
+							</>
+						}
 					</>;
 				})}
 			</div>
