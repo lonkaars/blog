@@ -8,7 +8,8 @@ import { ArticleMeta, getStaticProps as getBlogPage, RenderedArticle } from './p
 
 import { useEffect, useState } from 'react';
 
-var posts = ['index', 'index', 'index'];
+// edit this to change the post displayed on the home page and the pinned posts
+var posts = ['index'];
 
 export default function Home(props: {
 	posts: Array<{

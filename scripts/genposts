@@ -1,4 +1,7 @@
 #!/bin/sh
+
+cd $(dirname $0)
+
 ./posts |\
 	jq ".posts |= sort_by(.date)" |\
 	jq -c \
