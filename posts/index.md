@@ -4,12 +4,17 @@
 [meta]: <date> (April 12 2021)
 [meta]: <tags> (home)
 
-Welcome to my blog page! This is where I post updates on things that I do such as:
+Welcome to my blog page! This is where I post updates on things that I do such
+as:
 
 - Cool open source software that I think you should use
 - How to set up self-hosted applications
 - Rants about Microsoft Windows
 - Maybe some recipes I dunno
 
-The page you're looking at right now is also open-source! The code for this page can be found on [GitHub](https://github.com/lonkaars/blog), and should also be available on my private git server, though that's broken at the moment.
+The page you're looking at right now is also open-source! The code for this
+page can be found on [GitHub](https://github.com/lonkaars/blog), and should
+also be available on [my private git server](https://git.pipeframe.xyz), though
+that's broken at the moment. (Permission issues prevent cgit from working
+properly)
 
