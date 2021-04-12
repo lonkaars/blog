@@ -1,2 +1,1 @@
-- gh markdown parsing (code highlighting + checkbox lists + html parsing)
 - ignore lines starting with '#' in code blocks

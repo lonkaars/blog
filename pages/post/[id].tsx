@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdownWithHTML from 'react-markdown/with-html';
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
+import gfm from 'remark-gfm';
 
 import Seperator from '../../components/seperator';
 import Navbar from '../../components/navbar';
@@ -21,7 +22,9 @@ export interface ArticleMeta {
 }
 
 export function RenderedArticle(props: { content: string }) {
-	return <ReactMarkdown
+	return <ReactMarkdownWithHTML
+	plugins={[gfm]}
+	allowDangerousHtml
 	children={props.content}
 	renderers={{
 		image: Image,
