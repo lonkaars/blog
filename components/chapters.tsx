@@ -1,9 +1,9 @@
-import { ReactNode, useState, CSSProperties } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 
 import { NavbarItem } from '../components/navbar';
 
-import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
+import RemoveRoundedIcon from '@material-ui/icons/RemoveRounded';
 
 export interface chapter {
 	name: string;
@@ -16,50 +16,48 @@ function NavbarChapter(props: {
 	chapter: chapter;
 	children?: ReactNode;
 }) {
-	var [ collapsed, setCollapsed ] = useState(true);
+	var [collapsed, setCollapsed] = useState(true);
 
-	var icon = <div className={ "collapseIcon" + (collapsed ? "" : " collapsed") }>
-		{
-			props.chapter.children?.length > 0 ?
-				<KeyboardArrowDownRoundedIcon/> :
-				<RemoveRoundedIcon/>
-		}
-	</div>
+	var icon = <div className={'collapseIcon' + (collapsed ? '' : ' collapsed')}>
+		{props.chapter.children?.length > 0
+			? <KeyboardArrowDownRoundedIcon />
+			: <RemoveRoundedIcon />}
+	</div>;
 
 	var classes = [
-		"chapter",
-		`indentLevel${props.level}`
-	]
-	!collapsed && classes.push("childrenCollapsed");
+		'chapter',
+		`indentLevel${props.level}`,
+	];
+	!collapsed && classes.push('childrenCollapsed');
 
 	var outercss = /* { "--children-height": 0 + "px" } */ {} as CSSProperties;
 
 	return <NavbarItem
-	icon={icon}
-	classList={classes}
-	title={props.chapter.name}
-	onIconClick={() => props.chapter.children?.length > 0 && setCollapsed(!collapsed)}
-	href={props.chapter.sectionLink}
-	key={(() => Math.round(Math.random() * 1e12))()}
-	style={{
-		marginLeft: 12 * props.level,
-	}} outerStyle={outercss}>
+		icon={icon}
+		classList={classes}
+		title={props.chapter.name}
+		onIconClick={() => props.chapter.children?.length > 0 && setCollapsed(!collapsed)}
+		href={props.chapter.sectionLink}
+		key={(() => Math.round(Math.random() * 1e12))()}
+		style={{
+			marginLeft: 12 * props.level,
+		}}
+		outerStyle={outercss}
+	>
 		{props.children}
-	</NavbarItem>
+	</NavbarItem>;
 }
 
 class Chapter {
 	constructor(public chapters: Array<chapter>, public level: number) {}
 	render() {
-		return <div className="chapterChildren">
-			{
-				this.chapters?.map(chapter => {
-					return <NavbarChapter level={this.level} chapter={chapter}>
-						{ new Chapter(chapter.children, this.level + 1).render() }
-					</NavbarChapter>
-				})
-			}
-		</div>
+		return <div className='chapterChildren'>
+			{this.chapters?.map(chapter => {
+				return <NavbarChapter level={this.level} chapter={chapter}>
+					{new Chapter(chapter.children, this.level + 1).render()}
+				</NavbarChapter>;
+			})}
+		</div>;
 	}
 }
 

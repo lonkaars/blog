@@ -3,7 +3,7 @@ export default function Button(props: {
 	href?: string;
 	onclick?: () => void;
 }) {
-	return props.href ?
-			<a href={props.href} className="button">{props.text}</a> :
-			<button onClick={props.onclick} className="button">{props.text}</button>
+	return props.href
+		? <a href={props.href} className='button'>{props.text}</a>
+		: <button onClick={props.onclick} className='button'>{props.text}</button>;
 }

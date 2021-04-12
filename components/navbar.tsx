@@ -1,4 +1,4 @@
-import { ReactNode, CSSProperties } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
@@ -16,15 +16,15 @@ export function NavbarItem(props: {
 	onClick?: () => void;
 }) {
 	var classes = props.classList || [];
-	classes.push("navbarItem");
-	props.active && classes.push("active");
-	return <a href={props.href} className={classes.join(" ")} style={props.outerStyle}>
-		<div className="inner" style={props.style}>
-			<div className="icon" onClick={props.onIconClick}>{props.icon}</div>
-			<span className="title" onClick={props.onClick}>{props.title}</span>
+	classes.push('navbarItem');
+	props.active && classes.push('active');
+	return <a href={props.href} className={classes.join(' ')} style={props.outerStyle}>
+		<div className='inner' style={props.style}>
+			<div className='icon' onClick={props.onIconClick}>{props.icon}</div>
+			<span className='title' onClick={props.onClick}>{props.title}</span>
 		</div>
 		{props.children}
-	</a>
+	</a>;
 }
 
 export default function Navbar(props: {
@@ -32,16 +32,18 @@ export default function Navbar(props: {
 }) {
 	return <div style={{ marginBottom: 24 }}>
 		<NavbarItem
-			active={props.page == "home"}
-			icon={<HomeRoundedIcon/>}
-			title="Home"
-			href="/"
-			classList={["indentLevel0", "link"]}/>
+			active={props.page == 'home'}
+			icon={<HomeRoundedIcon />}
+			title='Home'
+			href='/'
+			classList={['indentLevel0', 'link']}
+		/>
 		<NavbarItem
-			active={props.page == "search"}
-			icon={<SearchRoundedIcon/>}
-			title="Search for posts"
-			href="/search"
-			classList={["indentLevel0", "link"]}/>
-	</div>
+			active={props.page == 'search'}
+			icon={<SearchRoundedIcon />}
+			title='Search for posts'
+			href='/search'
+			classList={['indentLevel0', 'link']}
+		/>
+	</div>;
 }
