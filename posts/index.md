@@ -14,7 +14,5 @@ as:
 
 The page you're looking at right now is also open-source! The code for this
 page can be found on [GitHub](https://github.com/lonkaars/blog), and should
-also be available on [my private git server](https://git.pipeframe.xyz), though
-that's broken at the moment. (Permission issues prevent cgit from working
-properly)
+also be available on [my private git server](https://git.pipeframe.xyz).
 
