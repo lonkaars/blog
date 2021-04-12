@@ -26,3 +26,9 @@
 	font-weight: 500;
 }
 
+@media (prefers-color-scheme: light) {
+	.postCard {
+		background-color: var(--heliotrope-gray);
+	}
+}
+
