@@ -40,6 +40,8 @@
 .contentWrapper {
 	grid-column: 2;
 	grid-row: 2;
+
+	overflow-x: hidden;
 }
 .contentWrapper > * {
 	margin: 0;
@@ -48,5 +50,11 @@
 
 .contentWrapper p {
 	text-align: justify;
+}
+
+.contentWrapper table,
+.contentWrapper code,
+.contentWrapper pre {
+	overflow-x: scroll;
 }
 
