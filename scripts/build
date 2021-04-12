@@ -1,6 +1,6 @@
 #!/bin/sh
 
-web_root=/home/loek/gert
+web_root=/var/www/blog
 
 cd $(dirname $0)
 
