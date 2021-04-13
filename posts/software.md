@@ -125,19 +125,48 @@ for when you can't figure out how to configure something.
 
 ## Server software
 
+This is the software that runs on my home server.
+
 ### Email
+
+I used [Luke Smith's](http://lukesmith.xyz/)
+[emailwiz](https://github.com/LukeSmithxyz/emailwiz) to set up my email server.
+The script installs and configures an email setup with
+[postfix](http://www.postfix.org/), [dovecot](https://www.dovecot.org/),
+[spamassassin](https://spamassassin.apache.org/) and
+[opendkim](http://www.opendkim.org/).
 
 ### Etesync
 
+I run my own [etesync](https://www.etesync.com/) server for synchronizing my
+to-do lists, calendar and contacts. It's relatively easy to set up, and has a
+web interface that you can use with your own self-hosted instance.
+
 ### Bitwarden
+
+I also run my own [bitwarden](https://github.com/bitwarden/server) server. It
+uses docker with docker-compose, which are two things that I'm supposed to know
+about, but I don't.
+
+I'm working on a connect 4 website myself, and I'm planning on learning to use
+docker with docker-compose to make it easier to run the seperate parts that are
+needed to host the project.
 
 ### Git
 
-### Samba
+I have a [cgit](https://git.zx2c4.com/cgit/about/) server to host my git
+repositories on <https://git.pipeframe.xyz>, and I use
+[gitolite](https://gitolite.com/gitolite/) for ssh git push access. Cgit is
+very easy to set up, and I like it very much. Gitolite on the other hand is a
+pain in the ass to set up, because the documentation is not that great. If
+you're planning on using gitolite on your own server, set the umask in
+`~/.gitolite.rc` of your server's git account to `0022`.
 
 ### SFTP
 
-### Minecraft
+I have two semi-public sftp accounts set up on my server: `media` and `sftp`.
+`sftp` is for generic file sharing, and `media` is for my media. Both accounts
+have tty login disabled and are chroot-jailed to /var/media and /var/sftp.
 
 ## Phone apps
 
