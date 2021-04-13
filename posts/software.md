@@ -170,7 +170,51 @@ have tty login disabled and are chroot-jailed to /var/media and /var/sftp.
 
 ## Phone apps
 
+These are the apps that I use on my phone. I have a Nokia 6 (2017), it's pretty
+shitty but I don't really use my phone. I used to have it rooted, but the root
+guide on xda forums was written by some Chinese guy, and it came with a Chinese
+android rom, which caused me to miss a lot of calls.
+
 ### Open source
 
+- **One-time password generator**: [andotp](https://github.com/andOTP/andOTP)
+
+- **App store**: [aurora store](https://gitlab.com/AuroraOSS/AuroraStore). This
+  app works better when you're rooted, but it's way better than the google play
+  store.
+
+- **App store**: [aurora f-droid](https://gitlab.com/AuroraOSS/auroradroid)
+
+- **Password manager**: [bitwarden](https://github.com/bitwarden/mobile)
+
+- **Browser**: [bromite](https://www.bromite.org/). This is basically ungoogled
+  chromium but for mobile.
+
+- **Calendar**: [etar](https://github.com/Etar-Group/Etar-Calendar)
+
+- [etesync](https://github.com/etesync/android)
+
+- **File browser**: [material
+  files](https://github.com/zhanghai/MaterialFiles). It looks sexy, it's free,
+  it's awesome.
+
+- **Email client**: [fairemail](https://email.faircode.eu/). STOP CRYING.
+
+- **Maps**: [osmand](https://osmand.net/)
+
+- **Music player**: [shuttle](https://www.shuttlemusicplayer.com/). It looks
+  sexy, it's free, it's awesome.
+
+- **Instant messenger**: [signal](https://signal.org/). [papa musk said
+  it](https://twitter.com/elonmusk/status/1347165127036977153).
+
+- **Manga reader**: [tachiyomi](https://tachiyomi.org/)
+
+- **To-do lists**: [tasks.org](https://tasks.org/). This is easily the best
+  to-do app I've ever used, and it integrated very well with etesync.
+
 ### Closed source
+
+- **Reddit client**:
+  [sync](https://play.google.com/store/apps/details?id=com.laurencedawson.reddit_sync)
 
