@@ -16,6 +16,7 @@
 	border-radius: 6px;
 	max-height: 220px;
 	object-fit: cover;
+	margin-bottom: 6px;
 }
 
 .postCard .title {

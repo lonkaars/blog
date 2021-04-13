@@ -3,6 +3,7 @@
 [meta]: <author> (Loek)
 [meta]: <date> (April 12 2021)
 [meta]: <tags> (home)
+[meta]: <cover> (/img/helloworld.png)
 
 Welcome to my blog page! This is where I post updates on things that I do such
 as:
