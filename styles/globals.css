@@ -66,6 +66,10 @@ h3 { font-size: 32px; }
 
 :focus { outline: none; }
 
+li {
+	margin-bottom: 6px;
+}
+
 @media (prefers-color-scheme: light) {
 	.subtile {
 		opacity: .6;
