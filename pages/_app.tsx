@@ -13,7 +13,7 @@ import '../styles/tags.css';
 export default function Blog({ Component, pageProps }) {
 	return <>
 		<Head>
-			<link rel="preload" as="style" href="/font/font.css" onLoad={() => this.rel='stylesheet'} />
+			<link rel='preload' as='style' href='/font/font.css' onLoad={() => this.rel = 'stylesheet'} />
 
 			<title>Loek's Blog</title>
 
