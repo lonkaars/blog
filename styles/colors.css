@@ -5,7 +5,10 @@
 	--oxford-blue: #161B33;
 	--xiketic: #0D0C1A;
 	--magnolia: #EFE9F4;
+
 	--fire-opal: #EE6352;
+	--cyan-process: #08B2E3;
+	--forest-green-crayola: #57A773;
 
 	--bg: var(--xiketic);
 	--fg: var(--almond);
@@ -15,7 +18,10 @@
 	:root {
 		--heliotrope-gray: #c9c9dd;
 		--purple-navy: #989abb;
+
 		--fire-opal: #ba3321;
+		--cyan-process: #397889;
+		--forest-green-crayola: #376848;
 
 		--bg: var(--magnolia);
 		--fg: var(--xiketic);

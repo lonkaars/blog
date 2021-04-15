@@ -1,14 +1,15 @@
-import ReactMarkdownWithHTML from 'react-markdown/with-html';
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { ReactNode } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import rehypeRaw from 'rehype-raw';
 import gfm from 'remark-gfm';
 
-import Navbar from '../../components/navbar';
-import Seperator from '../../components/seperator';
-// import Button from '../../components/button';
 import Chapters, { chapter } from '../../components/chapters';
 import Image from '../../components/image';
+import Navbar from '../../components/navbar';
+import Seperator from '../../components/seperator';
 import Tags from '../../components/tag';
 
 export interface ArticleMeta {
@@ -20,19 +21,6 @@ export interface ArticleMeta {
 	chapters?: Array<chapter>;
 	cover?: string;
 	id?: string;
-}
-
-export function RenderedArticle(props: { content: string; }) {
-	return <ReactMarkdownWithHTML
-		plugins={[gfm]}
-		allowDangerousHtml
-		children={props.content}
-		renderers={{
-			image: Image,
-			thematicBreak: Seperator,
-			heading: Heading,
-		}}
-	/>;
 }
 
 var headingLevel = (input: string) => input?.match(/^[#]+/)[0]?.length || 0;
@@ -48,7 +36,44 @@ function Heading(props: {
 	level?: number;
 }) {
 	var HeadingTag = 'h' + props.level as keyof JSX.IntrinsicElements;
-	return <HeadingTag id={sectionID(props.children[0].props.children)} children={props.children} />;
+	console.log(props);
+	return <HeadingTag id={sectionID(props.children[0])} children={props.children} />;
+}
+
+function Code(props: {
+	className?: string;
+	children?: ReactNode;
+}) {
+	var language = /language-(\w+)/.exec(props.className || '');
+	if (!language) return <code children={props.children} className={props.className} />;
+	return <SyntaxHighlighter
+		language={language[1]}
+		children={props.children.toString().trim()}
+		useInlineStyles={false}
+		PreTag='div'
+		style={{}}
+	/>;
+}
+
+export function RenderedArticle(props: { content: string; }) {
+	return <ReactMarkdown
+		rehypePlugins={[rehypeRaw]}
+		remarkPlugins={[gfm]}
+		children={props.content}
+		components={{
+			img: ({ node, ...props }) => <Image src={props.src as string} alt={props.alt as string} />,
+			hr: Seperator,
+
+			h1: Heading, // TODO: fix this garbage
+			h2: Heading,
+			h3: Heading,
+			h4: Heading,
+			h5: Heading,
+			h6: Heading,
+
+			code: Code,
+		}}
+	/>;
 }
 
 export default function Post(props: {

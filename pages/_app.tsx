@@ -2,6 +2,7 @@ import Head from 'next/head';
 
 import '../styles/button.css';
 import '../styles/card.css';
+import '../styles/code.css';
 import '../styles/colors.css';
 import '../styles/globals.css';
 import '../styles/image.css';

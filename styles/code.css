@@ -1,0 +1,50 @@
+.prismjs { padding: 6px; }
+
+pre {
+	background-color: var(--oxford-blue);
+	border-radius: 6px;
+}
+
+.prismjs code { color: var(--magnolia); }
+
+.prismjs .token.comment
+{ font-style: italic; }
+
+.prismjs .token.keyword,
+.prismjs .token.annotation
+{ font-weight: 700; }
+
+.prismjs .token.string,
+.prismjs .token.number
+{ color: var(--fg); }
+
+.prismjs .token.comment {
+	color: var(--heliotrope-gray);
+	opacity: .7;
+}
+
+.prismjs .token.keyword
+{ color: var(--fire-opal); }
+
+.prismjs .token.annotation
+{ color: var(--cyan-process); }
+
+.prismjs .token.punctuation:not(.annotation)
+.prismjs .token.operator
+{ opacity: .8; }
+
+@media (prefers-color-scheme: light) {
+	pre { background-color: var(--heliotrope-gray); }
+
+	.prismjs code { color: var(--fg); }
+
+	.prismjs .token.string,
+	.prismjs .token.number
+	{ opacity: .8; }
+
+	.prismjs .token.comment {
+		color: var(--oxford-blue);
+		opacity: .4;
+	}
+}
+
