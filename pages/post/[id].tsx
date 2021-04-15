@@ -36,7 +36,6 @@ function Heading(props: {
 	level?: number;
 }) {
 	var HeadingTag = 'h' + props.level as keyof JSX.IntrinsicElements;
-	console.log(props);
 	return <HeadingTag id={sectionID(props.children[0])} children={props.children} />;
 }
 
