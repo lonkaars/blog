@@ -101,3 +101,47 @@
 		color: var(--oxford-blue)
 	}
 }
+
+.mobileNav {
+	width: 48px;
+	text-align: center;
+	line-height: 0;
+}
+
+.mobileNav .button:last-child {
+	margin-bottom: 0;
+}
+
+.mobileNav .button {
+	padding: 12px;
+	background-color: var(--fire-opal);
+	display: inline-block !important;
+	min-width: 0;
+	border-radius: 24px;
+	margin: 0;
+	box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 25%);
+
+	width: 24px;
+	height: 24px;
+	position: relative;
+}
+
+.mobileNav .button > svg {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.mobileNav .button.small {
+	padding: 6px;
+	background-color: var(--purple-navy);
+	margin-bottom: 12px;
+
+	opacity: 0;
+	transition: opacity .3s;
+}
+
+.mobileNav.open .button.small {
+	opacity: 1;
+}

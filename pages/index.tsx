@@ -1,7 +1,7 @@
 import Button from '../components/button';
 import PostCard from '../components/card';
 import Chapters, { chapter } from '../components/chapters';
-import Navbar, { NavbarItem } from '../components/navbar';
+import Navbar, { NavbarItem, MobileNavbar } from '../components/navbar';
 import Seperator from '../components/seperator';
 import { ArticleMeta, getStaticProps as getBlogPage, RenderedArticle } from './post/[id]';
 import { PostsInfo } from './search';
@@ -51,6 +51,7 @@ export default function Home(props: {
 					/>
 				</div>
 			</div>
+			<MobileNavbar/>
 			<div className='contentWrapper'>
 				{props.posts.map((post, index) => {
 					return <>

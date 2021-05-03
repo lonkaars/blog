@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js';
 import { useEffect, useState } from 'react';
 
-import Navbar from '../components/navbar';
+import Navbar, { MobileNavbar } from '../components/navbar';
 import Tags from '../components/tag';
 
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
@@ -149,6 +149,7 @@ export default function SearchPage() {
 					<Navbar page='search' />
 				</div>
 			</div>
+			<MobileNavbar/>
 			<div className='contentWrapper'>
 				<SearchBar
 					searchFunction={() => {

@@ -2,6 +2,7 @@ import { CSSProperties, ReactNode } from 'react';
 
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
+import MenuIcon from '@material-ui/icons/Menu';
 
 export function NavbarItem(props: {
 	icon?: ReactNode;
@@ -30,7 +31,7 @@ export function NavbarItem(props: {
 export default function Navbar(props: {
 	page?: string;
 }) {
-	return <div style={{ marginBottom: 24 }}>
+	return <div className="globalLinks" style={{ marginBottom: 24 }}>
 		<NavbarItem
 			active={props.page == 'home'}
 			icon={<HomeRoundedIcon />}
@@ -45,5 +46,18 @@ export default function Navbar(props: {
 			href='/search'
 			classList={['indentLevel0', 'link']}
 		/>
+	</div>;
+}
+
+export function MobileNavbar() {
+	return <div className="mobileNav">
+		<a className="home button small" href="/"><HomeRoundedIcon /></a>
+		<a className="search button small" href="/search"><SearchRoundedIcon/></a>
+		<div className="mainButton button" onClick={() => {
+			document.getElementsByClassName("mobileNav")[0].classList.toggle("open");
+			document.getElementsByClassName("navAreaWrapper")[0].classList.toggle("navVisible");
+		}}>
+			<MenuIcon style={{ "fill": "var(--oxford-blue)" }} />
+		</div>
 	</div>;
 }
