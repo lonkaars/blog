@@ -8,7 +8,7 @@ import gfm from 'remark-gfm';
 
 import Chapters, { chapter } from '../../components/chapters';
 import Image from '../../components/image';
-import Navbar from '../../components/navbar';
+import Navbar, { MobileNavbar } from '../../components/navbar';
 import Seperator from '../../components/seperator';
 import Tags from '../../components/tag';
 
@@ -92,6 +92,7 @@ export default function Post(props: {
 					<Chapters chapters={props.meta.chapters} />
 				</div>
 			</div>
+			<MobileNavbar/>
 			<div className='contentWrapper'>
 				<RenderedArticle content={props.content} />
 			</div>
