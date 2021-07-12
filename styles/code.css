@@ -1,8 +1,7 @@
-.prismjs { padding: 6px; }
-
 pre {
 	background-color: var(--oxford-blue);
 	border-radius: 6px;
+	padding: 6px;
 }
 
 .prismjs code { color: var(--magnolia); }

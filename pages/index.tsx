@@ -1,7 +1,7 @@
 import Button from '../components/button';
 import PostCard from '../components/card';
 import Chapters, { chapter } from '../components/chapters';
-import Navbar, { NavbarItem, MobileNavbar } from '../components/navbar';
+import Navbar, { MobileNavbar, NavbarItem } from '../components/navbar';
 import Seperator from '../components/seperator';
 import { ArticleMeta, getStaticProps as getBlogPage, RenderedArticle } from './post/[id]';
 import { PostsInfo } from './search';
@@ -51,7 +51,7 @@ export default function Home(props: {
 					/>
 				</div>
 			</div>
-			<MobileNavbar/>
+			<MobileNavbar />
 			<div className='contentWrapper'>
 				{props.posts.map((post, index) => {
 					return <>
@@ -61,7 +61,7 @@ export default function Home(props: {
 						{index == 0 && <>
 							<h2>Recent posts</h2>
 							<div className='recentPosts'>
-								{posts.posts.slice(0, 4).reverse().map(post => {
+								{posts.posts.reverse().slice(0, 4).map(post => {
 									return <PostCard post={post} />;
 								})}
 							</div>

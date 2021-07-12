@@ -92,7 +92,7 @@ export default function Post(props: {
 					<Chapters chapters={props.meta.chapters} />
 				</div>
 			</div>
-			<MobileNavbar/>
+			<MobileNavbar />
 			<div className='contentWrapper'>
 				<RenderedArticle content={props.content} />
 			</div>

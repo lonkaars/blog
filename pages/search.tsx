@@ -149,7 +149,7 @@ export default function SearchPage() {
 					<Navbar page='search' />
 				</div>
 			</div>
-			<MobileNavbar/>
+			<MobileNavbar />
 			<div className='contentWrapper'>
 				<SearchBar
 					searchFunction={() => {
