@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { ReactNode } from 'react';
@@ -80,6 +81,12 @@ export default function Post(props: {
 	meta: ArticleMeta;
 }) {
 	return <div>
+		<Head>
+			<title>{props.meta.title} - Loek's Blog</title>
+			<meta property='og:site_name' content={props.meta.date} />
+			<meta property='og:title' content={props.meta.title} />
+			<meta property='og:description' content={props.meta.subtitle} />
+		</Head>
 		<div className='centeredPage'>
 			<div className='titleWrapper'>
 				<h1>{props.meta.title}</h1>

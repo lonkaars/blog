@@ -24,7 +24,9 @@ export default function Blog({ Component, pageProps }) {
 			<meta property='og:title' content="Loek's excruciatingly interesting blog" />
 			<meta property='og:description' content='This is my personal blog website' />
 			<meta property='og:type' content='website' />
-			<meta name='theme-color' content='#ee6352' />
+
+			<meta name='theme-color' media='(prefers-color-scheme: light)' content='#c9c9dd' />
+			<meta name='theme-color' media='(prefers-color-scheme: dark)' content='#0D0C1A' />
 		</Head>
 		<Component {...pageProps} />
 	</>;

@@ -43,7 +43,7 @@ pre {
 
 	.prismjs .token.comment {
 		color: var(--oxford-blue);
-		opacity: .4;
+		opacity: .5;
 	}
 }
 
