@@ -24,13 +24,7 @@ export default function Blog({ Component, pageProps }) {
 	return <>
 		<Head>
 			<link rel='preload' as='style' href='/font/font.css' onLoad={() => this.rel = 'stylesheet'} />
-
-			<title>Loek's Blog</title>
-
-			<meta property='og:site_name' content="Loek's blog" />
 			<meta property='og:url' content='https://blog.pipeframe.xyz' />
-			<meta property='og:title' content="Loek's excruciatingly interesting blog" />
-			<meta property='og:description' content='This is my personal blog website' />
 			<meta property='og:type' content='website' />
 			<meta name='theme-color' content={dark ? '#0D0C1A' : '#c9c9dd'} />
 		</Head>

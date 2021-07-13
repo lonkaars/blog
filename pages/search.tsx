@@ -1,5 +1,6 @@
 import Fuse from 'fuse.js';
 import { useEffect, useState } from 'react';
+import Head from 'next/head';
 
 import Navbar, { MobileNavbar } from '../components/navbar';
 import Tags from '../components/tag';
@@ -140,6 +141,12 @@ export default function SearchPage() {
 	}, [query]);
 
 	return <div>
+		<Head>
+			<title>Search - Loek's Blog</title>
+			<meta property='og:site_name' content="Loek's blog" />
+			<meta property='og:title' content="Loek's excruciatingly interesting blog" />
+			<meta property='og:description' content='This is my personal blog website' />
+		</Head>
 		<div className='centeredPage'>
 			<div className='titleWrapper'>
 				<h1>Search for posts</h1>

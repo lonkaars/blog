@@ -5,6 +5,7 @@ import Navbar, { MobileNavbar, NavbarItem } from '../components/navbar';
 import Seperator from '../components/seperator';
 import { ArticleMeta, getStaticProps as getBlogPage, RenderedArticle } from './post/[id]';
 import { PostsInfo } from './search';
+import Head from 'next/head';
 
 import { useEffect, useState } from 'react';
 
@@ -30,6 +31,12 @@ export default function Home(props: {
 	}, []);
 
 	return <div>
+		<Head>
+			<title>Loek's Blog</title>
+			<meta property='og:site_name' content="Loek's blog" />
+			<meta property='og:title' content="Loek's excruciatingly interesting blog" />
+			<meta property='og:description' content='This is my personal blog website' />
+		</Head>
 		<div className='centeredPage'>
 			<div className='titleWrapper'>
 				<h1>{props.posts[0].props.meta.title}</h1>
