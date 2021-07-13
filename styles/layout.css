@@ -88,6 +88,13 @@ blockquote:before {
 	background-color: var(--cyan-process);
 }
 
+@media (prefers-color-scheme: light) {
+	blockquote {
+		color: var(--oxford-blue);
+		opacity: .8;
+	}
+}
+
 @media screen and (max-device-width: 550px) {
 	.navAreaWrapper {
 		grid-column: none;

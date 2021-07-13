@@ -1,0 +1,19 @@
+@media print {
+	:root {
+		--nav-width: 0px;
+
+		--bg: #ffffff;
+		--fg: #000000;
+
+		--heliotrope-gray: var(--bg);
+		--purple-navy: #989abb;
+
+		--fire-opal: #ba3321;
+		--cyan-process: #397889;
+		--forest-green-crayola: #376848;
+
+	}
+
+	.centeredPage { grid-gap: var(--page-margins) 0; }
+	pre { border: solid 2px var(--fg); }
+}
