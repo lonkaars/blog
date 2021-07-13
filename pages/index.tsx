@@ -9,7 +9,7 @@ import { PostsInfo } from './search';
 import { useEffect, useState } from 'react';
 
 // edit this to change the post displayed on the home page and the pinned posts
-var posts = ['index', 'connect4', 'software', 'git'];
+var posts = ['index', 'software'];
 
 export default function Home(props: {
 	posts: Array<{
