@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 
 import '../styles/button.css';
 import '../styles/card.css';
@@ -13,6 +14,13 @@ import '../styles/search.css';
 import '../styles/tags.css';
 
 export default function Blog({ Component, pageProps }) {
+	var [dark, setDark] = useState(false);
+	useEffect(() => {
+		let colorSchemeQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+		setDark(!!colorSchemeQueryList.matches);
+		colorSchemeQueryList.addEventListener('change', e => setDark(!!e.matches));
+	}, []);
+
 	return <>
 		<Head>
 			<link rel='preload' as='style' href='/font/font.css' onLoad={() => this.rel = 'stylesheet'} />
@@ -24,9 +32,7 @@ export default function Blog({ Component, pageProps }) {
 			<meta property='og:title' content="Loek's excruciatingly interesting blog" />
 			<meta property='og:description' content='This is my personal blog website' />
 			<meta property='og:type' content='website' />
-
-			<meta name='theme-color' media='(prefers-color-scheme: light)' content='#c9c9dd' />
-			<meta name='theme-color' media='(prefers-color-scheme: dark)' content='#0D0C1A' />
+			<meta name='theme-color' content={dark ? '#0D0C1A' : '#c9c9dd'} />
 		</Head>
 		<Component {...pageProps} />
 	</>;
