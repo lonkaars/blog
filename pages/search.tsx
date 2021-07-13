@@ -1,6 +1,6 @@
+import Head from 'next/head';
 import Fuse from 'fuse.js';
 import { useEffect, useState } from 'react';
-import Head from 'next/head';
 
 import Navbar, { MobileNavbar } from '../components/navbar';
 import Tags from '../components/tag';

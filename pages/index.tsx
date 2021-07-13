@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Button from '../components/button';
 import PostCard from '../components/card';
 import Chapters, { chapter } from '../components/chapters';
@@ -5,7 +6,6 @@ import Navbar, { MobileNavbar, NavbarItem } from '../components/navbar';
 import Seperator from '../components/seperator';
 import { ArticleMeta, getStaticProps as getBlogPage, RenderedArticle } from './post/[id]';
 import { PostsInfo } from './search';
-import Head from 'next/head';
 
 import { useEffect, useState } from 'react';
 
