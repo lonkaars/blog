@@ -1,19 +1,23 @@
 :root {
-	--nav-width: 200px;
+	--collapse-horizontal-gap: 0;
+	--nav-width: calc(200px * (1 - var(--collapse-horizontal-gap))) !important;
 	--page-width: 700px;
 	--page-margins: 24px;
 }
 
 .centeredPage {
+	transition-property: gap, max-width;
+	transition-duration: 500ms;
+
 	max-width: calc(var(--nav-width) + var(--page-width) + var(--page-margins));
 	margin: 0 auto;
 	margin-top: 96px;
 	padding: 0 var(--page-margins);
 
 	display: grid;
-	gap: var(--page-margins);
-	grid-template-columns: var(--nav-width) 1fr;
 	grid-auto-rows: auto;
+
+	gap: var(--page-margins) calc((1 - var(--collapse-horizontal-gap)) * var(--page-margins));
 }
 
 .titleWrapper {
@@ -28,6 +32,10 @@
 .navAreaWrapper {
 	grid-column: 1;
 	grid-row: 2;
+
+	transition-property: width;
+	transition-duration: 500ms;
+	width: var(--nav-width);
 }
 .navAreaWrapper > .sticky {
 	position: sticky;

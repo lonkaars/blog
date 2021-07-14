@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import rehypeRaw from 'rehype-raw';
@@ -76,6 +76,12 @@ export function RenderedArticle(props: { content: string; }) {
 	/>;
 }
 
+var collapsed = false;
+function toggle() {
+	collapsed = !collapsed;
+	document.documentElement.style.setProperty('--collapse-horizontal-gap', Number(collapsed).toString());
+}
+
 export default function Post(props: {
 	content: string;
 	meta: ArticleMeta;
@@ -89,7 +95,7 @@ export default function Post(props: {
 		</Head>
 		<div className='centeredPage'>
 			<div className='titleWrapper'>
-				<h1>{props.meta.title}</h1>
+				<h1 onClick={toggle}>{props.meta.title}</h1>
 				<p className='subtile'>{props.meta.subtitle}</p>
 				{props.meta.tags && <Tags tags={props.meta.tags} />}
 			</div>
