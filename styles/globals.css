@@ -6,6 +6,7 @@ html, body {
 	color: var(--fg);
 
 	font-family: "Inter", sans-serif;
+	hyphens: auto;
 }
 
 code { font-family: "JetBrainsMono", monospace; }

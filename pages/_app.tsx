@@ -23,6 +23,7 @@ export default function Blog({ Component, pageProps }) {
 
 	return <>
 		<Head>
+			<html lang='en-US' />
 			<link rel='preload' as='style' href='/font/font.css' onLoad={() => this.rel = 'stylesheet'} />
 			<meta property='og:url' content='https://blog.pipeframe.xyz' />
 			<meta property='og:type' content='website' />
