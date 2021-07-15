@@ -44,6 +44,7 @@
 	max-height: calc(100vh - 2 * var(--page-margins));
 
 	overflow-y: scroll;
+	overflow-x: hidden;
 
 	border-radius: 8px;
 }

@@ -49,6 +49,7 @@ h3 { font-size: 32px; }
 
 ::-webkit-scrollbar {
 	width: 12px;
+	height: 12px;
 }
 
 ::-webkit-scrollbar-track {
