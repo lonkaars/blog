@@ -2,6 +2,8 @@
 
 cd $(dirname $0)
 
+alias xml="xmlstarlet"
+
 # exit if no out dir
 [[ ! -d ../out ]] && exit 1
 
@@ -20,8 +22,5 @@ for file in ../out/post/*; do
 		atom.xml
 done
 
-mv atom.xml ../public
+mv atom.xml ../out/
 
-cd ..
-npx next build
-npx next export
