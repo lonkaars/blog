@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Loek's excruciatingly interesting blog</title>
+		<description>This is where I post updates on things that I do</description>
+		<language>en-us</language>
+		<link>https://blog.pipeframe.xyz/atom.xml</link>
+		<atom:link href="https://blog.pipeframe.xyz/atom.xml" rel="self" type="application/rss+xml" />
+	</channel>
+</rss>

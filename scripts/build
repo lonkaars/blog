@@ -15,6 +15,9 @@ npx next build
 echo "-> exporting static files..."
 npx next export
 
+echo "-> generating atom.xml..."
+./rss/genrss
+
 echo "-> cleaning $web_root..."
 rm -rf $web_root/*
 

