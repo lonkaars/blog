@@ -4,9 +4,6 @@ cd $(dirname $0)
 
 alias xml="xmlstarlet"
 
-# exit if no out dir
-[[ ! -d ../out ]] && exit 1
-
 cp base.xml atom.xml
 for file in ../out/post/*; do
 	base=$(basename "$file" .html)
