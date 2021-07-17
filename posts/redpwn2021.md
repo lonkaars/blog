@@ -665,6 +665,79 @@ remaining possibilities until it got longer output from the program, but
 laziness took over and I decided that spending 45 minutes doing very dull work
 was more worth it instead.
 
+### Willem's part in the CTF
+
+Hi, Willem here.
+In this part I will talk about my experience during the CTF and The
+collaboration between me and Loek.
+
+This was also my first CTF, just like Loek, because of this was quite
+uncertain about my skill level. For example, I have no experience using Linux
+systems, but from what I learned before the CTF it is quite essential. My fear of
+not being able to do any off the challenge disappear quickly after we had completely 
+the beginner challenges.
+With a simple sql injection I got my first real flag.
+```
+username: admin';--
+password:
+flag{sqli_overused_again_0b4f6}
+```
+
+We had planned to use github's projects to track progress on challenges, but
+when you're actually doing a challenge it's the last thing you think about.
+So, we didn't really know who was doing which challenge, but because we're a
+team of two this wasn't a big problem.
+
+The most challenge were a bit to hard for me. Some I would get pretty far, but needed
+Loek's help to solve it. Others I didn't even attempt to begin on.
+
+One challenge I spend a lot of time on was __The substitution game__.
+In the substitution game you had to substitute certain parts of the input string
+to get the desired output string. I got to level for of 6.
+level 1 and 2 to were really simple, but at level 3 you started to need to 
+really understand the game.
+```
+level 3:
+initial: aaaaaaaaaaaaaa (the amount of a's varied)
+target: a
+```
+The solution is really simple, but it's pretty hard to get to it.
+You want to remove 'a's so I started with ```a => ``` , this turn all 'a's
+to None and left you with an empty string. The problem is you can't substitute anything in 
+an empty string. The solution was ```aa => a```, this removed an 'a' every time 
+the initial string got checked. To get this solution you had to realize,
+that the program would always substitute the first instance it would come 
+across, and the program was set to do way more than needed substitutions.
+This would come handy in the next level.
+```
+level 4:
+initial: ggggggggggg (the amount of g's varied)
+target: ginkoid
+```
+After completing level 3 this level looks very easy, just substitute the g's
+like before ```gg => g``` and turn the last g into ginkoid ```g => ginkoid```
+, but this didn't work because of the way the program worked, after getting to a
+valid solution I didn't stop and the single g in ginkoid would also change to
+ginkoid. You would get infinite ginkoid.
+The solution was:
+```gg => ginkoid; ginkoidginkoid => ginkoid; ginkoidg => ginkoid```
+I began with noticing you couldn't just change the g, because that would also
+change the g in ginkoid. so double gg becomes ginkoid. We have to use the same
+trick as in level 3 to gain only one ginkoid ```ginkoidginkoid => ginkoid```
+because of the way we changed the single g's to ginkoid it would only work
+with an even amount of g's. In the case there was an uneven amount of g's
+we would be left with ginkoidg, so we remove it ```ginkoidg => ginkoid```.
+
+I found this challenge really enjoyable and during this challenge I noticed
+that I most enjoy the puzzle aspect of computer science, puzzling for hours
+to fix a bug and then finally finding a solution.
+
+I didn't complete many challenges and wasn't really able to help Loek, but
+I really enjoyed the CTF. It's a really fun way to test your skills and 
+knowledge. In the end I'm really happy with the score we (mostly Loek) got
+and I think I’ll take part in other CTFs in the future.
+
+
 ## Epilogue
 
 Of the 47 total challenges, me and Willem only solved 15. My end goal for this
