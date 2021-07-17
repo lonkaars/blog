@@ -52,7 +52,7 @@ Combining these two a simple paste can be created:
 I wasn't planning on including this one, but it makes use of the excellent
 [CyberChef](https://gchq.github.io/CyberChef/) tool. The flag is given in the
 challenge description, and is encrypted using a ceasar/rot13 cipher. A simple
-python implementation of this cypher is included with the challenge, but I just
+python implementation of this cipher is included with the challenge, but I just
 put it into CyberChef and started trying different offsets.
 
 ### rev/wstrings
@@ -95,8 +95,8 @@ hex -> 0x00000068 0x00000065 0x0000006c 0x0000006c 0x0000006f
 str -> h          e          l          l          o
 ```
 
-I think 32-bit strings also have practical use for things like non-english
-texts such as hebrew, chinese or japanese. Those characters take up more space
+I think 32-bit strings also have practical use for things like non-English
+texts such as Hebrew, Chinese or Japanese. Those characters take up more space
 anyways, and you would waste less space by not using unicode escape characters.
 
 ### web/secure
@@ -115,7 +115,7 @@ db.exec(`INSERT INTO users (username, password) VALUES (
 ```
 
 This section of code immediately jumped out to me because I noticed that
-`crypto.randomUUID` wansn't actually being called.
+`crypto.randomUUID` wasn't actually being called.
 
 Because the 'random uuid' is being fed into `btoa()` it becomes a base64
 encoded string. However, `btoa()` also expects a string as input. Because every
@@ -177,7 +177,7 @@ which single-handedly saved my sanity during the binary exploitation
 challenges.
 
 The first thing I did was use [iaito](https://github.com/radareorg/iaito) to
-look at a dissassembly graph of the binary. Iaito is a graphical frontend to
+look at a disassembly graph of the binary. Iaito is a graphical front-end to
 the radare2 reverse engineering framework, and I didn't feel like learning two
 things at the same time, so that's why I used it. While it's very
 user-friendly, I didn't look into reverse engineering tools very much, and
@@ -222,17 +222,17 @@ int main(void)
 ```
 
 After looking at this source things became a lot clearer, because the only
-input you can actually control is recieved from `gets(...);`
+input you can actually control is received from `gets(...);`
 
 Now comes the hard part: doing it, but in assembly!
 
-Some recources you should consume before attempting binary exploitation would
+Some resources you should consume before attempting binary exploitation would
 be [computerphile's video on buffer
 overflows](https://www.youtube.com/watch?v=1S0aBV-Waeo) and
 [cheat.sh/gdb](https://cheat.sh/gdb) for some basic gdb commands. The rest of
 this section assumes you know the basics of both buffer overflows and gdb.
 
-First, let's print a dissassembly of the `int main()` function:
+First, let's print a disassembly of the `int main()` function:
 
 ```
 (gdb) disas main
@@ -319,7 +319,7 @@ lot easier.
 
 I'm also using [gef](https://github.com/hugsy/gef) so I get access to a command
 called `context` which prints all sorts of information about registers, the
-stack and a small dissassembly window. I won't show it's output here, but it
+stack and a small disassembly window. I won't show it's output here, but it
 was an indispensable tool that you should install nonetheless.
 
 Let's print the memory at `[$rbp - 0x8]`:
@@ -345,7 +345,7 @@ Hmmm, no overwriteage yet. Let's try 56 bytes instead:
 0x7fffffffd758: 0x6161616161616161
 ```
 
-Jackpot! We've overwritten 16 bytes of the adress that the `cmp` instruction
+Jackpot! We've overwritten 16 bytes of the address that the `cmp` instruction
 reads. Let's try setting it to `0xff` instead, so we get a shell. Python 3 is
 not that great for binary exploitation, so the code for this is a little bit
 ugly, but if it works, it works!
@@ -399,7 +399,7 @@ though be warned, it's _very_ janky and you're probably better off copying
 stuff from stackoverflow. Writing your own tools is more fun though, and might
 also be faster than trying to wrestle with existing tools to try to get them to
 do exactly what you want them to do. In this case I could've also just used [a
-siple
+simple
 command](https://reverseengineering.stackexchange.com/questions/13928/managing-inputs-for-payload-injection?noredirect=1&lq=1).
 
 It did help me though and I actually had to copy it for use in the other buffer
@@ -515,7 +515,7 @@ called at all in the original.
 
 The only input we have control over is again a call to `gets();`
 
-Let's look at the dissassembly in gdb:
+Let's look at the disassembly in gdb:
 
 ```
 (gdb) disas main
@@ -539,9 +539,9 @@ End of assembler dump.
 We see again multiple calls to `<puts@plt>` and right after a call to
 `<gets@plt>`. There is no `cmp` and `jne` to be found in this challenge though.
 
-The goal is to overwrite the _return adress_. This is a memory adress also
-stored in memory, and the program will move execution to that memory adress
-once it sees a `ret` instruction. In this 'vanilla' state, the return adress
+The goal is to overwrite the _return address_. This is a memory address also
+stored in memory, and the program will move execution to that memory address
+once it sees a `ret` instruction. In this 'vanilla' state, the return address
 always goes to the assembly equivalent of an `exit()` function. Let's see if we
 can overwrite it by giving too much input:
 
@@ -577,7 +577,7 @@ a0a1a2a3a4a5a6a7a8a9b0b1b2b3b4b5b6b7b8b9c0c1c2c3
 0x7fffffffd898: 0x3363326331633063
 ```
 
-Let's use cyberchef to see what `0x3363326331633063` is in ascii!
+Let's use CyberChef to see what `0x3363326331633063` is in ascii!
 
 ![](/img/redpwn2021/cyberchef1.png)
 
@@ -585,7 +585,7 @@ Hmm, it's backwards. Let's reverse it!
 
 ![](/img/redpwn2021/cyberchef2.png)
 
-Let's find the adress of the super generic flag reading function with gdb.
+Let's find the address of the super generic flag reading function with gdb.
 
 ```
 (gdb) print super_generic_flag_reading_function_please_ret_to_me
