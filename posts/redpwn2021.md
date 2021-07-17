@@ -1,6 +1,6 @@
 [meta]: <title> (redpwnCTF 2021)
 [meta]: <subtitle> (A noob's perspective)
-[meta]: <author> (Loek)
+[meta]: <author> (Loek, Willem)
 [meta]: <date> (July 13 2021)
 [meta]: <tags> (hacking, CTF, writeup)
 [meta]: <cover> (/img/redpwn2021.png)
@@ -13,6 +13,10 @@ programming. Willem solved most of the challenges, and I helped solve 3 more.
 
 Apart from those challenges, basically all my hacking knowledge comes from
 computerphile videos, liveoverflow videos and making applications myself.
+
+> epic announcement!!!
+> 
+> Willem has added explanations of the challenges he solved, so go read them!
 
 ## Challenges
 
@@ -684,7 +688,7 @@ real flag:
 ```
 username: admin';--
 password:
-flag{sqli_overused_again_0b4f6}
+flag{this_is_a_dummy_flag_go_solve_it_yourself}
 ```
 
 We had planned to use github's projects to track progress on challenges, but
