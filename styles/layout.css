@@ -102,7 +102,10 @@ blockquote:before {
 		color: var(--oxford-blue);
 		opacity: .8;
 	}
-	.navAreaWrapper { background-color: #dbdbe688; }
+}
+
+@media screen and (max-device-width: 550px) and (prefers-color-scheme: light) {
+	.navAreaWrapper { background-color: #dbdbe688 !important; }
 }
 
 @media screen and (max-device-width: 550px) {
