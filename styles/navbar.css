@@ -89,6 +89,7 @@
 
 @media (prefers-color-scheme: light) {
 	.navbarItem .inner { background-color: var(--heliotrope-gray); }
+	.mobileNav .button.small { background-color: var(--cyan-process) !important; }
 
 	.navbarItem.active .inner,
 	.navbarItem.link:hover .inner {
@@ -131,6 +132,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	fill: currentColor !important;
 }
 
 .mobileNav .button.small {

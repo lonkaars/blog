@@ -36,6 +36,8 @@
 	transition-property: width;
 	transition-duration: 500ms;
 	width: var(--nav-width);
+
+	background-color: #161B33a0;
 }
 .navAreaWrapper > .sticky {
 	position: sticky;
@@ -102,14 +104,10 @@ blockquote:before {
 		color: var(--oxford-blue);
 		opacity: .8;
 	}
+	.navAreaWrapper { background-color: #dbdbe688; }
 }
 
 @media screen and (max-device-width: 550px) {
-	.navAreaWrapper {
-		grid-column: none;
-		grid-row: none;
-	}
-
 	.centeredPage {
 		grid-template-columns: 0 1fr;
 		gap: var(--page-margins) 0;
@@ -117,6 +115,11 @@ blockquote:before {
 	}
 
 	.navAreaWrapper {
+		grid-column: none;
+		grid-row: none;
+
+		width: 100vw;
+
 		position: fixed;
 		inset: 0px 0px 0px 0px;
 
@@ -128,7 +131,6 @@ blockquote:before {
 		opacity: 0;
 		pointer-events: none;
 		backdrop-filter: blur(50px);
-		background-color: #161B3300;
 	}
 	
 	.navAreaWrapper.navVisible {
