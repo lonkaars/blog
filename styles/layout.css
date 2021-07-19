@@ -36,8 +36,6 @@
 	transition-property: width;
 	transition-duration: 500ms;
 	width: var(--nav-width);
-
-	background-color: #161B33a0;
 }
 .navAreaWrapper > .sticky {
 	position: sticky;
@@ -131,6 +129,8 @@ blockquote:before {
 		opacity: 0;
 		pointer-events: none;
 		backdrop-filter: blur(50px);
+
+		background-color: #161B33a0;
 	}
 	
 	.navAreaWrapper.navVisible {
