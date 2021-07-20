@@ -1,7 +1,4 @@
 .button {
-	background-color: var(--fire-opal);
-	color: var(--fg) !important;
-
 	padding: 12px;
 	min-width: 200px;
 	text-align: center;
@@ -23,6 +20,3 @@
 a.button { min-width: calc(200px - 2 * 12px); }
 a.button::after { display: none; }
 
-@media (prefers-color-scheme: light) {
-	.button { color: var(--bg) !important; }
-}

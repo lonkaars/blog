@@ -1,5 +1,5 @@
 .navbarItem .inner {
-	background-color: var(--oxford-blue);
+	background-color: var(--bg-alt);
 	color: var(--fg);
 
 	padding: 8px;
@@ -36,8 +36,8 @@
 
 .navbarItem.active .inner,
 .navbarItem.link:hover .inner {
-	background-color: var(--heliotrope-gray);
-	color: var(--oxford-blue);
+	background-color: var(--fg-alt);
+	color: var(--bg-alt);
 }
 
 .navbarItem.chapter .inner,
@@ -53,7 +53,7 @@
 	margin: 0;
 	font-style: italic;
 	opacity: .8;
-	color: var(--heliotrope-gray)
+	color: var(--fg-alt)
 }
 .navbarItem.pinned * { cursor: default !important; }
 
@@ -88,18 +88,14 @@
 .navbarItem > div > svg { vertical-align: super; }
 
 @media (prefers-color-scheme: light) {
-	.navbarItem .inner { background-color: var(--heliotrope-gray); }
-	.mobileNav .button.small { background-color: var(--cyan-process) !important; }
-
 	.navbarItem.active .inner,
 	.navbarItem.link:hover .inner {
-		color: var(--bg);
 		background-color: var(--fg);
 	}
 
 	.navbarItem.pinned .inner .title {
 		opacity: .6;
-		color: var(--oxford-blue)
+		color: var(--fg-alt);
 	}
 }
 
@@ -115,7 +111,6 @@
 
 .mobileNav .button {
 	padding: 12px;
-	background-color: var(--fire-opal);
 	display: inline-block !important;
 	min-width: 0;
 	border-radius: 24px;
@@ -137,7 +132,6 @@
 
 .mobileNav .button.small {
 	padding: 6px;
-	background-color: var(--purple-navy);
 	margin-bottom: 12px;
 
 	opacity: 0;

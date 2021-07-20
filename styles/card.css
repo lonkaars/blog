@@ -1,5 +1,5 @@
 .postCard {
-	background-color: var(--oxford-blue);
+	background-color: var(--bg-alt);
 	padding: 12px;
 	border-radius: 8px;
 
@@ -25,11 +25,5 @@
 
 .postCard .subtitle {
 	font-weight: 500;
-}
-
-@media (prefers-color-scheme: light) {
-	.postCard {
-		background-color: var(--heliotrope-gray);
-	}
 }
 
