@@ -68,7 +68,10 @@ export default function Home(props: {
 						{index == 0 && <>
 							<h2>Recent posts</h2>
 							<div className='recentPosts'>
-								{posts.posts.reverse().slice(0, 4).map(post => {
+								{posts.posts.sort((a, b) => (
+									new Date(a.date).getTime() -
+									new Date(b.date).getTime()
+								)).reverse().slice(0, 4).map(post => {
 									return <PostCard post={post} />;
 								})}
 							</div>
