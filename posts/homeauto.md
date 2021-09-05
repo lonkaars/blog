@@ -229,5 +229,13 @@ describes all the research that went into reverse-engineering the lamp.
 
 ## Toshiba air conditioning unit
 
-IR remote emulation with LIRC
+I created a small daughter board to connect to the raspberry pi's gpio pins,
+that has an IR phototransistor and IR blaster. This is so I could record and
+replay the IR messages from the remote more easily.
+
+I've spent a solid two days now trying to use my raspberry pi or arduino uno as
+a janky logic analyzer, to capture the IR messages and get the message contents
+manually, but I still haven't succeeded. I have however succeeded in frying the
+IR LED by giving it +5v backwards without any protection, so that's something I
+guess. I'll update this article when I get it working.
 
