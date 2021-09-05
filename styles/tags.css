@@ -17,6 +17,7 @@
 	z-index: 1;
 
 	margin-top: 6px;
+	display: inline-block;
 }
 
 @media (prefers-color-scheme: light) {

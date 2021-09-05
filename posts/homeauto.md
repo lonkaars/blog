@@ -2,7 +2,7 @@
 [meta]: <subtitle> (How to make your house a shitty utopia)
 [meta]: <author> (Loek)
 [meta]: <date> (August 17 2021)
-[meta]: <tags> (home automation, raspberry pi, software, hardware, hacking)
+[meta]: <tags> (home automation, raspberry pi, esp8266, cc2500, microcontrollers, software, hardware, hacking)
 [meta]: <cover> (/img/homeauto.png)
 
 Home automation is cool, but it can also be scary. I want to try to convert my
@@ -23,7 +23,7 @@ The devices I'm going to try to automate are:
 - A gen 1 Philips LivingColors lamp from 2008
 - My Toshiba RAS-M10GKV-E2 air conditioning unit
 
-## The bluetooth RGB lamp
+## Bluetooth RGB lamp
 
 This lamp is apparently another Chinese product that gets rebranded and sold
 under different names. I bought mine as the "[Shada led's
@@ -92,7 +92,7 @@ plugin code is available on
 [GitHub](https://github.com/lonkaars/homeassistant-beken) and [my personal git
 server](https://git.pipeframe.xyz/lonkaars/homeassistant-beken/about).
 
-## The RGB gamer bed
+## RGB gamer bed
 
 I was originally planning to control this strip using IR remote emulation, but
 I remembered a friend of mine still had an esp8266 laying around. So I went the
@@ -126,9 +126,9 @@ over WiFi. The schematic I'm using comes from
 
 ![](/img/homeauto/schematic.png)
 
---- photo of thing in breadboard ---
-
---- photo of thing in perfboard ---
+The whole solder job was a complete massacre, and I really don't want to show
+it. It does work though, but I had to buy a new soldering station because my
+old soldering iron wasn't really fit for soldering small electronics.
 
 ### Beautiful dremel work
 
@@ -141,7 +141,11 @@ time, so I used my dad's dremel to create holes for the esp to fit.
 
 As you can see I did a great job :^)
 
---- photo of perfboard in case ---
+The esp is still at the bottom of the case, but getting everything to fit
+inside was so hard that I completely forgot to take pictures. So here's a
+picture of the finished controller mounted under my bed using two small nails:
+
+![Job well done](/img/homeauto/finishedcontroller.png)
 
 ### ESP firmware
 
@@ -180,10 +184,10 @@ these features, but I wanted to have a go at writing my own firmare anyways.
 
 Because the esp8266 is a pretty basic microcontroller, it doesn't use https or
 ssl for encryption. To protect from people in my house wanting to control my
-lights, I used the raspberry pi's on board wifi module to create a hidden
+lights, I used the raspberry pi's onboard wifi module to create a hidden
 private isolated wifi network for this, and all future IoT devices in my
 bedroom. I'm using `hostapd` to create the wifi network, and `dnsmasq` for
-assigning ip addresses and hostname resolution.  Here's the config file for
+assigning ip addresses and hostname resolution. Here's the config file for
 `dnsmasq`:
 
 ```
@@ -218,12 +222,12 @@ ht_capab=[HT40+][SHORT-GI-20][DSSS_CCK-40]
 
 Very complicated stuff...
 
-## The Philips LivingColors lamp
+## Philips LivingColors lamp
 
 [This](http://www.knutsel.org/2009/01/01/livingcolors-1st-generation/) article
 describes all the research that went into reverse-engineering the lamp.
 
-## The Toshiba air conditioning unit
+## Toshiba air conditioning unit
 
 IR remote emulation with LIRC
 

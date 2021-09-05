@@ -2,7 +2,7 @@
 [meta]: <subtitle> (Handbook and quick explanations)
 [meta]: <author> (Loek)
 [meta]: <date> (July 22 2021)
-[meta]: <tags> (windows, normie)
+[meta]: <tags> (windows, normie, software)
 [meta]: <cover> (/img/scoop.png)
 
 Here's a quick reference for returning customers:
