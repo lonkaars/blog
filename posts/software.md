@@ -170,10 +170,16 @@ have tty login disabled and are chroot-jailed to /var/media and /var/sftp.
 
 ## Phone apps
 
-These are the apps that I use on my phone. I have a Nokia 6 (2017), it's pretty
-shitty but I don't really use my phone. I used to have it rooted, but the root
-guide on xda forums was written by some Chinese guy, and it came with a Chinese
-android rom, which caused me to miss a lot of calls.
+These are the apps that I use on my phone. I recently upgraded my 2017 Nokia 6
+to a Google Pixel 4a (sunfish). It's a great phone! You can root it or flash
+custom rom's very easily, and it gave me new appreciation for the basic
+features of a smartphone. The Pixel 4a has really good haptics. They're almost
+iPhone level, though I won't be using iPhones any time soon.
+
+I flashed [CalyxOS](https://calyxos.org/) as soon as it was 5 minutes out of
+the box, but ended up not liking it because of it's nonexistant root support.
+I'm currently using [LineageOS](https://lineageos.org/) 18.1, rooted using
+[magisk](https://github.com/topjohnwu/Magisk).
 
 ### Open source
 
@@ -198,9 +204,9 @@ android rom, which caused me to miss a lot of calls.
   files](https://github.com/zhanghai/MaterialFiles). It looks sexy, it's free,
   it's awesome.
 
-- **Email client**: [fairemail](https://email.faircode.eu/). STOP CRYING.
+- **Email client**: [k-9](https://k9mail.app/).
 
-- **Maps**: [osmand](https://osmand.net/)
+- **Maps**: [osmand](https://osmand.net/).
 
 - **Music player**: [shuttle](https://www.shuttlemusicplayer.com/). It looks
   sexy, it's free, it's awesome.
@@ -212,6 +218,47 @@ android rom, which caused me to miss a lot of calls.
 
 - **To-do lists**: [tasks.org](https://tasks.org/). This is easily the best
   to-do app I've ever used, and it integrated very well with etesync.
+
+- **Smart home control**: [home assistant](https://www.home-assistant.io/).
+	[the whole spiel](/post/homeauto).
+
+- **Notes**: [leaflet](https://github.com/PotatoProject/Leaflet). It's
+	basically Google Keep but open source and without Google. It's part of the
+	PotatoProject which is a custom Android rom, and there were plans for an open
+	source notes sync server that you could host yourself, but I haven't seen
+	that pop up yet.
+
+	The app is written in Flutter, and did have choppy scrolling animations on my
+	old phone. I'm not sure if that was a bug or my old phone just being
+	underpowered, but it's something I want to mention anyways.
+
+- **Weather**: [geometric
+	weather](https://f-droid.org/en/packages/wangdaye.com.geometricweather/).
+	It's really good. Good animations, live wallpaper, fast, etc.
+
+- **RSS Reader**: [tiny tiny
+	rss](https://www.f-droid.org/en/packages/org.fox.tttrss/). This app requires
+	that you host your own tiny tiny rss server, but I do and the app works
+	great!
+
+- **Myanimelist client**: [moelist](https://github.com/axiel7/MoeList). I don't
+	know how I found this app but it's a real gem. If you use MAL you should
+	download this app.
+
+### Requires root
+
+- **Ad-blocker**: [adaway](https://adaway.org/). It does have a rootless mode,
+	though the app warns you that it's slower and impacts your battery life
+	negatively.
+
+- **Theme engine**: [substratum](https://github.com/substratum/substratum).
+	Substratum requires root on android 9+, unless you're on stock samsung (one
+	ui). Android 8 and under users can buy
+	[andromeda](https://play.google.com/store/apps/details?id=projekt.andromeda).
+	Samsung users can buy
+	[synergy](https://play.google.com/store/apps/details?id=projekt.samsung.theme.compiler).
+	They're both developed by the same people behind substratum, but they're not
+	open source.
 
 ### Closed source
 
