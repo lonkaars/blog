@@ -12,7 +12,7 @@ automation system.
 I've tried two home automation systems so far: homebridge and home assistant.
 Homebridge isn't really an automation system. It's meant to add unsupported
 devices to *homekit*, but doesn't work with anything other than apple devices.
-I've also tried (and am currently using) home assistant.  It's a complete
+I've also tried (and am currently using) home assistant. It's a complete
 replacement for the homekit ecosystem, and it can do basically anything, as
 long as you're patient enough...
 
@@ -227,6 +227,10 @@ Very complicated stuff...
 [This](http://www.knutsel.org/2009/01/01/livingcolors-1st-generation/) article
 describes all the research that went into reverse-engineering the lamp.
 
+I ordered a cc2500 wireless transmitter and receiver, but the seller cancelled
+the order, and now I have to wait a while longer to get one. I'll update this
+article once I've set it up though.
+
 ## Toshiba air conditioning unit
 
 I created a small daughter board to connect to the raspberry pi's gpio pins,
@@ -237,5 +241,8 @@ I've spent a solid two days now trying to use my raspberry pi or arduino uno as
 a janky logic analyzer, to capture the IR messages and get the message contents
 manually, but I still haven't succeeded. I have however succeeded in frying the
 IR LED by giving it +5v backwards without any protection, so that's something I
-guess. I'll update this article when I get it working.
+guess. I'll update this section of the article together with the Philips lamp.
+
+
+To be continued...
 
