@@ -217,7 +217,10 @@ I'm currently using [LineageOS](https://lineageos.org/) 18.1, rooted using
 - **Manga reader**: [tachiyomi](https://tachiyomi.org/)
 
 - **To-do lists**: [tasks.org](https://tasks.org/). This is easily the best
-  to-do app I've ever used, and it integrated very well with etesync.
+	to-do app I've ever used, and it integrated very well with etesync.
+
+	If you're cheap (like me), you can get 'free' pro by downloading this app
+	through f-droid instead of the play store. It's still nice to donate.
 
 - **Smart home control**: [home assistant](https://www.home-assistant.io/).
 	[the whole spiel](/post/homeauto).
@@ -244,6 +247,11 @@ I'm currently using [LineageOS](https://lineageos.org/) 18.1, rooted using
 - **Myanimelist client**: [moelist](https://github.com/axiel7/MoeList). I don't
 	know how I found this app but it's a real gem. If you use MAL you should
 	download this app.
+
+- **PDF reader**: [pdf viewer
+	plus](https://f-droid.org/en/packages/com.gsnathan.pdfviewer/). This is the
+	only one that's actually decent. Good UI, good UX, pretty fast rendering.
+	9/10
 
 ### Requires root
 
