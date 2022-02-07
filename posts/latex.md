@@ -42,12 +42,11 @@ different name in your distro's package manager.
 	- `texlive-pstricks`
 	- `texlive-publishers`
 	- `texlive-science`
-- `latex-mk`
 
 tl;dr
 
 ```
-# pacman -S texlive-most biber latex-mk
+# pacman -S texlive-most biber
 ```
 
 ### Force XeTeX compiler with latexmk
@@ -64,6 +63,12 @@ $postscript_mode = 0;
 
 
 ## Hello world
+
+> I have recently made another repository on my profile for template files, you
+> can find it [here on github](https://github.com/lonkaars/templates) or [here
+> on git.pipeframe.xyz](https://git.pipeframe.xyz/lonkaars/templates). It
+> includes a latex starting point with more commonly used packages, and other
+> files I tend to copy from other projects
 
 LaTeX uses a lot of auxiliary files for compilation, so it's a good idea to
 create a new directory for every document. After creating a new directory,
@@ -110,11 +115,15 @@ Because LaTeX creates a lot of temporary files, you should add the following to
 your repository's `.gitignore`:
 
 ```gitignore
-**/*.aux
-**/*.fdb_latexmk
-**/*.fls
-**/*.log
-**/*.out
-**/*.synctex.gz
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
 ```
 
