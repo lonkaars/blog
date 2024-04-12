@@ -1,3 +1,4 @@
+title: "Loek's blog"
 permalink: /post/:title
 exclude:
   - makefile
@@ -7,3 +8,4 @@ defaults:
       type: posts
     values:
       layout: post
+      lang: "en"

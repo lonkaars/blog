@@ -1,8 +1,6 @@
 ---
 title: Avans wifi setup
 subtitle: How to use Avans eduroam with NetworkManager
-author: Loek
-date: September 9 2021
 tags:
     - software
 cover: /img/avanswifi.png
