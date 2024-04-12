@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ page.title }} - Loek's Blog</title>
+	<meta property='og:site_name' content='{{ page.date }}' />
+	<meta property='og:title' content='{{ page.title }}' />
+	<meta property='og:description' content='{{ page.subtitle }}' />
+</head>
+<body>
+	<div className='centeredPage'>
+		<div className='titleWrapper'>
+			<h1>{{ page.title }}</h1>
+			<p className='subtile'>{{ page.subtitle }}</p>
+			{props.meta.tags && <Tags tags={props.meta.tags} />}
+		</div>
+		<div className='navAreaWrapper'>
+			<div className='sticky'>
+				<Navbar />
+				<Chapters chapters={props.meta.chapters} />
+			</div>
+		</div>
+		<MobileNavbar />
+		<div className='contentWrapper'>
+			{{ content }}
+		</div>
+	</div>
+</body>
+</html>

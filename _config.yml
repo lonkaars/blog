@@ -1,0 +1,9 @@
+permalink: /post/:title
+exclude:
+  - makefile
+  - license
+defaults:
+  - scope:
+      type: posts
+    values:
+      layout: post
