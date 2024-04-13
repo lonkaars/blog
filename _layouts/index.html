@@ -2,7 +2,7 @@
 <html lang='{{ page.lang }}'>
 <head>
 	{% include head.html %}
-	{% include title.html %}
+	<title>{{ site.title }}</title>
 	{% include opengraph.html %}
 </head>
 <body>
@@ -14,13 +14,30 @@
 		</div>
 		<div class='navAreaWrapper'>
 			<div class='sticky'>
-				{% include navbar.html page="post" %}
+				{% include navbar.html page="index" %}
 				<!-- <Chapters chapters={props.meta.chapters} /> -->
 			</div>
 		</div>
 		<!-- <MobileNavbar /> -->
 		<div class='contentWrapper'>
 			{{ content }}
+			<hr/>
+			<h2>Recent posts</h2>
+			<div class="recentPosts">
+				{% for post in site.posts limit:4 %}
+					<div class="postCard">
+						<a href="{{ post.url }}">
+							<img src="{{ post.cover }}" alt="post cover" class="cover">
+							<h2 class="title">{{ post.title }}</h2>
+							<strong class="subtitle">{{ post.subtitle }}</strong>
+						</a>
+						{% include tags.html tags=post.tags %}
+					</div>
+				{% endfor %}
+			</div>
+			<div>
+				<a href="/search" class="button">Go to all posts</a>
+			</div>
 		</div>
 	</div>
 </body>

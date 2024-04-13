@@ -4,12 +4,10 @@
 	border-radius: 8px;
 
 	overflow-x: hidden;
-	color: var(--fg) !important;
 }
 
-.postCard::after {
-	display: none;
-}
+.postCard a { color: var(--fg) !important; }
+.postCard a::after { display: none; }
 
 .postCard .cover {
 	width: 100%;
@@ -19,11 +17,6 @@
 	margin-bottom: 6px;
 }
 
-.postCard .title {
-	font-size: 24px;
-}
-
-.postCard .subtitle {
-	font-weight: 500;
-}
+.postCard .title { font-size: 24px; }
+.postCard .subtitle { font-weight: 500; }
 

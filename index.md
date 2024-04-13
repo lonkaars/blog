@@ -1,5 +1,6 @@
 ---
 title: Loek's excruciatingly interesting blog
+layout: index
 ---
 
 Welcome to my blog page! This is where I post updates on things that I do such

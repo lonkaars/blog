@@ -9,6 +9,10 @@
 	transition-duration: .15s;
 
 	position: relative;
+
+	display: flex;
+	gap: 8px;
+	align-items: center;
 }
 
 .navbarItem {
@@ -58,14 +62,10 @@
 .navbarItem.pinned * { cursor: default !important; }
 
 .navbarItem .title {
-	vertical-align: top;
-	margin-left: 8px;
-	margin-top: 3px;
 	display: inline-block;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	width: calc(100% - 32px);
 }
 .navbarItem.chapter .title { margin-top: 1px; }
 

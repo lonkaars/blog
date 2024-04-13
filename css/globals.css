@@ -47,3 +47,8 @@ li {
 	margin-bottom: 6px;
 }
 
+.icon svg {
+	width: 24px;
+	height: 24px;
+	fill: currentColor;
+}
