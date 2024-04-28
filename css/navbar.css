@@ -143,7 +143,6 @@
 
 .chapterChildren li,
 .chapterChildren summary {
-	display: block;
 	min-height: 24px;
 	padding-left: 32px;
 	position: relative;
