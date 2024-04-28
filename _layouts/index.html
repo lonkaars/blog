@@ -21,6 +21,10 @@
 		<!-- <MobileNavbar /> -->
 		<div class='contentWrapper'>
 			{{ content }}
+			{% if site.rss != nil %}
+				<p>An rss/atom feed of this blog is also available:</p>
+				<pre>{{ site.rss.url }}</pre>
+			{% endif %}
 			<hr/>
 			<h2>Recent posts</h2>
 			<div class="recentPosts">

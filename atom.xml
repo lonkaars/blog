@@ -1,0 +1,28 @@
+---
+# empty frontmatter to force this file to be interpreted using liquid
+---
+{% for post in site.pages %}
+	{% if post.layout == "index" %}
+		{% assign index_post = post %}
+	{% endif %}
+{% endfor %}
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>{{ index_post.title }}</title>
+		<description>{{ index_post.content | markdownify | xml_escape }}</description>
+		<language>en-us</language>
+		<link>{{ site.rss.url }}</link>
+		<atom:link href="{{ site.rss.url }}" rel="self" type="application/rss+xml" />
+	</channel>
+	{% for post in site.posts %}
+		<item>
+			<title>{{ post.title }}</title>
+			<guid>{{ post.id }}</guid>
+			<link>{{ post.url }}</link>
+			<pubDate>{{ post.date | date_to_xmlschema }}</pubDate>
+			<description>{{ post.content | markdownify | xml_escape }}</description>
+		</item>
+	{% endfor %}
+</rss>
+
