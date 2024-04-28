@@ -1,5 +1,4 @@
 ---
-# empty frontmatter to force this file to be interpreted using liquid
 ---
 {% for post in site.pages %}
 	{% if post.layout == "index" %}

@@ -1,0 +1,52 @@
+pre {
+	background-color: var(--bg-alt);
+	border-radius: 6px;
+	padding: 6px;
+}
+
+pre.highlight {
+	code { color: var(--magnolia); }
+	// https://github.com/rouge-ruby/rouge/wiki/List-of-tokens
+	@each $c in c,cm,cp,c1,cs { .#{$c} { @extend %token_comment } }
+	@each $c in k,kc,kd,kn,kp,kr,kt { .#{$c} { @extend %token_keyword } }
+	@each $c in s,sb,sc,sd,s2,se,sh,si,sx,sr,s1,ss { .#{$c} { @extend %token_string } }
+	@each $c in m,mf,mh,mi,il,mo,mx,mb { .#{$c} { @extend %token_number } }
+	@each $c in o,ow { .#{$c} { @extend %token_operator } }
+}
+
+%token_comment
+{ font-style: italic; }
+
+%token_keyword
+{ font-weight: 700; }
+
+%token_string,
+%token_number
+{ color: var(--fg); }
+
+%token_comment {
+	color: var(--heliotrope-gray);
+	opacity: .7;
+}
+
+%token_keyword
+{ color: var(--fire-opal); }
+
+%token_operator
+{ opacity: .8; }
+
+@media (prefers-color-scheme: light) {
+	pre { background-color: var(--heliotrope-gray); }
+
+	pre.highlight code { color: var(--fg); }
+
+	%token_string,
+	%token_number
+	{ opacity: .8; }
+
+	%token_comment {
+		color: var(--oxford-blue);
+		opacity: .5;
+	}
+}
+

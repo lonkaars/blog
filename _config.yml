@@ -11,3 +11,7 @@ defaults:
     values:
       layout: post
       lang: en
+markdown: kramdown
+sass:
+  style: compressed
+  sourcemap: development
