@@ -1,15 +1,15 @@
 ---
 ---
-{% for post in site.pages %}
-	{% if post.layout == "index" %}
-		{% assign index_post = post %}
+<?xml version="1.0" encoding="utf-8"?>
+{% for page in site.pages %}
+	{% if page.id == "index" %}
+		{% assign index_post = page %}
 	{% endif %}
 {% endfor %}
-<?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
-		<title>{{ index_post.title }}</title>
-		<description>{{ index_post.content | markdownify | xml_escape }}</description>
+		<title>{{ site.title }}</title>
+		<description>{{ index_post.title }}</description>
 		<language>en-us</language>
 		<link>{{ site.rss.url }}</link>
 		<atom:link href="{{ site.rss.url }}" rel="self" type="application/rss+xml" />

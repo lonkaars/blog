@@ -9,9 +9,12 @@ defaults:
   - scope:
       type: posts
     values:
-      layout: post
+      layout: default
       lang: en
+      toc: true
 markdown: kramdown
 sass:
   style: compressed
   sourcemap: development
+gems:
+  - jekyll-liquify

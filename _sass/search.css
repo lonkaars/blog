@@ -3,6 +3,8 @@
 	border-radius: 8px;
 	padding: 12px;
 	margin-bottom: 24px;
+
+	display: flex;
 }
 
 .searchBar .input {
@@ -12,10 +14,7 @@
 	color: var(--bg);
 
 	margin-left: 12px;
-	width: calc(100% - 48px - 12px);
-	padding: 14px 0;
-
-	vertical-align: top;
+	flex-grow: 1;
 }
 
 .searchBar .input::placeholder {
@@ -27,7 +26,6 @@
 
 .searchBar .button {
 	margin: 0;
-	display: inline-block !important;
 	line-height: 0;
 	min-width: unset;
 	background-color: var(--bg);

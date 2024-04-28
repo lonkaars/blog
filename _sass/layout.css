@@ -16,6 +16,7 @@
 
 	display: grid;
 	grid-auto-rows: auto;
+	grid-auto-columns: auto 1fr;
 
 	gap: var(--page-margins) calc((1 - var(--collapse-horizontal-gap)) * var(--page-margins));
 }

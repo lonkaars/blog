@@ -14,8 +14,8 @@
 		</div>
 		<div class='navAreaWrapper'>
 			<div class='sticky'>
-				{% include navbar.html page="post" %}
-				{% toc %}
+				{% include navbar.html page=page.id %}
+				{% if page.toc %}{% toc %}{% endif %}
 			</div>
 		</div>
 		<!-- <MobileNavbar /> -->
