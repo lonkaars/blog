@@ -8,11 +8,12 @@ JEKYLL_BUILD_ARGS += --destination $(WEBROOT)
 
 # Gemfile.lock is used as a proxy for checking if the required gems are
 # installed
+GEMS = Gemfile.lock
 
-build: Gemfile.lock
+build: $(GEMS)
 	bundle exec jekyll build $(JEKYLL_BUILD_ARGS)
 
-Gemfile.lock: Gemfile
+$(GEMS): Gemfile
 	bundle install --quiet
 
 clean:

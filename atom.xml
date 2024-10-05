@@ -11,8 +11,8 @@
 		<title>{{ site.title }}</title>
 		<description>{{ index_post.title }}</description>
 		<language>en-us</language>
-		<link>{{ site.rss.url }}</link>
-		<atom:link href="{{ site.rss.url }}" rel="self" type="application/rss+xml" />
+		<link>https://{{ site.domain }}/atom.xml</link>
+		<atom:link href="https://{{ site.domain }}/atom.xml" rel="self" type="application/rss+xml" />
 	</channel>
 	{% for post in site.posts %}
 		<item>

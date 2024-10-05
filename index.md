@@ -17,12 +17,10 @@ The page you're looking at right now is also open-source! The code for this
 page can be found on [GitHub](https://github.com/lonkaars/blog), and should
 also be available on [my private git server](https://git.pipeframe.xyz).
 
-{% if site.rss != nil %}
 An rss/atom feed of this blog is also available:
 ```
-{{ site.rss.url }}
+https://{{ site.domain }}/atom.xml
 ```
-{% endif %}
 
 ---
 

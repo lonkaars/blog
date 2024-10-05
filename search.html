@@ -5,12 +5,13 @@ id: search
 toc: false
 ---
 
-<div class="searchBar">
-	<input class="input" id="searchInput" placeholder="Search for posts..." spellcheck="false" autocomplete="off">
+<form class="searchBar" method="get" action="{{ site.nojs-search }}">
+	<input type="text" class="input" id="searchInput" name="q" placeholder="Search for posts..." spellcheck="false" autocomplete="off">
+	<input type="hidden" name="q" value="site:{{ site.domain }}">
 	<button class="button">
 		<div class="icon">{% include icon/search-round.svg %}</div>
 	</button>
-</div>
+</form>
 
 <div class="searchResults"></div>
 
