@@ -1,7 +1,7 @@
 title: "Loek's Blog"
 rss:
   url: https://blog.pipeframe.xyz/atom.xml
-permalink: /post/:title
+permalink: /post/:title/
 exclude:
   - makefile
   - license
@@ -18,3 +18,4 @@ sass:
   sourcemap: development
 gems:
   - jekyll-liquify
+
