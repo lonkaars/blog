@@ -56,9 +56,9 @@
 
 	overflow-x: hidden;
 }
-.contentWrapper > * {
-	margin: 0;
-	margin-bottom: var(--page-margins);
+
+.contentWrapper :first-child {
+	margin-top: 0;
 }
 
 .contentWrapper p {
