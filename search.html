@@ -13,5 +13,18 @@ toc: false
 	</button>
 </form>
 
-<div class="searchResults"></div>
+<div class="searchResults">
+	{% for post in site.items %}
+	<div class="post">
+		<a href="{{ post.url }}" class="nolink block">
+			<b class="title">{{ post.title }}</b>
+			<p class="subtitle">{{ post.subtitle }}</p>
+			<p class="authordate">???</p>
+			<input class="keywords" type="hidden" value=""/>
+		</a>
+		{% include tags.html tags=post.tags %}
+	</div>
+	{% endfor %}
+</div>
+
 

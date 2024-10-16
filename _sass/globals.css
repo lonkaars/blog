@@ -8,14 +8,23 @@ html, body {
 	hyphens: auto;
 }
 
-.contentWrapper a {
+.block { display: block; }
+
+.contentWrapper a.nolink {
+	color: unset;
+}
+
+.contentWrapper a:not(.nolink) {
 	color: var(--links);
-	text-decoration: none;
 	position: relative;
 	display: inline-block;
 }
 
-.contentWrapper a::after {
+.contentWrapper a {
+	text-decoration: none;
+}
+
+.contentWrapper a:not(.nolink)::after {
 	content: '';
 	position: absolute;
 	left: 0;

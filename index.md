@@ -27,16 +27,16 @@ https://{{ site.domain }}/atom.xml
 ## Recent posts
 
 <div class="recentPosts">
-{% for post in site.posts limit:4 %}
-    <div class="postCard">
-        <a href="{{ post.url }}">
-            <img src="{{ post.cover }}" alt="post cover" class="cover">
-            <h2 class="title">{{ post.title }}</h2>
-            <strong class="subtitle">{{ post.subtitle }}</strong>
-        </a>
-        {% include tags.html tags=post.tags %}
-    </div>
-{% endfor %}
+  {% for post in site.items limit:4 %}
+  <div class="postCard">
+    <a href="{{ post.url }}" class="nolink block">
+      <img src="{{ post.cover }}" alt="post cover" class="cover">
+      <h2 class="title">{{ post.title }}</h2>
+      <strong class="subtitle">{{ post.subtitle }}</strong>
+    </a>
+    {% include tags.html tags=post.tags %}
+  </div>
+  {% endfor %}
 </div>
 
 [Go to all posts](/search){:.button}

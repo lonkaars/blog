@@ -1,17 +1,21 @@
 title: "Loek's Blog"
 domain: blog.pipeframe.xyz
-permalink: /post/:title/
 exclude:
   - makefile
   - license
   - readme.md
+collections:
+  items:
+    permalink: /post/:title/
+    output: true
 defaults:
   - scope:
-      type: posts
+      type: items
     values:
       layout: default
       lang: en
       toc: true
+      output: true
 markdown: kramdown
 sass:
   style: compressed
