@@ -1,0 +1,21 @@
+#!/bin/sh
+file="$1"
+tab="$(printf '\t')"
+
+history="$(git log \
+	--follow \
+	--ignore-all-space --diff-filter=AM \
+	--date=short --pretty=format:"%cd$tab%an" \
+	-- "$file")"
+
+dates="$(echo "$history" | cut -d"$tab" -f1)"
+authors="$(echo "$history" | cut -d"$tab" -f2 | sort -u)"
+
+cat << EOF
+date: $(echo "$dates" | head -n1)
+date_initial: $(echo "$dates" | tail -n1)
+edits: $(echo "$dates" | wc -l)
+authors:
+$(echo "$authors" | sed 's/^/- /')
+EOF
+

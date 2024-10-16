@@ -1,6 +1,7 @@
 authors:
   - name: Loek
     git:
+      - Loek Le Blansch
       - lonkaars
   - name: Willem
     git:

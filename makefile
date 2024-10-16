@@ -1,3 +1,5 @@
+.PHONY: FORCE
+
 JEKYLL_ENV ?= development
 # JEKYLL_ENV ?= production
 
@@ -10,12 +12,19 @@ JEKYLL_BUILD_ARGS += --destination $(WEBROOT)
 # installed
 GEMS = Gemfile.lock
 
-build: $(GEMS)
+POSTS := $(wildcard _items/*)
+POST_META := $(patsubst _items/%.md,_data/post/%.yml,$(POSTS))
+
+build: $(GEMS) $(POST_META) FORCE
 	bundle exec jekyll build $(JEKYLL_BUILD_ARGS)
 
 $(GEMS): Gemfile
 	bundle install --quiet
 
-clean:
+_data/post/%.yml: _items/%.md
+	@mkdir -p _data/post
+	_scripts/postinfo $< > $@
+
+clean: FORCE
 	$(RM) -r $(WEBROOT)
 
