@@ -4,5 +4,7 @@ Live at <https://blog.pipeframe.xyz>
 
 ## TODO
 
-- local search page functionality
+- rss is broken lol
+- tag index
+- search bar or something
 
