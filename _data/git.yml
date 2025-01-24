@@ -3,3 +3,4 @@
 # even though its content hasn't changed.
 ignore_commits:
   - ce37824c5260dd370c61cf174ea80ca7deeb1058 # next.js -> jekyll
+  - 7593175d2fc1acfeff315106099b663c251a51af # remove thumbnails
