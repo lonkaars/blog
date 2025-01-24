@@ -1,4 +1,4 @@
-title: "Loek's Blog"
+title: blog.pipeframe.xyz
 domain: blog.pipeframe.xyz
 exclude:
   - makefile
@@ -16,7 +16,7 @@ defaults:
       lang: en
       toc: true
       output: true
-      footer: true
+      post: true
 markdown: kramdown
 sass:
   style: compressed

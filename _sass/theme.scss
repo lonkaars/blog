@@ -58,3 +58,38 @@ nav .right a {
 	font-style: italic;
 }
 
+td, th {
+	padding: 0 1ex;
+}
+table {
+	border-color: currentColor;
+	border-spacing: 0;
+}
+
+// booktabs tables
+table th {
+	border-bottom-style: solid; // \midrule
+	padding-bottom: .4ex; // \aboverulesep
+	border-bottom-width: .05em; // \lightrulewidth
+}
+table tr:has(th) + tr td {
+	padding-top: .65ex; // \belowrulesep
+}
+table {
+	border-top-style: solid; // \toprule
+	margin-top: 0; // \abovetopsep
+	border-top-width: .08em; // \heavyrulewidth
+	padding-top: .65ex; // \belowrulesep
+
+	border-bottom-style: solid; // \bottomrule
+	padding-bottom: .4ex; // \aboverulesep
+	border-bottom-width: .08em; // \heavyrulewidth
+	margin-bottom: 0; // \belowbottomsep
+}
+
+.sortcolumn {
+	display: list-item;
+	list-style: inside;
+	list-style-type: disclosure-open;
+}
+

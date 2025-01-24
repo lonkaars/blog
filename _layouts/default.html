@@ -7,10 +7,10 @@
 	<meta property='og:site_name' content='{{ page.date }}' />
 	<meta property='og:title' content='{{ page.title }}' />
 	<meta property='og:description' content='{{ page.subtitle }}' />
-	{% if page.id == "index" %}
-	<title>{{ site.title }}</title>
-	{% else %}
+	{% if page.post %}
 	<title>{{ page.title }} - {{ site.title }}</title>
+	{% else %}
+	<title>{{ site.title }}</title>
 	{% endif %}
 </head>
 <body>
@@ -25,7 +25,7 @@
 			<a href="/posts" class="item {% if page.id == "posts" %}active{% endif %}">posts</a>
 			<span class="right">
 				{% if page.toc %}<a href="#" class="item">top</a>{% endif %}
-				{% if page.footer %}<a href="#footer" class="item">bottom</a>{% endif %}
+				{% if page.post %}<a href="#footer" class="item">bottom</a>{% endif %}
 			</span>
 		</div>
 	</nav>
@@ -33,28 +33,26 @@
 		{% if page.toc %}{% toc %}{% endif %}
 		{{ content }}
 	</article>
-	{% if page.footer %}
-		{% assign post_meta = site.data.post[page.slug] %}
-		{% assign site_meta = site.data.meta %}
+	{% if page.post %}
 		<footer id="footer" class="invert plainlink">
 			<div class="limitwidth">
 				<div class="autocolumn">
 					<div class="column">
 						<span class="title">about this post</span>
 						<ul>
-							<li>written by {% fmt_authors site.data.authors post_meta.authors %}</li>
-							<li>published on {{ post_meta.date }}</li>
+							<li>written by {% fmt_authors site.data.authors page.meta.authors %}</li>
+							<li>published on {{ page.meta.date | datefmt }}</li>
 						</ul>
 						<ul>
-							<li>edited {{ post_meta.edits }} times</li>
-							<li>first published on {{ post_meta.date_initial }}</li>
+							<li>edited {{ page.meta.edits }} times</li>
+							<li>first published on {{ page.meta.date_initial | datefmt }}</li>
 						</ul>
 					</div>
 					<div class="column">
 						<a href="/" class="title">{{ site.domain }}</a>
 						<ul>
-							<li>version <code>{{ site_meta.slug }}</code> (<a href="https://git.pipeframe.xyz/lonkaars/blog">git</a>)</li>
-							<li>built {{ site_meta.build_date }}</li>
+							<li>version <code>{{ site.data.meta.slug }}</code> (<a href="https://git.pipeframe.xyz/lonkaars/blog">git</a>)</li>
+							<li>built {{ site.data.meta.build_date | datefmt }}</li>
 						</ul>
 					</div>
 				</div>

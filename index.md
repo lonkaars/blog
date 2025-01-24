@@ -3,7 +3,7 @@ title: blog.pipeframe.xyz
 layout: default
 id: index
 toc: false
-footer: false
+post: false
 ---
 
 Welcome to my blog! If I ever feel like writing something there's a good chance
