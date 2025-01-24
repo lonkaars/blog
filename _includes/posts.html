@@ -1,9 +1,9 @@
 <table class="plainlink" width="100%">
 	<tr>
-		<th><a href="by-date.html" class="{% if include.sort == "date" %}sortcolumn{% endif %}">date</a></th>
-		<th><a href="by-title.html" class="{% if include.sort == "title" %}sortcolumn{% endif %}">title</a></th>
+		<th><a href="by-date" class="{% if include.sort == "date" %}sortcolumn{% endif %}">date</a></th>
+		<th><a href="by-title" class="{% if include.sort == "title" %}sortcolumn{% endif %}">title</a></th>
 	</tr>
-	{% assign posts = site.items | sort: include.sort %}
+	{% assign posts = site.items | post_sort: include.sort %}
 	{% for post in posts %}
 	<tr>
 		<td>{{ post.date | datefmt }}</td>

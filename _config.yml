@@ -6,7 +6,7 @@ exclude:
   - readme.md
 collections:
   items:
-    permalink: /post/:title/
+    permalink: /post/:title
     output: true
 defaults:
   - scope:

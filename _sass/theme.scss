@@ -28,9 +28,10 @@ blockquote::before {
 	background-color: black;
 	color: white;
 }
-nav a.active {
-	color: canvastext;
-	background-color: canvas;
+
+nav .item.active {
+	color: canvastext !important;
+	background-color: canvas !important;
 }
 
 // only show underline when hovering link

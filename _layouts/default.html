@@ -22,7 +22,7 @@
 	<nav class="invert plainlink">
 		<div class="limitwidth">
 			<a href="/" class="item {% if page.id == "index" %}active{% endif %}">home</a>
-			<a href="/posts" class="item {% if page.id == "posts" %}active{% endif %}">posts</a>
+			<a href="/posts/by-date" class="item {% if page.id == "posts" %}active{% endif %}">posts</a>
 			<span class="right">
 				{% if page.toc %}<a href="#" class="item">top</a>{% endif %}
 				{% if page.post %}<a href="#footer" class="item">bottom</a>{% endif %}
@@ -38,14 +38,12 @@
 			<div class="limitwidth">
 				<div class="autocolumn">
 					<div class="column">
-						<span class="title">about this post</span>
+						<span class="title">post info</span>
 						<ul>
+							<li>last published on {{ page.meta.date | datefmt }}</li>
 							<li>written by {{ page.authors | map: 'nick' | sentence_join }}</li>
-							<li>published on {{ page.meta.date | datefmt }}</li>
-						</ul>
-						<ul>
-							<li>edited {{ page.meta.edits }} times</li>
 							<li>first published on {{ page.meta.date_initial | datefmt }}</li>
+							<li>edited {{ page.meta.edits | plural: 'time' }}</li>
 						</ul>
 					</div>
 					<div class="column">
@@ -61,3 +59,4 @@
 	{% endif %}
 </body>
 </html>
+

@@ -6,8 +6,10 @@ toc: false
 post: false
 ---
 
-Welcome to my blog! If I ever feel like writing something there's a good chance
-it'll be posted here. As common with programmers, I have a serious
+Welcome to my blog!
+
+If I ever feel like writing something there's a good chance it'll be posted
+here. As common with programmers, I have a serious
 [bikeshedding](https://en.wiktionary.org/wiki/bikeshedding) problem, so beware
 of any outdated posts or references to unfinished projects.
 

@@ -10,12 +10,18 @@ pre.highlight {
 
 %token_comment { font-style: italic; }
 %token_keyword { font-weight: 700; }
-%token_comment { opacity: .7; }
-%token_operator { opacity: .8; }
 
 %token_comment { color: var(--code-comment); }
 %token_keyword { color: var(--code-keyword); }
 %token_string { color: var(--code-string); }
 %token_number { color: var(--code-number); }
 %token_operator { color: var(--code-operator); }
+
+:root {
+	--code-comment: #556885;
+	--code-keyword: #a72076;
+	--code-string: #755a1c;
+	--code-number: #c94f29;
+	--code-operator: #6327c1;
+}
 
