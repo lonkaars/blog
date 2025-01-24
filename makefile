@@ -2,6 +2,7 @@
 
 JEKYLL_ENV ?= development
 # JEKYLL_ENV ?= production
+export JEKYLL_ENV
 
 WEBROOT ?= _site
 
@@ -34,4 +35,8 @@ $(REPO_META):
 
 clean: FORCE
 	$(RM) -r $(WEBROOT)
+
+_dist.tar.gz: FORCE
+	$(MAKE) -E JEKYLL_ENV=production -B build
+	tar -zcf $@ -C _site .
 
