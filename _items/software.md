@@ -7,7 +7,6 @@ tags:
   - source
   - server
   - phone
-cover: /img/software.png
 ---
 
 ## PC software

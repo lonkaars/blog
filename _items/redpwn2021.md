@@ -5,7 +5,6 @@ tags:
     - hacking
     - CTF
     - writeup
-cover: /img/redpwn2021.png
 ---
 
 This is the first 'real' CTF I've participated in. About two weeks ago, a

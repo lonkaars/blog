@@ -3,7 +3,6 @@ title: Avans wifi setup
 subtitle: How to use Avans eduroam with NetworkManager
 tags:
     - software
-cover: /img/avanswifi.png
 ---
 
 I wasted 2 hours trying to set up my school's WiFi, so here's a quick reference

@@ -5,7 +5,6 @@ tags:
     - windows
     - normie
     - software
-cover: /img/scoop.png
 ---
 
 Here's a quick reference for returning customers:

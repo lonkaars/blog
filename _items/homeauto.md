@@ -10,7 +10,6 @@ tags:
     - software
     - hardware
     - hacking
-cover: /img/homeauto.png
 ---
 
 Home automation is cool, but it can also be scary. I want to try to convert my

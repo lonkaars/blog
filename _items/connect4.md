@@ -3,7 +3,6 @@ title: Connect 4 beta live!
 tags:
     - connect 4
     - beta
-cover: /img/connectfourbeta.png
 ---
 
 My connect four website is currently online as a public beta. You can visit the

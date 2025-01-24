@@ -5,7 +5,6 @@ tags:
     - git
     - server
     - software
-cover: /img/git.png
 ---
 
 ## Overview

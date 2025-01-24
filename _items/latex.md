@@ -5,7 +5,6 @@ tags:
     - software
     - latex
     - git
-cover: /img/latex.png
 ---
 
 I started using LaTeX instead of MS Word about two years ago, and I've never
