@@ -40,6 +40,7 @@ class Meta < Jekyll::Generator
 		data['authors'] = git_log.map{ |c| c['author'] }.uniq
 		data['date_initial'] = git_log.first['date']
 		data['date'] = git_log.last['date']
+		data['edits'] = git_log.length - 1 # original commit is not an edit
 		return data
 	end
 end

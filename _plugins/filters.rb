@@ -10,7 +10,7 @@ module Filters
 	end
 
 	def plural(num, counter)
-		return "#{num} #{counter}#{counter == 1 ? '' : 's'}"
+		return "#{num} #{counter}#{num == 1 ? '' : 's'}"
 	end
 
 	def post_sort(posts, sort_by)
