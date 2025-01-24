@@ -1,7 +1,7 @@
-- name: Loek
+- nick: Loek
   git:
     - Loek Le Blansch
     - lonkaars
-- name: Willem
+- nick: Willem
   git:
     - Willem Paternotte

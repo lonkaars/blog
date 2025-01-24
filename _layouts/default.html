@@ -40,7 +40,7 @@
 					<div class="column">
 						<span class="title">about this post</span>
 						<ul>
-							<li>written by {% fmt_authors site.data.authors page.meta.authors %}</li>
+							<li>written by {{ page.authors | map: 'nick' | sentence_join }}</li>
 							<li>published on {{ page.meta.date | datefmt }}</li>
 						</ul>
 						<ul>

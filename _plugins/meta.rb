@@ -8,6 +8,11 @@ module Meta
 				# directly add generated page metadata to `page.meta` in liquid
 				page.data['meta'] = site.data['post'][page.slug]
 
+				# set page.authors to author metadata from git+yaml
+				page.data['authors'] = site.data['authors'].filter { |author|
+					author['git'].intersect?(page.data['meta']['authors'])
+				}
+
 				# set page.date to generated date_initial
 				page.data['date'] = page.data['meta']['date_initial']
 			end
