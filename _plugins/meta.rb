@@ -5,30 +5,42 @@ module Meta
 			site.data = parse_unix_dates(site.data)
 
 			for page in site.collections['items'] do
-				# directly add generated page metadata to `page.meta` in liquid
-				page.data['meta'] = site.data['post'][page.slug]
+				# convert generated page metadata and add directly to `page.meta` in liquid
+				page.data['meta'] = transform_data(site, page.slug)
 
 				# set page.authors to author metadata from git+yaml
-				page.data['authors'] = site.data['authors'].filter { |author|
+				page.data['authors'] = site.data['authors'].filter do |author|
 					author['git'].intersect?(page.data['meta']['authors'])
-				}
+				end
 
 				# set page.date to generated date_initial
-				page.data['date'] = page.data['meta']['date_initial']
+				page.data['date'] = page.data['meta']['date']
 			end
 		end
 
 		def parse_unix_dates(data)
-			for key, value in data do
-				if value.is_a? Hash
-					data[key] = parse_unix_dates(value)
-					next
-				end
-				
-				next unless value.is_a? String
-				next unless value =~ /^@\d+$/
-				data[key] = Time.at(Integer(value[1..]))
+			# recurse deeper
+			return data.transform_values { |val| parse_unix_dates(val) } if data.is_a? Hash
+			return data.map { |val| parse_unix_dates(val) } if data.is_a? Array
+
+			# convert strings matching regex
+			return Time.at(Integer(data[1..])) if data.is_a? String and data =~ /^@\d+$/
+
+			# base case
+			return data
+		end
+
+		def transform_data(site, slug)
+			data = site.data['post'][slug]
+			data['git_log'] = data['git_log'].sort { |c| c['date'].to_i }
+
+			git_log = data['git_log'].filter do |commit|
+				!site.data['git']['ignore_commits'].include?(commit['hash'])
 			end
+
+			data['authors'] = git_log.map{ |c| c['author'] }.uniq
+			data['date_initial'] = git_log.first['date']
+			data['date'] = git_log.last['date']
 			return data
 		end
 	end

@@ -4,20 +4,17 @@ export LANG=C
 file="$1"
 tab="$(printf '\t')"
 
-history="$(git log \
+git log \
 	--follow \
 	--ignore-all-space --diff-filter=AM \
-	--date=unix --pretty=format:"%cd$tab%an" \
-	-- "$file")"
-
-dates="$(echo "$history" | cut -d"$tab" -f1)"
-authors="$(echo "$history" | cut -d"$tab" -f2 | sort -u)"
-
-cat << EOF
-date: '@$(echo "$dates" | head -n1)'
-date_initial: '@$(echo "$dates" | tail -n1)'
-edits: $(echo "$dates" | wc -l)
-authors:
-$(echo "$authors" | sed 's/^/- /')
-EOF
+	--date=unix --pretty=format:"%H$tab%cd$tab%an" \
+	-- "$file" |\
+awk -F"$tab" '
+BEGIN { printf("git_log:\n") }
+{
+	printf("  - hash: \"%s\"\n", $1)
+	printf("    date: \"@%s\"\n", $2)
+	printf("    author: \"%s\"\n", $3)
+}
+'
 

@@ -41,7 +41,7 @@
 						<span class="title">post info</span>
 						<ul>
 							<li>last published on {{ page.meta.date | datefmt }}</li>
-							<li>written by {{ page.authors | map: 'nick' | sentence_join }}</li>
+							<li>written by {{ page.authors | map: 'nick' | sentence_join: 'nobody?' }}</li>
 							<li>first published on {{ page.meta.date_initial | datefmt }}</li>
 							<li>edited {{ page.meta.edits | plural: 'time' }}</li>
 						</ul>

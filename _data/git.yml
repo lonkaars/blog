@@ -1,0 +1,5 @@
+# These commits are ignored when calculating first/last published dates and
+# edit counts, and is used to ignore commits where git sees a file as touched
+# even though its content hasn't changed.
+ignore_commits:
+  - ce37824c5260dd370c61cf174ea80ca7deeb1058 # next.js -> jekyll
