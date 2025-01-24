@@ -216,8 +216,7 @@ I'm currently using [LineageOS](https://lineageos.org/) 18.1, rooted using
 - **Music player**: [shuttle](https://www.shuttlemusicplayer.com/). It looks
   sexy, it's free, it's awesome.
 
-- **Instant messenger**: [signal](https://signal.org/). [papa musk said
-  it](https://twitter.com/elonmusk/status/1347165127036977153).
+- **Instant messenger**: [signal](https://signal.org/).
 
 - **Manga reader**: [tachiyomi](https://tachiyomi.org/)
 
