@@ -16,11 +16,11 @@ defaults:
       lang: en
       toc: true
       output: true
+      footer: true
 markdown: kramdown
 sass:
   style: compressed
   sourcemap: development
 gems:
   - jekyll-liquify
-nojs-search: https://google.com/search
 

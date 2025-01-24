@@ -1,0 +1,118 @@
+html, body {
+	padding: 0;
+	margin: 0;
+}
+
+.limitwidth {
+	max-width: 650px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+nav {
+	position: sticky;
+	z-index: 2; // above toc
+
+	top: 0;
+	left: 0;
+	right: 0;
+
+	line-height: 20px;
+}
+
+article {
+	margin-top: 24px;
+	margin-bottom: 24px;
+}
+
+nav a {
+	display: inline-block;
+	padding: 2px 8px;
+}
+
+nav .right { float: right; }
+
+header, footer { padding: 8px 0px; }
+
+img, figcaption {
+	display: block;
+	max-width: 80%;
+	margin: 0 auto;
+}
+
+// table of contents
+aside {
+	// make sure mouse events work on toc even if content is behind toc
+	position: relative;
+	z-index: 1;
+
+	float: right;
+	width: 40%;
+
+	margin-left: 12px;
+	margin-bottom: 6px;
+	padding: 6px 0px;
+}
+
+aside ul {
+	padding-left: 16px;
+	margin: 0;
+	// list-style-position: inside;
+	list-style-type: square;
+}
+
+// indent first level
+aside > ul { margin-left: 12px; }
+
+// align description arrow with list bullet inside toc
+aside summary { list-style-position: outside; }
+
+// hide bullets for list items that can be expanded
+li.stub::marker { content: ""; }
+
+// give collapsable element arrow "clickable" cursor
+summary::marker { cursor: pointer; }
+
+blockquote {
+	position: relative;
+	padding-left: 12px;
+}
+
+blockquote, figure {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+pre {
+	overflow-x: auto;
+	border-radius: 6px;
+	padding: 6px 8px;
+}
+
+figure figcaption {
+	margin-top: 6px;
+}
+
+// fix anchor scroll offset
+h1, h2, h3, h4, h5, h6 { scroll-margin-top: 40px; }
+
+footer ul {
+	list-style: none;
+	padding: 0;
+}
+
+.autocolumn {
+	display: flex;
+	gap: 24px;
+	justify-content: flex-start;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.autocolumn .column {
+	min-width: 250px;
+	flex-grow: 1;
+}
+
+

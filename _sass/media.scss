@@ -1,0 +1,42 @@
+// no floating toc when screen too narrow
+@media only screen and (max-width: 450px) {
+	aside {
+		float: none;
+		width: unset;
+
+		border-left: none;
+		border-bottom: 1px dashed;
+		margin-left: 0px;
+	}
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+	:root, html {
+		background-color: black;
+		color: white;
+	}
+	.invert {
+		background-color: #222;
+		color: inherit;
+	}
+	nav .item.active {
+		color: inherit;
+		background-color: black;
+		text-decoration: underline;
+		font-weight: bold;
+	}
+	a { color: #9aa9f9; }
+	a:visited { color: #bb87f2; }
+}
+
+@media print {
+	nav { display: none; }
+
+	.invert {
+		background-color: unset;
+		color: unset;
+	}
+
+	.limitwidth { max-width: 35em; }
+}
+

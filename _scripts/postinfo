@@ -1,4 +1,6 @@
 #!/bin/sh
+export LANG=C
+
 file="$1"
 tab="$(printf '\t')"
 

@@ -1,6 +1,0 @@
-<div class="tags">
-  <span>Tags:</span>
-  {%- for tag in include.tags -%}
-    <a class="tag" href="/search?q={{ tag }}" style="--tag-hue: {{ tag | to_tag_color }};">{{ tag }}</a>
-  {%- endfor -%}
-</div>

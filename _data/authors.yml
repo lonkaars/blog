@@ -1,8 +1,7 @@
-authors:
-  - name: Loek
-    git:
-      - Loek Le Blansch
-      - lonkaars
-  - name: Willem
-    git:
-      - Willem Paternotte
+- name: Loek
+  git:
+    - Loek Le Blansch
+    - lonkaars
+- name: Willem
+  git:
+    - Willem Paternotte

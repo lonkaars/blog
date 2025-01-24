@@ -1,0 +1,60 @@
+html {
+	font-family: "Inter", sans-serif;
+	font-size: 10pt;
+	font-feature-settings: "ss07", "ss08";
+}
+
+code {
+	font-family: "JetBrainsMono", monospace;
+	font-size: 9pt;
+}
+
+blockquote {
+	font-style: italic;
+	opacity: .8;
+}
+blockquote::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 2px;
+	background-color: currentcolor;
+}
+
+// navbar colors
+.invert {
+	background-color: black;
+	color: white;
+}
+nav a.active {
+	color: canvastext;
+	background-color: canvas;
+}
+
+// only show underline when hovering link
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+// separator style
+hr {
+	display: block;
+	border: none;
+	border-top: 1px dashed;
+}
+
+aside { border-left: 1px dashed; }
+
+pre { border: 1px solid; }
+
+.title { font-size: 150%; }
+
+.plainlink a,
+.plainlink a:visited { color: inherit; }
+
+nav .right a {
+	opacity: .75;
+	font-style: italic;
+}
+

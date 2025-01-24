@@ -1,27 +1,65 @@
 <!DOCTYPE html>
-<html lang='{{ page.lang }}'>
+<html lang="{{ page.lang }}">
 <head>
-	{% include head.html %}
-	{% include title.html %}
-	{% include opengraph.html %}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/style.css">
+	<meta property='og:site_name' content='{{ page.date }}' />
+	<meta property='og:title' content='{{ page.title }}' />
+	<meta property='og:description' content='{{ page.subtitle }}' />
+	{% if page.id == "index" %}
+	<title>{{ site.title }}</title>
+	{% else %}
+	<title>{{ page.title }} - {{ site.title }}</title>
+	{% endif %}
 </head>
 <body>
-	<div class='centeredPage'>
-		<div class='titleWrapper'>
-			<h1>{{ page.title }}</h1>
-			{% if page.subtitle %}<p class='subtile'>{{ page.subtitle }}</p>{% endif %}
-			{% if page.tags %}{% include tags.html tags=page.tags %}{% endif %}
+	<header class="invert plainlink">
+		<div class="limitwidth">
+			<span class="title">{{ page.title | smartify }}</span>
 		</div>
-		<div class='navAreaWrapper'>
-			<div class='sticky'>
-				{% include navbar.html page=page.id %}
-				{% if page.toc %}{% toc %}{% endif %}
+	</header>
+	<nav class="invert plainlink">
+		<div class="limitwidth">
+			<a href="/" class="item {% if page.id == "index" %}active{% endif %}">home</a>
+			<a href="/posts" class="item {% if page.id == "posts" %}active{% endif %}">posts</a>
+			<span class="right">
+				{% if page.toc %}<a href="#" class="item">top</a>{% endif %}
+				{% if page.footer %}<a href="#footer" class="item">bottom</a>{% endif %}
+			</span>
+		</div>
+	</nav>
+	<article class="limitwidth content">
+		{% if page.toc %}{% toc %}{% endif %}
+		{{ content }}
+	</article>
+	{% if page.footer %}
+		{% assign post_meta = site.data.post[page.slug] %}
+		{% assign site_meta = site.data.meta %}
+		<footer id="footer" class="invert plainlink">
+			<div class="limitwidth">
+				<div class="autocolumn">
+					<div class="column">
+						<span class="title">about this post</span>
+						<ul>
+							<li>written by {% fmt_authors site.data.authors post_meta.authors %}</li>
+							<li>published on {{ post_meta.date }}</li>
+						</ul>
+						<ul>
+							<li>edited {{ post_meta.edits }} times</li>
+							<li>first published on {{ post_meta.date_initial }}</li>
+						</ul>
+					</div>
+					<div class="column">
+						<a href="/" class="title">{{ site.domain }}</a>
+						<ul>
+							<li>version <code>{{ site_meta.slug }}</code> (<a href="https://git.pipeframe.xyz/lonkaars/blog">git</a>)</li>
+							<li>built {{ site_meta.build_date }}</li>
+						</ul>
+					</div>
+				</div>
 			</div>
-		</div>
-		<!-- <MobileNavbar /> -->
-		<div class='contentWrapper'>
-			{{ content }}
-		</div>
-	</div>
+		</footer>
+	{% endif %}
 </body>
 </html>

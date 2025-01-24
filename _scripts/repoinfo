@@ -1,0 +1,8 @@
+#!/bin/sh
+export LANG=C
+cat << EOF
+commit: $(git rev-parse HEAD)
+slug: $(git describe --always --dirty='*' --abbrev)
+build_date: $(date -Idate)
+EOF
+

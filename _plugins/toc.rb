@@ -9,7 +9,9 @@ module Jekyll
 
 			# enumerate over all h1-4 headings
 			@els = doc.css("h1, h2, h3, h4")
-			return '<div class="chapterChildren">%s</div>' % [ output_toc ]
+			toc = output_toc()
+			return '' if toc.empty?
+			return '<aside id="toc" class="plainlink">%s</aside>' % [ toc ]
 		end
 
 		def output_toc
@@ -29,7 +31,7 @@ module Jekyll
 				if level >= level_next
 					output += '<li>'
 				else
-					output += '<li class="stub"><details open>'
+					output += '<li class="stub"><details>'
 					output += '<summary>'
 				end
 

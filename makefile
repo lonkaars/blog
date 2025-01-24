@@ -14,8 +14,11 @@ GEMS = Gemfile.lock
 
 POSTS := $(wildcard _items/*)
 POST_META := $(patsubst _items/%.md,_data/post/%.yml,$(POSTS))
+REPO_META := _data/meta.yml
 
-build: $(GEMS) $(POST_META) FORCE
+META := $(POST_META) $(REPO_META)
+
+build: $(GEMS) $(META) FORCE
 	bundle exec jekyll build $(JEKYLL_BUILD_ARGS)
 
 $(GEMS): Gemfile
@@ -24,6 +27,10 @@ $(GEMS): Gemfile
 _data/post/%.yml: _items/%.md
 	@mkdir -p _data/post
 	_scripts/postinfo $< > $@
+
+$(REPO_META):
+	@mkdir -p _data/post
+	_scripts/repoinfo > $@
 
 clean: FORCE
 	$(RM) -r $(WEBROOT)
