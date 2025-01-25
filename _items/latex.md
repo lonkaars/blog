@@ -1,10 +1,6 @@
 ---
 title: My LaTeX setup
-subtitle: How to set up a simple LaTeX environment with XeTeX and latexmk
-tags:
-    - software
-    - latex
-    - git
+tags: software latex git
 ---
 
 I started using LaTeX instead of MS Word about two years ago, and I've never

@@ -1,5 +1,5 @@
 ---
-title: Posts
+title: post listing
 layout: default
 id: posts
 toc: false

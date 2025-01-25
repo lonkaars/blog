@@ -1,11 +1,6 @@
 ---
-title: Software that I use
-subtitle: Desktop software, server software, phone apps, everything
-tags:
-  - software
-  - open source
-  - server
-  - phone
+title: software that I use
+tags: [software, open source, server, phone]
 ---
 
 ## PC software

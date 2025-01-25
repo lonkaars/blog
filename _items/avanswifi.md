@@ -1,8 +1,6 @@
 ---
 title: Avans eduroam wifi setup
-tags:
-    - software
-    - phone
+tags: software phone
 ---
 
 I wasted 2 hours trying to set up my school's WiFi on my laptop, so here's a

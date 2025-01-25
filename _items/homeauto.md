@@ -1,12 +1,9 @@
 ---
-title: My home automation adventure
-subtitle: How to make your house a shitty utopia
+title: my home automation adventure
 tags:
     - home automation
     - raspberry pi
     - esp8266
-    - cc2500
-    - microcontrollers
     - software
     - hardware
     - hacking

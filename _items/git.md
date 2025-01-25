@@ -1,6 +1,5 @@
 ---
-title: My git setup
-subtitle: How I use git on my server
+title: git server setup
 tags: git server software
 ---
 

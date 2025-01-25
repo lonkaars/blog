@@ -1,10 +1,6 @@
 ---
 title: redpwnCTF 2021
-subtitle: A noob's perspective
-tags:
-    - hacking
-    - CTF
-    - writeup
+tags: hacking CTF writeup
 ---
 
 This is the first 'real' CTF I've participated in. About two weeks ago, a
