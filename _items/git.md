@@ -13,11 +13,13 @@ This article details the configuration of my git server
 # SSH Access with gitolite
 
 [Gitolite][gitolite] was a pain in the ass to set up because I didn't
-understand umasks before I started trying to set it up. A *umask* is like the
-"opposite" of what you'd enter when running `chmod`. For example: if I run
-`touch test`, I will now have a file with the same permissions as `chmod 644`
-(though the default umask may vary per distro). You can check this with the
-`stat` command:
+understand umasks before I started trying to set it up.
+
+A *umask* literally masks a file's permissions (or mode) when its created. You
+can think of it kind of like the "opposite" of what you'd enter when running
+`chmod`. For example: if I run `touch test`, I will now have a file with the
+same permissions as `chmod 644` (though the default umask may vary per distro).
+You can check this with the `stat` command:
 
 ```sh
 $ touch test
@@ -84,8 +86,8 @@ And now my `.gitolite.rc`:
 [Cgit][cgit] is probably the easiest thing to set up. It has great built-in
 documentation (`man 5 cgitrc`). Pretty much all configuration is in
 `/etc/cgitrc` (css/syntax highlighting isn't in there). The only reason I'm
-posting my config here is because for some reason, the order of the options in
-cgit's config matters:
+posting my config here is because for some reason the order of the options in
+`/etc/cgitrc` matters:
 
 ```conf
 # cgit config; see cgitrc(5) for details
@@ -144,18 +146,34 @@ section-from-path=1
 scan-path=/srv/git
 ```
 
-Some notable tweaks I made were:
+# Bonus tips
 
-- The `about-filter` uses `pandoc` to convert most document types to HTML (and
-  properly renders GitHub-flavored markdown unlike the built-in
-  about-formatting\.sh script)
-- I tweaked the [style.css](https://git.pipeframe.xyz/style.css)
-- I added a custom [script.js](https://git.pipeframe.xyz/script.js) that
-  currently does the following:
+## Cgit
+
+- Replace the default `about-filter` with a script that uses `pandoc` (or
+  similar) to convert readme pages to HTML. The built-in about-formatting\.sh
+  script doesn't properly render markdown.
+- I tweaked the [style.css](https://git.pipeframe.xyz/style.css) file
+- I added a custom [script.js](https://git.pipeframe.xyz/script.js) that adds
+  some quality of life improvements:
   - Modifies the repository clone URLs to copy the URL on click instead of
     navigating
   - Make the root title a link to '/' for quickly clearing URL query parameters
   - Open binary blobs in the tree explorer as raw instead of hexdump by default
+
+## Gitolite
+
+Because gitolite acts as the login shell for an SSH user, you'll get an
+annoying message each time you connect:
+
+> PTY allocation request failed on channel 0
+
+This can be fixed by placing the following in your `~/.ssh/config`:
+
+```ssh
+match user git host pipeframe.xyz
+	requesttty no
+```
 
 [pipeframe-git]: https://git.pipeframe.xyz
 [gitolite]: https://gitolite.com/gitolite/index.html
