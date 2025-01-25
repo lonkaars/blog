@@ -1,4 +1,4 @@
-<blockquote class="admonition hidden" x-unhide-after="{{ include.date | date: "%s" | plus: site.stale_threshold }}">
+<blockquote class="admonition" hidden x-unhide-after="{{ include.date | date: "%s" | plus: site.stale_threshold }}">
 	<p class="title">Warning</p>
 	<p>This post was last updated on {{ include.date | datefmt }}, and may no
 	longer contain accurate or up-to-date information.</p>
