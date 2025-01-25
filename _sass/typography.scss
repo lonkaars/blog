@@ -1,9 +1,19 @@
 html {
+	font-family: "Inter", sans-serif;
+	font-size: 10pt;
+	font-feature-settings: "ss07", "ss08";
+
 	hyphens: auto;
 	tab-size: 2;
+}
+
+code {
+	font-family: "JetBrainsMono", monospace;
+	font-size: 9pt;
 }
 
 h1, h2, h3, h4, h5, h6,
 aside,
 header { text-wrap: balance; }
 
+article { text-align: justify; }
