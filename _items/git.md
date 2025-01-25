@@ -1,27 +1,23 @@
 ---
 title: My git setup
 subtitle: How I use git on my server
-tags:
-    - git
-    - server
-    - software
+tags: git server software
 ---
 
-# Overview
+This article details the configuration of my git server
+[git.pipeframe.xyz][pipeframe-git]. I have two access mechanisms set up:
 
-I have two mechanisms set up for accessing [my git
-server](https://git.pipeframe.xyz):
-
-1. **gitolite** for ssh access and permission management
-2. **cgit** for browsing and read-only access over HTTP
+1. [**gitolite**][gitolite] for ssh access and permission management
+2. [**cgit**][cgit] for browsing and read-only access over HTTP
 
 # SSH Access with gitolite
 
-Gitolite was a pain in the ass to set up because I didn't understand umasks
-before I started trying to set it up. A *umask* is like the "opposite" of what
-you'd enter when running `chmod`. For example: if I run `touch test`, I will
-now have a file with the same permissions as `chmod 644` (though the default
-umask may vary per distro). You can check this with the `stat` command:
+[Gitolite][gitolite] was a pain in the ass to set up because I didn't
+understand umasks before I started trying to set it up. A *umask* is like the
+"opposite" of what you'd enter when running `chmod`. For example: if I run
+`touch test`, I will now have a file with the same permissions as `chmod 644`
+(though the default umask may vary per distro). You can check this with the
+`stat` command:
 
 ```sh
 $ touch test
@@ -41,9 +37,10 @@ the file's permissions. This value is usually displayed using octal notation
 |binary|`110`|`100`|`100`|
 |octal|`6`|`4`|`4`|
 
-The umask very literally *masks* each bit (using a bitwise and operation). If I want gitolite to create
-repositories with default permissions so other users can read but not write, I
-have to use a mode with the bits set of the permissions that I *don't* want to grant:
+The umask very literally *masks* each bit (using a bitwise and operation). If I
+want gitolite to create repositories with default permissions so other users
+can read but not write, I have to use a mode with the bits set of the
+permissions that I *don't* want to grant:
 
 ||user|group|world|
 |-:|:-:|:-:|:-:|
@@ -84,7 +81,7 @@ And now my `.gitolite.rc`:
 
 # HTTP Access with cgit
 
-Cgit is probably the easiest thing to set up. It has great built-in
+[Cgit][cgit] is probably the easiest thing to set up. It has great built-in
 documentation (`man 5 cgitrc`). Pretty much all configuration is in
 `/etc/cgitrc` (css/syntax highlighting isn't in there). The only reason I'm
 posting my config here is because for some reason, the order of the options in
@@ -159,4 +156,8 @@ Some notable tweaks I made were:
     navigating
   - Make the root title a link to '/' for quickly clearing URL query parameters
   - Open binary blobs in the tree explorer as raw instead of hexdump by default
+
+[pipeframe-git]: https://git.pipeframe.xyz
+[gitolite]: https://gitolite.com/gitolite/index.html
+[cgit]: https://git.zx2c4.com/cgit/about
 
