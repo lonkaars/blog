@@ -1,0 +1,26 @@
+---
+---
+
+// fill width
+#posts {
+	table-layout: auto;
+	width: 100%;
+}
+
+// fit date column
+#posts td:nth-child(1),
+#posts th:nth-child(1) {
+	white-space: nowrap;
+	width: 1%;
+}
+
+// dates with table numerals
+#posts td:nth-child(1) { font-feature-settings: "tnum"; }
+
+#search {
+	display: flex;
+	gap: 6px;
+
+	margin-bottom: 24px;
+}
+#search input[type=text] { flex-grow: 1; }

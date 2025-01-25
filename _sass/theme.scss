@@ -94,3 +94,18 @@ table {
 	list-style-type: disclosure-open;
 }
 
+*:focus { outline: none; }
+
+input, button {
+	border: none;
+	background: #ccc;
+	color: inherit;
+
+	box-sizing: content-box;
+	height: 20px;
+	line-height: 20px;
+	display: inline-block;
+	padding: 2px 8px;
+}
+input[type=submit], buttom { cursor: pointer; }
+

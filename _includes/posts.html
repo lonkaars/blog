@@ -1,4 +1,12 @@
-<table class="plainlink" width="100%">
+<link rel="stylesheet" href="style.css">
+
+<form id="search" method="get" action="https://google.com/search">
+	<input type="text" placeholder="search" name="q" spellcheck="false" autocomplete="off">
+	<input type="hidden" name="q" value="site:{{ site.domain }}">
+	<input type="submit">
+</form>
+
+<table id="posts" class="plainlink">
 	<tr>
 		<th><a href="by-date" class="{% if include.sort == "date" %}sortcolumn{% endif %}">date</a></th>
 		<th><a href="by-title" class="{% if include.sort == "title" %}sortcolumn{% endif %}">title</a></th>
@@ -11,3 +19,4 @@
 	</tr>
 	{% endfor %}
 </table>
+

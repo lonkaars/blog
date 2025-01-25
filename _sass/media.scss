@@ -11,7 +11,7 @@
 }
 
 @media only screen and (prefers-color-scheme: dark) {
-	.invert {
+	.invert, input, button {
 		background-color: #222;
 		color: inherit;
 	}
