@@ -14,14 +14,14 @@
 		<link>https://{{ site.domain }}/atom.xml</link>
 		<atom:link href="https://{{ site.domain }}/atom.xml" rel="self" type="application/rss+xml" />
 	</channel>
-	{% for post in site.posts %}
-		<item>
-			<title>{{ post.title }}</title>
-			<guid>{{ post.id }}</guid>
-			<link>{{ post.url }}</link>
-			<pubDate>{{ post.date | date_to_xmlschema }}</pubDate>
-			<description>{{ post.content | markdownify | xml_escape }}</description>
-		</item>
+	{% for post in site.items %}
+	<item>
+		<title>{{ post.title | smartify | xml_escape }}</title>
+		<guid>{{ post.id }}</guid>
+		<link>{{ post.url }}</link>
+		<pubDate>{{ post.date | date_to_xmlschema }}</pubDate>
+		<description>{{ post.content | markdownify | xml_escape }}</description>
+	</item>
 	{% endfor %}
 </rss>
 
