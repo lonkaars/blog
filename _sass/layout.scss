@@ -67,11 +67,9 @@ aside ul {
 aside > ul { margin-left: 12px; }
 
 // align description arrow with list bullet inside toc
-aside summary { list-style-position: outside; }
-
+summary { list-style-position: outside; }
 // hide bullets for list items that can be expanded
 li.stub::marker { content: ""; }
-
 // give collapsable element arrow "clickable" cursor
 summary::marker { cursor: pointer; }
 
@@ -114,4 +112,11 @@ footer ul {
 	min-width: 250px;
 	flex-grow: 1;
 }
+
+#search {
+	display: flex;
+	gap: 6px;
+	margin: 24px 0px;
+}
+#search input[type=text] { flex-grow: 1; }
 

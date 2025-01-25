@@ -3,7 +3,8 @@ class Meta < Jekyll::Generator
 		# convert yaml @0123456789 (unix timestamps) into ruby Date
 		site.data = parse_unix_dates(site.data)
 
-		for page in site.collections['items'] do
+		posts = site.collections['items']
+		for page in posts do
 			# convert generated page metadata and add directly to `page.meta` in liquid
 			page.data['meta'] = transform_data(site, page.slug)
 
@@ -15,6 +16,9 @@ class Meta < Jekyll::Generator
 			# set page.date to generated date_initial
 			page.data['date'] = page.data['meta']['date']
 		end
+
+		# count tags on all posts
+		site.data['tags'] = count_tags(posts)
 	end
 
 	def parse_unix_dates(data)
@@ -43,4 +47,21 @@ class Meta < Jekyll::Generator
 		data['edits'] = git_log.length - 1 # original commit is not an edit
 		return data
 	end
+
+	def count_tags(posts)
+		tags = {}
+
+		# tally tags
+		for post in posts do
+			for tag in post.tags do
+				tags[tag] = tags.fetch(tag, 0) + 1
+			end
+		end
+
+		# sort by post count descending
+		tags = tags.sort_by {|key,value| -value}
+
+		return tags
+	end
 end
+
