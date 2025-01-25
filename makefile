@@ -8,6 +8,11 @@ WEBROOT ?= _site
 
 JEKYLL_BUILD_ARGS += --quiet
 JEKYLL_BUILD_ARGS += --destination $(WEBROOT)
+ifeq "development" "$(JEKYLL_ENV)"
+ifeq "" "$(findstring B,$(MAKEFLAGS))"
+JEKYLL_BUILD_ARGS += --incremental
+endif
+endif
 
 # Gemfile.lock is used as a proxy for checking if the required gems are
 # installed
