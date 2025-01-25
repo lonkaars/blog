@@ -6,7 +6,7 @@ class Meta < Jekyll::Generator
 		posts = site.collections['items']
 		for page in posts do
 			# convert generated page metadata and add directly to `page.meta` in liquid
-			page.data['meta'] = transform_data(site, page.slug)
+			page.data['meta'] = transform_data(site, page.data['slug'])
 
 			# set page.authors to author metadata from git+yaml
 			page.data['authors'] = site.data['authors'].filter do |author|
@@ -53,7 +53,7 @@ class Meta < Jekyll::Generator
 
 		# tally tags
 		for post in posts do
-			for tag in post.tags do
+			for tag in post.data['tags'] do
 				tags[tag] = tags.fetch(tag, 0) + 1
 			end
 		end

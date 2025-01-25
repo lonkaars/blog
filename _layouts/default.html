@@ -13,6 +13,7 @@
 	<title>{{ site.title }}</title>
 	{% endif %}
 	<link rel="stylesheet" href="/style.css">
+	<script src="/script.js" defer></script>
 </head>
 <body>
 	<header class="invert plainlink">
@@ -33,6 +34,7 @@
 	</nav>
 	<article class="limitwidth content">
 		{% if page.toc %}{% toc %}{% endif %}
+		{% if page.post %}{% include outdated.html date=page.date %}{% endif %}
 		{{ content }}
 	</article>
 	{% if page.post %}

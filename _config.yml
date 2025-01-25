@@ -21,6 +21,5 @@ markdown: kramdown
 sass:
   style: compressed
   sourcemap: development
-gems:
-  - jekyll-liquify
+stale_threshold: 63072000 # 2 years
 

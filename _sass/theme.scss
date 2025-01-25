@@ -1,15 +1,27 @@
 blockquote {
 	font-style: italic;
 	opacity: .8;
+	--color: currentcolor;
 }
 blockquote::before {
 	content: "";
 	position: absolute;
 	left: 0;
-	top: 0;
-	bottom: 0;
+	top: -4px;
+	bottom: -4px;
 	width: 2px;
-	background-color: currentcolor;
+	background-color: var(--color);
+}
+blockquote p {
+	margin: 1ex 0;
+}
+blockquote.admonition {
+	font-style: unset;
+	opacity: unset;
+}
+blockquote.admonition .title {
+	font-weight: bold;
+	color: var(--color);
 }
 
 // navbar colors
@@ -38,7 +50,8 @@ aside { border-left: 1px dashed; }
 
 pre { border: 1px solid; }
 
-.title { font-size: 150%; }
+header .title { font-size: 150%; }
+footer .title { font-size: 120%; }
 
 .plainlink a,
 .plainlink a:visited { color: inherit; }

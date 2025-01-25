@@ -15,9 +15,9 @@ module Filters
 
 	def post_sort(posts, sort_by)
 		# date (reverse chronological)
-		return posts.sort_by{ |post| -post.date.to_i } if sort_by == "date"
+		return posts.sort_by{ |post| -post.data['date'].to_i } if sort_by == "date"
 		# title (case insensitive)
-		return posts.sort_by{ |post| post.title.downcase } if sort_by == "title"
+		return posts.sort_by{ |post| post.data['title'].downcase } if sort_by == "title"
 	end
 end
 
