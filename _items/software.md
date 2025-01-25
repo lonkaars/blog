@@ -3,8 +3,7 @@ title: Software that I use
 subtitle: Desktop software, server software, phone apps, everything
 tags:
   - software
-  - open
-  - source
+  - open source
   - server
   - phone
 ---
