@@ -1,3 +1,4 @@
+
 blockquote {
 	font-style: italic;
 	opacity: .8;
@@ -24,15 +25,14 @@ blockquote.admonition .title {
 	color: var(--color);
 }
 
-// navbar colors
-.invert {
-	background-color: black;
-	color: white;
+nav, header, footer {
+	background-color: var(--bg-1);
+	color: var(--fg-1);
 }
 
 nav .item.active {
-	color: canvastext !important;
-	background-color: canvas !important;
+	background-color: var(--bg-0) !important;
+	color: var(--fg-0) !important;
 }
 
 // only show underline when hovering link
@@ -65,7 +65,7 @@ td, th {
 	padding: 0 1ex;
 }
 table {
-	border-color: currentColor;
+	border-color: currentcolor;
 	border-spacing: 0;
 }
 
@@ -96,12 +96,10 @@ table {
 	list-style-type: disclosure-open;
 }
 
-*:focus { outline: none; }
-
 input, button {
 	border: none;
-	background: #ccc;
-	color: inherit;
+	background-color: var(--bg-2);
+	color: var(--fg-2);
 
 	box-sizing: content-box;
 	height: 20px;

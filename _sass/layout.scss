@@ -57,6 +57,10 @@ aside {
 	padding: 6px 0px;
 }
 
+ul {
+	padding-left: 24px;
+}
+
 aside ul {
 	padding-left: 16px;
 	margin: 0;
@@ -71,8 +75,8 @@ aside > ul { margin-left: 12px; }
 summary { list-style-position: outside; }
 // hide bullets for list items that can be expanded
 li.stub::marker { content: ""; }
-// give collapsable element arrow "clickable" cursor
-summary::marker { cursor: pointer; }
+// collapsable element
+summary, summary::marker { cursor: pointer; }
 
 blockquote {
 	position: relative;

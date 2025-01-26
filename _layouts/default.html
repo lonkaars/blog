@@ -15,12 +15,12 @@
 	<script src="/script.js" defer></script>
 </head>
 <body>
-	<header class="invert plainlink">
+	<header class="plainlink">
 		<div class="limitwidth">
 			<span class="title">{{ page.title | smartify }}</span>
 		</div>
 	</header>
-	<nav class="invert plainlink">
+	<nav class="plainlink">
 		<div class="limitwidth">
 			<a href="/" class="item {% if page.id == "index" %}active{% endif %}">home</a>
 			<a href="/posts/by-date" class="item {% if page.id == "posts" %}active{% endif %}">posts</a>
@@ -37,7 +37,7 @@
 		{{ content }}
 	</article>
 	{% if page.post %}
-		<footer id="footer" class="invert plainlink">
+		<footer id="footer" class="plainlink">
 			<div class="limitwidth">
 				<div class="autocolumn">
 					<div class="column">

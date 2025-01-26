@@ -1,0 +1,32 @@
+:root {
+	--bg-0: canvas;
+	--fg-0: canvastext;
+	--bg-1: canvastext;
+	--fg-1: canvas;
+	--bg-2: buttonface;
+	--fg-2: buttontext;
+
+	--code-comment: #556885;
+	--code-keyword: #a72076;
+	--code-string: #755a1c;
+	--code-number: #c94f29;
+	--code-operator: #6327c1;
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+	:root {
+		--bg-0: canvas;
+		--fg-0: canvastext;
+		--bg-1: color-mix(in srgb, canvas 100%, white 10%);
+		--fg-1: canvastext;
+		--bg-2: var(--bg-1);
+		--fg-2: var(--fg-1);
+
+		--code-comment: #808b9bd9;
+		--code-keyword: #d25a76;
+		--code-string: #e4a87e;
+		--code-number: #fa7d57;
+		--code-operator: #da9eff;
+	}
+}
+

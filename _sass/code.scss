@@ -17,11 +17,3 @@ pre.highlight {
 %token_number { color: var(--code-number); }
 %token_operator { color: var(--code-operator); }
 
-:root {
-	--code-comment: #556885;
-	--code-keyword: #a72076;
-	--code-string: #755a1c;
-	--code-number: #c94f29;
-	--code-operator: #6327c1;
-}
-
