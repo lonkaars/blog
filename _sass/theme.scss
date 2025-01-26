@@ -22,7 +22,17 @@ blockquote.admonition {
 }
 blockquote.admonition .title {
 	font-weight: bold;
-	color: var(--color);
+	color: var(--bg-0);
+	background-color: var(--color);
+	display: inline-block;
+	padding: 3px 6px;
+	border-radius: 4px;
+	margin: 0;
+}
+@each $level in warning,note,info {
+	.admonition.#{$level} {
+		--color: var(--admonition-#{$level});
+	}
 }
 
 nav, header, footer {

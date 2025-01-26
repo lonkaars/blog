@@ -11,6 +11,10 @@
 	--code-string: #755a1c;
 	--code-number: #c94f29;
 	--code-operator: #6327c1;
+
+	--admonition-warning: #d61b12;
+	--admonition-note: #a0790a;
+	--admonition-info: #0f4ba3;
 }
 
 @media only screen and (prefers-color-scheme: dark) {
@@ -27,6 +31,10 @@
 		--code-string: #e4a87e;
 		--code-number: #fa7d57;
 		--code-operator: #da9eff;
+
+		--admonition-warning: #f87171;
+		--admonition-note: #f2b939;
+		--admonition-info: #74b7f2;
 	}
 }
 
