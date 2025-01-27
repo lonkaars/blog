@@ -1,8 +1,11 @@
 _site
+_bundle
+_dist.tar.gz
+
+Gemfile.lock
+
 .jekyll-cache
 .jekyll-metadata
 
 .DS_Store
 
-Gemfile.lock
-_dist.tar.gz

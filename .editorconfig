@@ -4,6 +4,7 @@ root = true
 indent_style = tab
 end_of_line = lf
 insert_final_newline = true
+max_line_length = 95
 
 [*.{md,yml}]
 indent_style = space
