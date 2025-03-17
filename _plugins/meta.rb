@@ -35,6 +35,7 @@ class Meta < Jekyll::Generator
 
 	def transform_data(site, slug)
 		data = site.data['post'][slug]
+		if data['git_log'] == nil then data['git_log'] = [ { } ] end
 		data['git_log'] = data['git_log'].sort { |c| c['date'].to_i }
 
 		git_log = data['git_log'].filter do |commit|

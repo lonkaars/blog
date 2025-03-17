@@ -1,6 +1,7 @@
 module Filters
 	def datefmt(input)
-		return input.strftime("%F")
+		return input.strftime("%F") if input.is_a? Time
+		return "???"
 	end
 
 	def sentence_join(items, fallback = "")
