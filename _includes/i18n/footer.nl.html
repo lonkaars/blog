@@ -1,0 +1,16 @@
+<div class="column">
+	<span class="title">post info</span>
+	<ul>
+		<li>geschreven door {{ page.authors | map: 'nick' | sentence_join: 'niemand?' }}</li>
+		<li>voor het eerst op {{ page.meta.date_initial | datefmt }} gepubliceerd</li>
+		<li>{{ page.meta.edits }} keer bewerkt</li>
+		<li>laatste (huidige) versie {{ page.meta.date | datefmt }}</li>
+	</ul>
+</div>
+<div class="column">
+	<a href="/" class="title">{{ site.domain }}</a>
+	<ul>
+		<li>versie <code>{{ site.data.meta.slug }}</code> (<a href="https://git.pipeframe.xyz/lonkaars/blog">git</a>)</li>
+		<li>op {{ site.data.meta.build_date | datefmt }} voor het laatst gebouwd</li>
+	</ul>
+</div>

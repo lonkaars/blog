@@ -15,3 +15,16 @@ aside,
 header { text-wrap: balance; }
 
 article { text-align: justify; }
+
+h1 { font-size: 2em; }
+
+html[lang^="ja"] {
+	* { font-style: normal !important; }
+	article { text-align: left; }
+	& {
+		line-height: 1.6;
+		font-size: 9pt;
+		hyphens: none;
+	}
+}
+

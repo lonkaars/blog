@@ -12,6 +12,7 @@
 	<title>{{ site.title }}</title>
 	{% endif %}
 	<link rel="stylesheet" href="/style.css">
+	<noscript><style>.dispjs { display:none; }</style></noscript>
 	<script src="/script.js" defer></script>
 </head>
 <body>
@@ -22,12 +23,12 @@
 	</header>
 	<nav class="plainlink">
 		<div class="limitwidth">
-			<a href="/" class="item {% if page.id == "index" %}active{% endif %}">home</a>
-			<a href="/posts/by-date" class="item {% if page.id == "posts" %}active{% endif %}">posts</a>
-			<a href="/tags" class="item {% if page.id == "tags" %}active{% endif %}">tags</a>
+			<a href="/" class="item {% if page.id == "index" %}active{% endif %}">{% i18n home %}</a>
+			<a href="/posts/by-date" class="item {% if page.id == "posts" %}active{% endif %}">{% i18n posts %}</a>
+			<a href="/tags" class="item {% if page.id == "tags" %}active{% endif %}">{% i18n tags %}</a>
 			<span class="right">
-				{% if page.toc %}<a href="#" class="item">top</a>{% endif %}
-				{% if page.post %}<a href="#footer" class="item">bottom</a>{% endif %}
+				{% if page.toc %}<a href="#" class="item">{% i18n top %}</a>{% endif %}
+				{% if page.post %}<a href="#footer" class="item">{% i18n bottom %}</a>{% endif %}
 			</span>
 		</div>
 	</nav>
@@ -37,28 +38,7 @@
 		{{ content }}
 	</article>
 	{% if page.post %}
-		<footer id="footer" class="plainlink">
-			<div class="limitwidth">
-				<div class="autocolumn">
-					<div class="column">
-						<span class="title">post info</span>
-						<ul>
-							<li>last published on {{ page.meta.date | datefmt }}</li>
-							<li>written by {{ page.authors | map: 'nick' | sentence_join: 'nobody?' }}</li>
-							<li>first published on {{ page.meta.date_initial | datefmt }}</li>
-							<li>edited {{ page.meta.edits | plural: 'time' }}</li>
-						</ul>
-					</div>
-					<div class="column">
-						<a href="/" class="title">{{ site.domain }}</a>
-						<ul>
-							<li>version <code>{{ site.data.meta.slug }}</code> (<a href="https://git.pipeframe.xyz/lonkaars/blog">git</a>)</li>
-							<li>built {{ site.data.meta.build_date | datefmt }}</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</footer>
+		{% include footer.html %}
 	{% endif %}
 </body>
 </html>

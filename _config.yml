@@ -10,7 +10,7 @@ collections:
     output: true
 defaults:
   - scope:
-      type: items
+      path: ""
     values:
       layout: default
       lang: en

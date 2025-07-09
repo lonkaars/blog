@@ -1,5 +1,11 @@
 <blockquote class="admonition warning" hidden x-unhide-after="{{ include.date | date: "%s" | plus: site.stale_threshold }}">
+	{% if page.lang == "ja" %}
+	{% include i18n/outdated.ja.html %}
+	{% elsif page.lang == "nl" %}
+	{% include i18n/outdated.nl.html %}
+	{% else %}
 	<p class="title">Warning</p>
 	<p>This post was last updated on {{ include.date | datefmt }}, and may no
 	longer contain accurate or up-to-date information.</p>
+	{% endif %}
 </blockquote>

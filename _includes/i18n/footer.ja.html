@@ -1,0 +1,16 @@
+<div class="column">
+	<span class="title">記事メタデータ</span>
+	<ul>
+		<li>{{ page.authors | map: 'nick' | sentence_join: 'nobody?' }}が書いた</li>
+		<li>最初{{ page.meta.date_initial | datefmt }}に投稿された</li>
+		<li>{{ page.meta.edits }}回変更された</li>
+		<li>最後{{ page.meta.date | datefmt }}にアップした</li>
+	</ul>
+</div>
+<div class="column">
+	<a href="/" class="title">{{ site.domain }}</a>
+	<ul>
+		<li>バージョン<code>{{ site.data.meta.slug }}</code> (<a href="https://git.pipeframe.xyz/lonkaars/blog">git</a>)</li>
+		<li>{{ site.data.meta.build_date | datefmt }}でビルドされた</li>
+	</ul>
+</div>

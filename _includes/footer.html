@@ -1,0 +1,28 @@
+<footer id="footer" class="plainlink">
+	<div class="limitwidth">
+		<div class="autocolumn">
+			{% if page.lang == "ja" %}
+			{% include i18n/footer.ja.html %}
+			{% elsif page.lang == "nl" %}
+			{% include i18n/footer.nl.html %}
+			{% else %}
+			<div class="column">
+				<span class="title">post info</span>
+				<ul>
+					<li>written by {{ page.authors | map: 'nick' | sentence_join: 'nobody?' }}</li>
+					<li>initially published on {{ page.meta.date_initial | datefmt }}</li>
+					<li>edited {{ page.meta.edits | plural: 'time' }}</li>
+					<li>last revised on {{ page.meta.date | datefmt }}</li>
+				</ul>
+			</div>
+			<div class="column">
+				<a href="/" class="title">{{ site.domain }}</a>
+				<ul>
+					<li>version <code>{{ site.data.meta.slug }}</code> (<a href="https://git.pipeframe.xyz/lonkaars/blog">git</a>)</li>
+					<li>built {{ site.data.meta.build_date | datefmt }}</li>
+				</ul>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</footer>

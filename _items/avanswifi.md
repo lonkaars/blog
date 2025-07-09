@@ -3,13 +3,16 @@ title: Avans eduroam wifi setup
 tags: software phone
 ---
 
-I wasted 2 hours trying to set up my school's WiFi on my laptop, so here's a
-quick reference for other students who might've tried connecting but ended up
-giving up.
+I wasted 2 hours trying to set up my school's WiFi on my laptop, so here's a quick reference
+for other students who might've tried connecting but ended up giving up.
 
-Keep in mind that your username isn't your student e-mail, but the first letter
-of your first name, and 7 characters from your last name (not including a
-middle name if you have one), i.e.  `Loek Le Blansch -> lblansch`.
+{:.admonition.info}
+> {:.title}
+> Note
+>
+> Keep in mind that your username isn't your student email, but the first letter of your first
+> name, and 7 characters from your last name (not including a middle name if you have one),
+> i.e.  `Loek Le Blansch -> lblansch`.
 
 # Linux with NetworkManager
 
@@ -29,9 +32,8 @@ nmcli> activate
 
 # Android
 
-You can connect to eduroam without installing any additional apps by manually
-adding a network in the Android WiFi settings using the following connection
-settings:
+You can connect to eduroam without installing any additional apps by manually adding a network
+in the Android WiFi settings using the following connection settings:
 
 |field|value|
 |-|-|
@@ -43,9 +45,9 @@ settings:
 |**Minimum TLS version**|TLS v1.0|
 |**Online Certificate Status**|Do not verify|
 |**Domain**|`wifi.avans.nl`|
-|**Identity**|\<username\>|
+|**Identity**|*\<username\>*|
 |**Anonymous identity**|anonymous|
-|**Password**|\<password\>|
+|**Password**|*\<password\>*|
 
 
 

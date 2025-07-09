@@ -6,6 +6,19 @@ toc: false
 post: false
 ---
 
+<div class="dispjs">
+	<button onclick="toggle_open(this)" type="button">open all</button>
+</div>
+<script defer>
+	function toggle_open(btn) {
+		const open = btn.hasAttribute("open");
+		btn[open ? "removeAttribute" : "setAttribute"]("open", "");
+		for (let el of document.getElementsByTagName("details")) {
+			el[open ? "removeAttribute" : "setAttribute"]("open", "");
+		}
+		btn.innerText = `${open ? "open" : "close"} all`;
+	}
+</script>
 <ul>
 	{% assign tags = site.data.tags %}
 	{% for tag in tags %}

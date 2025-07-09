@@ -1,6 +1,5 @@
 <form id="search" method="get" action="https://google.com/search">
-	<input type="text" placeholder="search" name="q" spellcheck="false" autocomplete="off">
+	<input type="text" placeholder="{% i18n search %}" name="q" spellcheck="false" autocomplete="off">
 	<input type="hidden" name="q" value="site:{{ site.domain }}">
-	<input type="submit">
+	<input type="submit" value="{% i18n go %}">
 </form>
-

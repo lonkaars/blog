@@ -1,0 +1,29 @@
+# header
+home:
+  en: home
+  ja: ホーム
+posts:
+  en: posts
+  ja: 記事
+tags:
+  en: tags
+  ja: タグ
+top:
+  en: top
+  nl: kop
+  ja: 先頭
+bottom:
+  en: bottom
+  nl: staart
+  ja: 末尾
+
+# posts/search page
+search:
+  en: search
+  nl: zoekterm
+  ja: キーワード
+go:
+  en: go
+  nl: zoeken
+  ja: 検索
+
